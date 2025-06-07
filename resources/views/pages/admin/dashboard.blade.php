@@ -41,8 +41,9 @@
                                     </div>
                                 </div>
                                 <div class="col-md-6 text-end">
-                                    <span class="text-muted small">Grafik ini menunjukkan jumlah pesanan berdasarkan
-                                        statusnya.</span>
+                                    <span class="text-muted small">
+                                        Pilih rentang tanggal untuk melihat statistik pesanan.
+                                    </span>
                                 </div>
                             </div>
                             <div class="chart">
@@ -194,6 +195,7 @@
                     const selectedDateRange = this.value;
                     // Lakukan sesuatu dengan rentang tanggal yang dipilih
                 });
+
                 // Inisialisasi date range picker
                 $('#daterange').daterangepicker({
                     opens: 'left',

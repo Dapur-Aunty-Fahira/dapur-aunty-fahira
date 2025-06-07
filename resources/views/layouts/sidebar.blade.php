@@ -35,7 +35,7 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#">
                         <i class="far fa-circle nav-icon"></i>
-                        <p>Dalam Proses</p>
+                        <p>Diproses</p>
                     </a>
                 </li>
                 <li class="nav-item">
