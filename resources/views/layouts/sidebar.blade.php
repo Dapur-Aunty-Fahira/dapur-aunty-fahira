@@ -12,16 +12,51 @@
         {{-- menu --}}
         <li class="nav-item">
             <a class="nav-link" href="#">
-                <i class="nav-icon fas fa-th"></i>
+                <i class="nav-icon fas fa-utensils"></i>
                 <p>Menu</p>
             </a>
         </li>
         {{-- kanban pesanan --}}
-        <li class="nav-item">
+        <li class="nav-item has-treeview">
             <a class="nav-link" href="#">
-                <i class="nav-icon fas fa-columns"></i>
-                <p>Kanban Pesanan</p>
+                <i class="nav-icon fas fa-th"></i>
+                <p>
+                    Pesanan
+                    <i class="right fas fa-angle-left"></i>
+                </p>
             </a>
+            <ul class="nav nav-treeview">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Menunggu Konfirmasi</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Dalam Proses</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Dikirim</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Selesai</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Dibatalkan</p>
+                    </a>
+                </li>
+            </ul>
         </li>
         {{-- laporan --}}
         <li class="nav-item">
