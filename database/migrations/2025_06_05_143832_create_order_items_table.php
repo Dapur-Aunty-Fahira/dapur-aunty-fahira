@@ -11,8 +11,9 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('order_items', function (Blueprint $table) {
-            $table->id('order_item_id'); // ID unik untuk setiap item order
-            $table->foreignId('order_id')->constrained('orders')->onDelete('cascade'); // ID order yang terkait
+            $table->id(); // ID unik untuk setiap item order
+            $table->string('order_number', 50); // Kolom foreign key ke orders.order_number
+            $table->foreign('order_number')->references('order_number')->on('orders')->onDelete('cascade');
             $table->foreignId('menu_id')->constrained('menus')->onDelete('cascade'); // ID menu yang dipesan
             $table->integer('quantity')->default(1); // Jumlah item yang dipesan
             $table->decimal('price', 10, 2); // Harga per item

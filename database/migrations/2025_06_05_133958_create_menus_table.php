@@ -11,7 +11,7 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('menus', function (Blueprint $table) {
-            $table->id('menu_id'); // ID menu
+            $table->id(); // ID menu
             $table->foreignId('category_id')->constrained('categories'); // ID kategori menu
             $table->string('name'); // Nama menu
             $table->string('image')->nullable(); // Gambar menu, bisa null

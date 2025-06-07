@@ -11,7 +11,7 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('carts', function (Blueprint $table) {
-            $table->id('cart_id'); // ID unik untuk setiap keranjang
+            $table->id(); // ID unik untuk setiap keranjang
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade'); // ID user yang memiliki keranjang
             $table->foreignId('menu_id')->constrained('menus')->onDelete('cascade'); // ID menu yang ditambahkan ke keranjang
             $table->integer('quantity')->default(1); // Jumlah item menu yang ditambahkan ke keranjang
