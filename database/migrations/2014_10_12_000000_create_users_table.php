@@ -16,7 +16,7 @@ return new class extends Migration {
             $table->string('email')->unique(); // Email user, harus unik
             $table->timestamp('email_verified_at')->nullable(); // Waktu verifikasi email
             $table->string('password'); // Password user, harus di-hash
-            $table->enum('role', ['admin', 'pelanggan', 'kurir']); // Role user, bisa admin, pelanggan, atau kurir
+            $table->enum('role', ['admin', 'pelanggan', 'kurir'])->default('pelanggan'); // Role user, bisa admin, pelanggan, atau kurir
             $table->string('phone')->nullable(); // Nomor telepon user, bisa null
             $table->rememberToken(); // Token untuk "remember me" pada login
             $table->timestamps(); // Timestamps untuk created_at dan updated_at

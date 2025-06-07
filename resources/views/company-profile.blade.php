@@ -5,6 +5,28 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description"
+        content="Dapur Aunty Fahira adalah layanan catering profesional yang menyajikan hidangan lezat untuk berbagai acara. Kami menyediakan menu nasi box, nasi besek, nasi bento, nasi tumpeng, liwet tampah, dan prasmanan dengan bahan berkualitas tinggi dan pelayanan terbaik. Pesan sekarang untuk pengalaman kuliner tak
+terlupakan!">
+    <meta name="keywords"
+        content="catering, nasi box, nasi besek, nasi bento, nasi tumpeng, liwet tampah, prasmanan, catering profesional, catering lezat, catering Jakarta, catering Banten" />
+    <meta name="author" content="Dapur Aunty Fahira" />
+    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#e557a1" />
+    <link rel="icon" href="{{ asset('images/logo.png') }}" type="image/png" />
+    <link rel="canonical" href="{{ url()->current() }}" />
+    <meta property="og:title" content="Dapur Aunty Fahira - Catering Lezat & Profesional" />
+    <meta property="og:description"
+        content="Dapur Aunty Fahira adalah layanan catering profesional yang menyajikan hidangan lezat untuk berbagai acara. Kami menyediakan menu nasi box, nasi besek, nasi bento, nasi tumpeng, liwet tampah, dan prasmanan dengan bahan berkualitas tinggi dan pelayanan terbaik. Pesan sekarang untuk pengalaman kuliner tak terlupakan!" />
+    <meta property="og:image" content="{{ asset('images/logo.png') }}" />
+    <meta property="og:url" content="{{ url()->current() }}" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Dapur Aunty Fahira" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Dapur Aunty Fahira - Catering Lezat & Profesional" />
+    <meta name="twitter:description"
+        content="Dapur Aunty Fahira adalah layanan catering profesional yang menyajikan hidangan lezat untuk berbagai acara. Kami menyediakan menu nasi box, nasi besek, nasi bento, nasi tumpeng, liwet tampah, dan prasmanan dengan bahan berkualitas tinggi dan pelayanan terbaik. Pesan sekarang untuk pengalaman kuliner tak terlupakan!" />
+    <meta name="twitter:image" content="{{ asset('images/logo.png') }}" />
     <title>Dapur Aunty Fahira - Catering Lezat & Profesional</title>
 
     <!-- Bootstrap CDN -->
@@ -47,6 +69,20 @@
             color: white;
             padding: 6rem 1rem 4rem;
             text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header-section::before {
+            content: "";
+            position: absolute;
+            top: -80px;
+            right: -80px;
+            width: 200px;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 50%;
+            z-index: 0;
         }
 
         .header-section h1 {
@@ -57,6 +93,8 @@
             justify-content: center;
             align-items: center;
             gap: 1rem;
+            position: relative;
+            z-index: 1;
         }
 
         .header-section h1 img {
@@ -77,6 +115,7 @@
             font-size: 1.2rem;
             border-radius: 0.5rem;
             text-decoration: none;
+            transition: background 0.2s;
         }
 
         .btn-maroon:hover {
@@ -121,6 +160,12 @@
             flex-grow: 1;
         }
 
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #e557a1;
+        }
+
         footer {
             background-color: #e557a1;
             color: white;
@@ -134,7 +179,7 @@
 <body>
 
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg">
+    <nav class="navbar navbar-expand-lg shadow-sm">
         <div class="container">
             <a class="navbar-brand" href="#">
                 <img src="{{ asset('images/logo.png') }}" alt="Logo Dapur Aunty Fahira" />
@@ -152,6 +197,9 @@
                     <li class="nav-item">
                         <a class="nav-link text-white" href="#testimoni">Testimoni</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="#kontak">Kontak</a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -166,30 +214,40 @@
             Catering profesional yang siap menyajikan berbagai menu spesial untuk acara Anda. Dari pesta pernikahan,
             ulang tahun, hingga acara kantor — kami hadirkan rasa terbaik.
         </p>
+        <a href="#menu" class="btn btn-maroon mt-3 shadow">Lihat Menu</a>
     </header>
 
     <!-- Features -->
     <section class="container py-5">
         <div class="row text-center">
             <div class="col-md-4 mb-4">
-                <div class="card card-fixed border-0 shadow-sm p-4 bg-white rounded-4">
+                <div class="card card-fixed border-0 shadow-sm p-4 bg-white rounded-4 h-100">
                     <div class="card-body">
+                        <div class="feature-icon">
+                            <i class="bi bi-list-ul"></i>
+                        </div>
                         <h4 class="text-danger">Menu Variatif</h4>
                         <p>Kami menyediakan berbagai pilihan menu tradisional dan modern yang sesuai selera Anda.</p>
                     </div>
                 </div>
             </div>
             <div class="col-md-4 mb-4">
-                <div class="card card-fixed border-0 shadow-sm p-4 bg-white rounded-4">
+                <div class="card card-fixed border-0 shadow-sm p-4 bg-white rounded-4 h-100">
                     <div class="card-body">
+                        <div class="feature-icon">
+                            <i class="bi bi-egg-fried"></i>
+                        </div>
                         <h4 class="text-danger">Bahan Berkualitas</h4>
                         <p>Hanya menggunakan bahan segar dan terbaik untuk menjaga cita rasa setiap hidangan.</p>
                     </div>
                 </div>
             </div>
             <div class="col-md-4 mb-4">
-                <div class="card card-fixed border-0 shadow-sm p-4 bg-white rounded-4">
+                <div class="card card-fixed border-0 shadow-sm p-4 bg-white rounded-4 h-100">
                     <div class="card-body">
+                        <div class="feature-icon">
+                            <i class="bi bi-truck"></i>
+                        </div>
                         <h4 class="text-danger">Pengiriman Tepat Waktu</h4>
                         <p>Layanan pengiriman cepat dan tepat waktu, memastikan makanan sampai dalam kondisi terbaik.
                         </p>
@@ -203,118 +261,100 @@
     <section id="menu" class="bg-white py-5 text-center">
         <div class="container">
             <h2 class="text-danger fw-bold mb-4">Menu Spesial Kami</h2>
-            <div class="row justify-content-center">
-                <div class="col-md-4 mb-4">
-                    <div class="card card-fixed border-0 shadow-sm">
-                        <img src="{{ asset('images/nasi_box.png') }}?auto=format&fit=crop&w=400&q=80"
-                            class="card-img-top rounded-top" alt="Nasi Box">
-                        <div class="card-body">
-                            <h5 class="card-title text-danger fw-bold">Nasi Box</h5>
-                            <p class="card-text">Nasi box praktis dengan berbagai pilihan lauk, ideal untuk acara
-                                santai.</p>
+            <div class="row justify-content-center g-4">
+                @php
+                    $menus = [
+                        [
+                            'img' => 'nasi_box.jpg',
+                            'title' => 'Nasi Box',
+                            'desc' => 'Nasi box praktis dengan berbagai pilihan lauk, ideal untuk acara santai.',
+                        ],
+                        [
+                            'img' => 'nasi_besek.jpg',
+                            'title' => 'Nasi Besek',
+                            'desc' => 'Nasi besek tradisional dengan bumbu khas, cocok untuk acara adat dan spesial.',
+                        ],
+                        [
+                            'img' => 'nasi_bento.jpg',
+                            'title' => 'Nasi Bento',
+                            'desc' =>
+                                'Nasi bento dengan porsi pas dan variasi lauk, sempurna untuk makan siang praktis.',
+                        ],
+                        [
+                            'img' => 'tumpeng.jpg',
+                            'title' => 'Nasi Tumpeng',
+                            'desc' =>
+                                'Nasi kuning berbentuk kerucut dengan lauk-pauk lengkap, cocok untuk acara spesial.',
+                        ],
+                        [
+                            'img' => 'liwet_tampah.jpg',
+                            'title' => 'Liwet Tampah',
+                            'desc' =>
+                                'Hidangan nasi liwet dengan tampah tradisional, disajikan dengan aneka lauk lezat.',
+                        ],
+                        [
+                            'img' => 'prasmanan.jpg',
+                            'title' => 'Prasmanan',
+                            'desc' => 'Berbagai pilihan hidangan disajikan secara prasmanan, cocok untuk acara besar.',
+                        ],
+                    ];
+                @endphp
+                @foreach ($menus as $menu)
+                    <div class="col-md-4">
+                        <div class="card card-fixed border-0 shadow-sm h-100">
+                            <img src="{{ asset('images/' . $menu['img']) }}?auto=format&fit=crop&w=400&q=80"
+                                class="card-img-top rounded-top" alt="{{ $menu['title'] }}">
+                            <div class="card-body">
+                                <h5 class="card-title text-danger fw-bold">{{ $menu['title'] }}</h5>
+                                <p class="card-text">{{ $menu['desc'] }}</p>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-4 mb-4">
-                    <div class="card card-fixed border-0 shadow-sm">
-                        <img src="{{ asset('images/nasi_besek.png') }}?auto=format&fit=crop&w=400&q=80"
-                            class="card-img-top rounded-top" alt="Nasi Besek">
-                        <div class="card-body">
-                            <h5 class="card-title text-danger fw-bold">Nasi Besek</h5>
-                            <p class="card-text">Nasi besek tradisional dengan bumbu khas, cocok untuk acara adat dan
-                                spesial.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-4">
-                    <div class="card card-fixed border-0 shadow-sm">
-                        <img src="{{ asset('images/nasi_bento.png') }}?auto=format&fit=crop&w=400&q=80"
-                            class="card-img-top rounded-top" alt="Nasi Bento">
-                        <div class="card-body">
-                            <h5 class="card-title text-danger fw-bold">Nasi Bento</h5>
-                            <p class="card-text">Nasi bento dengan porsi pas dan variasi lauk, sempurna untuk makan
-                                siang praktis.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-4">
-                    <div class="card card-fixed border-0 shadow-sm">
-                        <img src="{{ asset('images/tumpeng.png') }}?auto=format&fit=crop&w=400&q=80"
-                            class="card-img-top rounded-top" alt="Nasi Tumpeng">
-                        <div class="card-body">
-                            <h5 class="card-title text-danger fw-bold">Nasi Tumpeng</h5>
-                            <p class="card-text">Nasi kuning berbentuk kerucut dengan lauk-pauk lengkap, cocok untuk
-                                acara spesial.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-4">
-                    <div class="card card-fixed border-0 shadow-sm">
-                        <img src="{{ asset('images/liwet_tampah.png') }}?auto=format&fit=crop&w=400&q=80"
-                            class="card-img-top rounded-top" alt="Liwet Tampah">
-                        <div class="card-body">
-                            <h5 class="card-title text-danger fw-bold">Liwet Tampah</h5>
-                            <p class="card-text">Hidangan nasi liwet dengan tampah tradisional, disajikan dengan aneka
-                                lauk lezat.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-4">
-                    <div class="card card-fixed border-0 shadow-sm">
-                        <img src="{{ asset('images/prasmanan.png') }}?auto=format&fit=crop&w=400&q=80"
-                            class="card-img-top rounded-top" alt="Prasmanan">
-                        <div class="card-body">
-                            <h5 class="card-title text-danger fw-bold">Prasmanan</h5>
-                            <p class="card-text">Berbagai pilihan hidangan disajikan secara prasmanan, cocok untuk acara
-                                besar.</p>
-                        </div>
-                    </div>
-                </div>
+                @endforeach
             </div>
         </div>
     </section>
 
-    <!-- alur process pemesanan -->
+    <!-- Alur Pemesanan -->
     <section class="bg-light py-5 text-center">
         <div class="container">
             <h2 class="text-danger fw-bold mb-5">Alur Pemesanan</h2>
             <div class="row justify-content-center">
                 <div class="col-md-8">
                     <ul class="timeline list-unstyled position-relative">
-                        <li class="mb-5 position-relative">
-                            <div class="timeline-dot bg-danger position-absolute top-0 start-0 translate-middle"></div>
-                            <div class="card border-0 shadow-sm p-4 bg-white rounded-4 ms-5 text-start">
-                                <h5 class="text-danger mb-2">1. Pilih Menu</h5>
-                                <p class="mb-0">Pilih menu catering sesuai kebutuhan acara Anda.</p>
-                            </div>
-                        </li>
-                        <li class="mb-5 position-relative">
-                            <div class="timeline-dot bg-danger position-absolute top-0 start-0 translate-middle"></div>
-                            <div class="card border-0 shadow-sm p-4 bg-white rounded-4 ms-5 text-start">
-                                <h5 class="text-danger mb-2">2. Isi Form Pemesanan</h5>
-                                <p class="mb-1">Isi form pemesanan anda dengan lengkap, termasuk alamat pengiriman,
-                                    tanggal dan waktu kirim, dan catatan khusus jika ada.</p>
-                                <p class="mb-0">Pastikan semua informasi sudah benar sebelum mengirimkan
-                                    pesanan.
-                                </p>
-                            </div>
-                        </li>
-                        <li class="mb-5 position-relative">
-                            <div class="timeline-dot bg-danger position-absolute top-0 start-0 translate-middle"></div>
-                            <div class="card border-0 shadow-sm p-4 bg-white rounded-4 ms-5 text-start">
-                                <h5 class="text-danger mb-2">3. Pembayaran</h5>
-                                <p class="mb-1">Lakukan pembayaran melalui transfer dan kirim bukti pembayaran.</p>
-                                <p class="mb-0">Setelah pembayaran dikonfirmasi, pesanan Anda akan diproses.</p>
-                            </div>
-                        </li>
-                        <li class="position-relative">
-                            <div class="timeline-dot bg-danger position-absolute top-0 start-0 translate-middle"></div>
-                            <div class="card border-0 shadow-sm p-4 bg-white rounded-4 ms-5 text-start">
-                                <h5 class="text-danger mb-2">4. Pengiriman</h5>
-                                <p class="mb-1">Hidangan akan dikirim sesuai waktu yang telah disepakati.</p>
-                                <p class="mb-0">Pastikan ada orang yang menerima pesanan di lokasi pengiriman.</p>
-                            </div>
-                        </li>
+                        @php
+                            $steps = [
+                                [
+                                    'title' => '1. Pilih Menu',
+                                    'desc' => 'Pilih menu catering sesuai kebutuhan acara Anda.',
+                                ],
+                                [
+                                    'title' => '2. Isi Form Pemesanan',
+                                    'desc' =>
+                                        'Isi form pemesanan anda dengan lengkap, termasuk alamat pengiriman, tanggal dan waktu kirim, dan catatan khusus jika ada. Pastikan semua informasi sudah benar sebelum mengirimkan pesanan.',
+                                ],
+                                [
+                                    'title' => '3. Pembayaran',
+                                    'desc' =>
+                                        'Lakukan pembayaran melalui transfer dan kirim bukti pembayaran. Setelah pembayaran dikonfirmasi, pesanan Anda akan diproses.',
+                                ],
+                                [
+                                    'title' => '4. Pengiriman',
+                                    'desc' =>
+                                        'Hidangan akan dikirim sesuai waktu yang telah disepakati. Pastikan ada orang yang menerima pesanan di lokasi pengiriman.',
+                                ],
+                            ];
+                        @endphp
+                        @foreach ($steps as $i => $step)
+                            <li class="mb-5 position-relative">
+                                <div class="timeline-dot bg-danger position-absolute top-0 start-0 translate-middle">
+                                </div>
+                                <div class="card border-0 shadow-sm p-4 bg-white rounded-4 ms-5 text-start">
+                                    <h5 class="text-danger mb-2">{{ $step['title'] }}</h5>
+                                    <p class="mb-0">{{ $step['desc'] }}</p>
+                                </div>
+                            </li>
+                        @endforeach
                     </ul>
                 </div>
             </div>
@@ -358,36 +398,41 @@
         <div class="container text-center">
             <h2 class="mb-4 fw-bold">Testimoni Pelanggan</h2>
             <div class="row justify-content-center">
-                <div class="col-md-6 mb-4">
-                    <div class="card bg-white bg-opacity-25 border-0 shadow-sm">
-                        <div class="card-body">
-                            <blockquote class="blockquote mb-0">
-                                <p>"Pelayanan cepat dan makanannya enak sekali! Saya pasti pesan lagi untuk acara
-                                    keluarga berikutnya."</p>
-                                <footer class="blockquote-footer text-white mt-3">Ibu Sari, <cite
-                                        title="Jakarta">Jakarta</cite></footer>
-                            </blockquote>
+                @php
+                    $testimonials = [
+                        [
+                            'text' =>
+                                'Pelayanan cepat dan makanannya enak sekali! Saya pasti pesan lagi untuk acara keluarga berikutnya.',
+                            'author' => 'Ibu Sari',
+                            'city' => 'Jakarta',
+                        ],
+                        [
+                            'text' =>
+                                'Dapur Aunty Fahira membuat pesta ulang tahun saya jadi istimewa dengan hidangan yang luar biasa.',
+                            'author' => 'Bapak Andi',
+                            'city' => 'Bandung',
+                        ],
+                    ];
+                @endphp
+                @foreach ($testimonials as $testi)
+                    <div class="col-md-6 mb-4">
+                        <div class="card bg-white bg-opacity-25 border-0 shadow-sm h-100">
+                            <div class="card-body">
+                                <blockquote class="blockquote mb-0">
+                                    <p>"{{ $testi['text'] }}"</p>
+                                    <footer class="blockquote-footer text-white mt-3">{{ $testi['author'] }}, <cite
+                                            title="{{ $testi['city'] }}">{{ $testi['city'] }}</cite></footer>
+                                </blockquote>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-6 mb-4">
-                    <div class="card bg-white bg-opacity-25 border-0 shadow-sm">
-                        <div class="card-body">
-                            <blockquote class="blockquote mb-0">
-                                <p>"Dapur Aunty Fahira membuat pesta ulang tahun saya jadi istimewa dengan hidangan yang
-                                    luar biasa."</p>
-                                <footer class="blockquote-footer text-white mt-3">Bapak Andi, <cite
-                                        title="Bandung">Bandung</cite></footer>
-                            </blockquote>
-                        </div>
-                    </div>
-                </div>
+                @endforeach
             </div>
         </div>
     </section>
 
     <!-- Call to Action & Contact Section -->
-    <section class="bg-light py-5 text-center">
+    <section id="kontak" class="bg-light py-5 text-center">
         <div class="container">
             <h2 class="text-danger fw-bold mb-4">Hubungi Kami</h2>
             <p class="mb-4">Punya pertanyaan atau ingin konsultasi menu? Tim kami siap membantu Anda!</p>
@@ -432,8 +477,16 @@
     </section>
 
     <!-- Floating Button -->
-    <a href="{{ route('login') }}" class="floating-button">Pesan Sekarang</a>
+    <a href="{{ route('login') }}" class="floating-button shadow">Pesan Sekarang</a>
 
     <!-- Footer -->
     <footer>
-        &copy; 2025 Dapur Aunty Fahira - Semua Hak Dilindungi
+        &copy; {{ date('Y') }} Dapur Aunty Fahira - Semua Hak Dilindungi
+    </footer>
+
+    <!-- Bootstrap Icons CDN -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
