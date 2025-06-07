@@ -9,22 +9,23 @@
     @include('layouts.stylesheet')
 </head>
 
-<body class="hold-transition sidebar-mini layout-fixed">
+<body class="hold-transition sidebar-mini layout-fixed sidebar-collapse">
     <div class="wrapper">
 
         <!-- Preloader -->
-        <div class="preloader flex-column justify-content-center align-items-center">
-            <img class="animation__shake" src="{{asset('assets/dist/img/AdminLTELogo.png')}}" alt="AdminLTELogo" height="60" width="60">
+        <div class="preloader flex-column justify-content-center align-items-center bg-white">
+            <img class="animation__shake brand-image img-circle elevation-2" src="{{ asset('images/logo.png') }}"
+                alt="dafur aunty fahira logo" height="300" width="300">
         </div>
 
         <!-- Navbar -->
-        <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+        <nav class="main-header navbar navbar-expand navbar-white navbar-light bg-pink">
             @include('layouts.navbar')
         </nav>
         <!-- /.navbar -->
 
         <!-- Main Sidebar Container -->
-        <aside class="main-sidebar sidebar-dark-primary elevation-4">
+        <aside class="main-sidebar sidebar-light-pink elevation-4">
             <!-- Brand Logo -->
             @include('layouts.brandlogo')
 

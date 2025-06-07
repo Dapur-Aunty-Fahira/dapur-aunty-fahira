@@ -20,7 +20,7 @@ use App\Http\Controllers\Page\Guest\GuestDashboard;
 // root
 Route::get('/', function () {
     if (!Auth::check()) {
-        return view('company-profile');
+        return view('landing');
     }
 
     $user = Auth::user();

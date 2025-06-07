@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,42 +13,58 @@
             background: linear-gradient(to right, #FEE3E8, #E557A1, #FEE3E8);
             font-family: 'Quicksand', sans-serif;
         }
+
         .auth-card {
             border-radius: 1rem;
             background-color: white;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
             padding: 2rem;
         }
+
         .brand-header {
             text-align: center;
             margin-bottom: 1rem;
         }
+
         .brand-header img {
             max-width: 80px;
             margin-bottom: 10px;
         }
+
         .brand-header h2 {
             color: #E557A1;
             font-weight: 700;
         }
+
         .brand-header small {
             color: #555;
             font-weight: 500;
         }
+
         .form-toggle {
             color: #E557A1;
             cursor: pointer;
             text-decoration: underline;
         }
+
         .btn-maroon {
             background-color: #E557A1;
             color: white;
         }
+
         .btn-maroon:hover {
             background-color: #ec7bb6;
         }
     </style>
 </head>
+
+<!-- Button Kembali ke Halaman Utama -->
+<div class="position-absolute top-0 start-0 m-3">
+    <a href="{{ url('/') }}" class="btn btn-outline-secondary">
+        Kembali ke Halaman Utama
+    </a>
+</div>
+
 <body class="d-flex align-items-center justify-content-center">
 
     <div class="auth-card" style="width: 100%; max-width: 420px;">
@@ -68,14 +85,18 @@
                 <label class="form-label">Email</label>
                 <input type="email" name="email" value="{{ old('email') }}"
                     class="form-control @error('email') is-invalid @enderror" required>
-                @error('email')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                @error('email')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
             </div>
 
             <div class="mb-3">
                 <label class="form-label">Password</label>
-                <input type="password" name="password"
-                    class="form-control @error('password') is-invalid @enderror" required>
-                @error('password')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                <input type="password" name="password" class="form-control @error('password') is-invalid @enderror"
+                    required>
+                @error('password')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
             </div>
 
             <div class="mb-3 form-check">
@@ -85,7 +106,8 @@
 
             <button type="submit" class="btn btn-maroon w-100 mb-2">Login</button>
             <div class="text-center">
-                <small>Belum punya akun? <span class="form-toggle" onclick="toggleForms()">Daftar sekarang</span></small>
+                <small>Belum punya akun? <span class="form-toggle" onclick="toggleForms()">Daftar
+                        sekarang</span></small>
             </div>
         </form>
 
@@ -95,21 +117,26 @@
             <div class="mb-3">
                 <label class="form-label">Nama Lengkap</label>
                 <input type="text" name="name" class="form-control @error('name') is-invalid @enderror" required>
-                @error('name')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                @error('name')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
             </div>
 
             <div class="mb-3">
                 <label class="form-label">Email</label>
-                <input type="email" name="email"
-                    class="form-control @error('email') is-invalid @enderror" required>
-                @error('email')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                <input type="email" name="email" class="form-control @error('email') is-invalid @enderror" required>
+                @error('email')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
             </div>
 
             <div class="mb-3">
                 <label class="form-label">Password</label>
-                <input type="password" name="password"
-                    class="form-control @error('password') is-invalid @enderror" required>
-                @error('password')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                <input type="password" name="password" class="form-control @error('password') is-invalid @enderror"
+                    required>
+                @error('password')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
             </div>
 
             <div class="mb-3">
@@ -140,4 +167,5 @@
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>
