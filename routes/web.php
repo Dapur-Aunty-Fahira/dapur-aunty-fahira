@@ -26,7 +26,7 @@ Route::get('/', function () {
     $user = Auth::user();
     return match ($user->role) {
         'admin' => redirect()->route('admin.dashboard'),
-        'guest' => redirect()->route('guest.dashboard'),
+        'pelanggan' => redirect()->route('guest.dashboard'),
         default => redirect()->route('showLogin'),
     };
 })->name('home');
@@ -47,7 +47,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('admin/dashboard', [AdminDashboard::class, 'show'])->name('admin.dashboard');
 });
 
-// Guest-only routes
-Route::middleware(['auth', 'role:guest'])->group(function () {
+// Pelanggan-only routes
+Route::middleware(['auth', 'role:pelanggan'])->group(function () {
     Route::get('guest/dashboard', [GuestDashboard::class, 'show'])->name('guest.dashboard');
 });
