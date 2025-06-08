@@ -1,12 +1,13 @@
 <?php
 
+use App\Http\Controllers\Page\Admin\MenuController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Page\Admin\Menu;
 use App\Http\Controllers\Authentication\Login;
 use App\Http\Controllers\Authentication\Register;
 use App\Http\Controllers\Page\Admin\AdminDashboard;
 use App\Http\Controllers\Page\Guest\GuestDashboard;
+use App\Http\Controllers\Page\Admin\CategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -50,8 +51,24 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('admin/dashboard', [AdminDashboard::class, 'show'])->name('admin.dashboard');
     Route::get('admin/stats/users-orders', [AdminDashboard::class, 'getUserOrderStats'])->name('admin.dashboard.orders');
 
+    // category
+    Route::prefix('admin/category')->group(function () {
+        Route::get('all', [CategoryController::class, 'getAllCategory'])->name('admin.category.all');
+        Route::get('{id}', [CategoryController::class, 'getCategory'])->name('admin.category');
+        Route::post('store', [CategoryController::class, 'store'])->name('admin.category.store');
+        Route::put('update/{id}', [CategoryController::class, 'update'])->name('admin.category.update');
+        Route::delete('destroy/{id}', [CategoryController::class, 'destroy'])->name('admin.category.destroy');
+    });
+
     // menu
-    Route::get('admin/menu', [Menu::class, 'show'])->name('admin.menu');
+    Route::prefix('admin/menu')->group(function () {
+        Route::get('', [MenuController::class, 'show'])->name('admin.menu');
+        Route::get('list', [MenuController::class, 'getListMenu'])->name('admin.menu.list');
+        Route::get('{id}', [MenuController::class, 'getMenu'])->name('admin.menu ');
+        Route::post('store', [MenuController::class, 'store'])->name('admin.menu.store');
+        Route::put('update/{id}', [MenuController::class, 'update'])->name('admin.menu.update');
+        Route::delete('destroy/{id}', [MenuController::class, 'destroy'])->name('admin.menu.destroy');
+    });
 });
 
 // Pelanggan-only routes
