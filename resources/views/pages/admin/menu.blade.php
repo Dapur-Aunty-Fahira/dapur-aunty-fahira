@@ -101,7 +101,7 @@
                     <div class="mb-3">
                         <div class="input-group">
                             <input type="text" id="newCategoryName" class="form-control" placeholder="Nama Kategori">
-                            <button id="addCategoryBtn" class="btn btn-primary">Tambah</button>
+                            <button id="addCategoryBtn" class="btn btn-secondary"><i class="fas fa-plus"></i></button>
                         </div>
                     </div>
                     <div class="card shadow-sm">
@@ -126,7 +126,7 @@
                 <div class="col-md-8">
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h5 class="m-0">Menu</h5>
-                        <button class="btn btn-success" id="addMenuBtn"><i class="fas fa-plus"></i> Tambah Menu</button>
+                        <button class="btn btn-secondary" id="addMenuBtn"><i class="fas fa-plus"></i></button>
                     </div>
                     <div class="row g-3" id="menuCards"></div>
                 </div>
