@@ -2,8 +2,13 @@
 
 namespace App\Http\Controllers\Page\Admin;
 
+use App\Models\Menu;
+use App\Models\User;
+use App\Models\Order;
 use App\Models\ActivityLogs;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 
 class AdminDashboard extends Controller
@@ -13,41 +18,34 @@ class AdminDashboard extends Controller
         return view('pages.admin.dashboard');
     }
 
-    public function getActivityLogs(Request $request)
+    public function getUserOrderStats(Request $request)
     {
-        $search = $request->input('search.value'); // get the search value
-        $length = $request->input('length');
-        $start = $request->input('start');
-        $orderColumnIndex = $request->input('order.0.column');
-        $orderDirection = $request->input('order.0.dir');
-        $columns = $request->input('columns');
-        $orderColumnName = $columns[$orderColumnIndex]['data'] ?? 'created_at';
+        try {
+            // Tanggal default: 1 bulan terakhir
+            $start = Carbon::parse($request->start ?? now()->startOfMonth());
+            $end = Carbon::parse($request->end ?? now()->endOfMonth())->endOfDay();
 
-        $query = ActivityLogs::with('user')
-            ->when($search, function ($query, $search) {
-                $query->where(function ($q) use ($search) {
-                    $q->where('type', 'like', "%$search%")
-                        ->orWhere('description', 'like', "%$search%")
-                        ->orWhere('trace_id', 'like', "%$search%")
-                        ->orWhere('url', 'like', "%$search%")
-                        ->orWhere('ip_address', 'like', "%$search%")
-                        ->orWhere('user_agent', 'like', "%$search%")
-                        ->orWhere('status', 'like', "%$search%");
-                });
-            });
+            // Statistik
+            $userCount = User::count();
+            $menuCount = Menu::count();
 
-        $recordsTotal = $query->count();
+            $orderStats = Order::whereBetween('created_at', [$start, $end])
+                ->selectRaw("order_status, COUNT(*) as count")
+                ->groupBy('order_status')
+                ->pluck('count', 'order_status');
 
-        $data = $query->orderBy($orderColumnName, $orderDirection)
-            ->skip($start)
-            ->take($length)
-            ->get();
-
-        return response()->json([
-            'data' => $data,
-            'recordsTotal' => $recordsTotal,
-            'recordsFiltered' => $recordsTotal,
-            'draw' => intval($request->input('draw'))
-        ]);
+            return response()->json([
+                'userCount' => $userCount,
+                'menuCount' => $menuCount,
+                'orders' => $orderStats
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Error in getUserOrderStats: ' . $e->getMessage(), [
+                'exception' => $e
+            ]);
+            return response()->json([
+                'error' => 'Failed to retrieve statistics.'
+            ], 500);
+        }
     }
 }

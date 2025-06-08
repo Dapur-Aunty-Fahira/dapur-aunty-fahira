@@ -62,12 +62,14 @@
                                     'label' => 'Total Pengguna',
                                     'icon' => 'fas fa-users',
                                     'color' => 'gradient-primary',
+                                    'class' => 'stat-total-pengguna',
                                 ],
                                 [
                                     'count' => 75,
                                     'label' => 'Total Menu',
                                     'icon' => 'fas fa-utensils',
                                     'color' => 'gradient-warning',
+                                    'class' => 'stat-total-menu',
                                 ],
                             ];
                         @endphp
@@ -78,13 +80,14 @@
                                     <div class="card-body d-flex align-items-center">
                                         <div class="me-3">
                                             <span
-                                                class="d-inline-flex align-items-center justify-content-center rounded-circle bg-{{ $stat['color'] }} shadow"
+                                                class="d-inline-flex align-items-center justify-content-center rounded-circle bg-gradient-{{ $stat['color'] }} shadow"
                                                 style="width:56px;height:56px;">
                                                 <i class="{{ $stat['icon'] }} text-white fs-3"></i>
                                             </span>
                                         </div>
                                         <div>
-                                            <h3 class="mb-0 fw-bold text-dark">{{ $stat['count'] }}</h3>
+                                            <h3 class="mb-0 fw-bold text-dark {{ $stat['class'] }}">{{ $stat['count'] }}
+                                            </h3>
                                             <div class="text-muted small">{{ $stat['label'] }}</div>
                                         </div>
                                     </div>
@@ -95,54 +98,28 @@
                 </div>
 
                 <style>
-                    .bg-gradient-primary {
+                    .bg-gradient-gradient-primary {
                         background: linear-gradient(135deg, #e83e8c 0%, #fd7e14 100%) !important;
                     }
 
-                    .bg-gradient-warning {
+                    .bg-gradient-gradient-warning {
                         background: linear-gradient(135deg, #ffc107 0%, #fd7e14 100%) !important;
                     }
                 </style>
-            </div>
-            <!-- Aktivitas Terbaru -->
-            <div class="row mb-4">
-                <div class="col-12">
-                    <div class="card border-0 shadow-sm">
-                        <div class="card-header bg-pink text-white border-0 mb-2">
-                            <h5 class="card-title mb-0">Aktivitas Terbaru</h5>
-                        </div>
-                        <div class="card-body p-0">
-                            <table id="activityTable" class="table table-bordered table-striped table-hover w-100">
-                                <thead class="table-light">
-                                    <tr>
-                                        <th>Timestamp</th>
-                                        <th>Pengguna</th>
-                                        <th>Type</th>
-                                        <th>Deskripsi Aktivitas</th>
-                                        <th>Trace ID</th>
-                                        <th>URL</th>
-                                        <th>IP Address</th>
-                                        <th>User Agent</th>
-                                        <th>Status</th>
-                                    </tr>
-                                </thead>
-                            </table>
-
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </section>
     <!-- /.content -->
     @push('scripts')
+        <!-- SweetAlert2 CDN (atau gunakan asset lokal jika ada) -->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script>
-            // Data untuk grafik pesanan
-            const orderData = {
+            let orderChart;
+            let orderData = {
                 labels: ['Menunggu Konfirmasi', 'Diproses', 'Dikirim', 'Selesai', 'Dibatalkan'],
                 datasets: [{
                     label: 'Jumlah Pesanan',
-                    data: [150, 44, 27, 53, 65],
+                    data: [0, 0, 0, 0, 0],
                     backgroundColor: [
                         'rgba(23, 162, 184, 0.6)',
                         'rgba(255, 193, 7, 0.6)',
@@ -161,98 +138,101 @@
                 }]
             };
 
-            // Konfigurasi grafik
-            const configOrder = {
-                type: 'bar',
-                data: orderData,
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: {
-                            position: 'top',
-                        },
-                        title: {
-                            display: true,
-                            text: 'Statistik Pesanan'
+            function showDashboardError(message) {
+                Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    icon: 'error',
+                    title: message,
+                    showConfirmButton: false,
+                    timer: 3500,
+                    timerProgressBar: true,
+                    customClass: {
+                        popup: 'colored-toast'
+                    }
+                });
+            }
+
+            function fetchDashboardStats(startDate, endDate) {
+                $.ajax({
+                    url: "{{ route('admin.dashboard.orders') }}",
+                    data: {
+                        start: startDate,
+                        end: endDate
+                    },
+                    success: function(response) {
+                        if (response && response.orders) {
+                            orderData.datasets[0].data = [
+                                response.orders['menunggu_konfirmasi'] ?? 0,
+                                response.orders['diproses'] ?? 0,
+                                response.orders['dikirim'] ?? 0,
+                                response.orders['selesai'] ?? 0,
+                                response.orders['dibatalkan'] ?? 0
+                            ];
+                            if (orderChart) orderChart.update();
+
+                            $('.stat-total-pengguna').text(response.userCount ?? 0);
+                            $('.stat-total-menu').text(response.menuCount ?? 0);
+                        } else {
+                            showDashboardError('Data tidak valid diterima dari server.');
+                            resetStats();
+                        }
+                    },
+                    error: function(xhr) {
+                        let msg = 'Terjadi kesalahan saat mengambil data statistik.';
+                        if (xhr.responseJSON && xhr.responseJSON.message) {
+                            msg += ' ' + xhr.responseJSON.message;
+                        }
+                        showDashboardError(msg);
+                        resetStats();
+                    }
+                });
+            }
+
+            function resetStats() {
+                orderData.datasets[0].data = [0, 0, 0, 0, 0];
+                if (orderChart) orderChart.update();
+                $('.stat-total-pengguna').text(0);
+                $('.stat-total-menu').text(0);
+            }
+
+            $(function() {
+                // Inisialisasi date range picker
+                $('#daterange').daterangepicker({
+                    opens: 'left',
+                    locale: {
+                        format: 'YYYY-MM-DD'
+                    }
+                });
+
+                // Inisialisasi grafik
+                orderChart = new Chart(
+                    document.getElementById('orderChart'), {
+                        type: 'bar',
+                        data: orderData,
+                        options: {
+                            responsive: true,
+                            plugins: {
+                                legend: {
+                                    position: 'top'
+                                },
+                                title: {
+                                    display: true,
+                                    text: 'Statistik Pesanan'
+                                }
+                            }
                         }
                     }
-                }
-            };
-            // Inisialisasi grafik
-            const orderChart = new Chart(
-                document.getElementById('orderChart'),
-                configOrder
-            );
-            // Event listener untuk filter tanggal
-            document.getElementById('daterange').addEventListener('change', function() {
-                const selectedDateRange = this.value;
-                // Lakukan sesuatu dengan rentang tanggal yang dipilih
-            });
+                );
 
-            // Inisialisasi date range picker
-            $('#daterange').daterangepicker({
-                opens: 'left',
-                locale: {
-                    format: 'YYYY-MM-DD'
-                }
-            });
+                // Ambil data awal
+                let initialRange = $('#daterange').val().split(' - ');
+                fetchDashboardStats(initialRange[0], initialRange[1]);
 
-
-            $(document).ready(function() {
-                $('#activityTable').DataTable({
-                    processing: true,
-                    serverSide: true,
-                    responsive: true,
-                    autoWidth: false,
-                    lengthChange: true,
-                    searching: true,
-                    paging: true,
-                    orderMulti: false,
-                    ajax: {
-                        url: "{{ route('admin.activities.data') }}",
-                        type: 'GET'
-                    },
-                    columns: [{
-                            data: 'created_at',
-                            name: 'timestamp'
-                        },
-                        {
-                            data: 'user.name',
-                            name: 'user.name'
-                        },
-                        {
-                            data: 'type',
-                            name: 'type'
-                        },
-                        {
-                            data: 'description',
-                            name: 'description'
-                        },
-                        {
-                            data: 'trace_id',
-                            name: 'trace_id'
-                        },
-                        {
-                            data: 'url',
-                            name: 'url'
-                        },
-                        {
-                            data: 'ip_address',
-                            name: 'ip_address'
-                        },
-                        {
-                            data: 'user_agent',
-                            name: 'user_agent'
-                        },
-                        {
-                            data: 'status',
-                            name: 'status'
-                        }
-                    ],
-                    order: [
-                        [0, 'desc']
-                    ],
-                    pageLength: 10,
+                // Event listener untuk filter tanggal
+                $('#daterange').on('apply.daterangepicker', function(ev, picker) {
+                    fetchDashboardStats(picker.startDate.format('YYYY-MM-DD'), picker.endDate.format(
+                        'YYYY-MM-DD'));
                 });
             });
         </script>
