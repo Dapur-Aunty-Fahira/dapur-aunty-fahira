@@ -58,10 +58,32 @@
                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                         @csrf
                     </form>
-                    <a href="#" class="btn btn-default btn-flat"
-                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
+                    <a href="#" class="btn btn-default btn-flat" id="logout-btn">Keluar</a>
                 </div>
             </li>
         </ul>
     </li>
 </ul>
+
+<!-- SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    document.getElementById('logout-btn').addEventListener('click', function(e) {
+        e.preventDefault();
+
+        Swal.fire({
+            title: 'Konfirmasi Logout',
+            text: "Apakah Anda yakin ingin keluar?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Ya, Logout',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('logout-form').submit();
+            }
+        });
+    });
+</script>

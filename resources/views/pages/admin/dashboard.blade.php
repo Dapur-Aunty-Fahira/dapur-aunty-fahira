@@ -104,36 +104,30 @@
                     }
                 </style>
             </div>
-
+            <!-- Aktivitas Terbaru -->
             <div class="row mb-4">
                 <div class="col-12">
                     <div class="card border-0 shadow-sm">
-                        <div class="card-header bg-pink text-white border-0">
+                        <div class="card-header bg-pink text-white border-0 mb-2">
                             <h5 class="card-title mb-0">Aktivitas Terbaru</h5>
                         </div>
                         <div class="card-body p-0">
-                            <table class="table table-hover align-middle mb-0">
+                            <table id="activityTable" class="table table-bordered table-striped table-hover w-100">
                                 <thead class="table-light">
                                     <tr>
-                                        <th style="width: 20%;">Tanggal</th>
-                                        <th>Aktivitas</th>
-                                        <th style="width: 20%;">Pengguna</th>
+                                        <th>Timestamp</th>
+                                        <th>Pengguna</th>
+                                        <th>Type</th>
+                                        <th>Deskripsi Aktivitas</th>
+                                        <th>Trace ID</th>
+                                        <th>URL</th>
+                                        <th>IP Address</th>
+                                        <th>User Agent</th>
+                                        <th>Status</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>2023-10-01</td>
-                                        <td>Pesanan baru dibuat</td>
-                                        <td>Admin</td>
-                                    </tr>
-                                    <tr>
-                                        <td>2023-10-02</td>
-                                        <td>Pendaftaran pengguna baru</td>
-                                        <td>John Doe</td>
-                                    </tr>
-                                    <!-- Tambahkan baris aktivitas lainnya di sini -->
-                                </tbody>
                             </table>
+
                         </div>
                     </div>
                 </div>
@@ -142,68 +136,125 @@
     </section>
     <!-- /.content -->
     @push('scripts')
-        @verbatim
-            <script>
-                // Data untuk grafik pesanan
-                const orderData = {
-                    labels: ['Menunggu Konfirmasi', 'Diproses', 'Dikirim', 'Selesai', 'Dibatalkan'],
-                    datasets: [{
-                        label: 'Jumlah Pesanan',
-                        data: [150, 44, 27, 53, 65],
-                        backgroundColor: [
-                            'rgba(23, 162, 184, 0.6)',
-                            'rgba(255, 193, 7, 0.6)',
-                            'rgba(0, 123, 255, 0.6)',
-                            'rgba(40, 167, 69, 0.6)',
-                            'rgba(220, 53, 69, 0.6)'
-                        ],
-                        borderColor: [
-                            'rgba(23, 162, 184, 1)',
-                            'rgba(255, 193, 7, 1)',
-                            'rgba(0, 123, 255, 1)',
-                            'rgba(40, 167, 69, 1)',
-                            'rgba(220, 53, 69, 1)'
-                        ],
-                        borderWidth: 1
-                    }]
-                };
+        <script>
+            // Data untuk grafik pesanan
+            const orderData = {
+                labels: ['Menunggu Konfirmasi', 'Diproses', 'Dikirim', 'Selesai', 'Dibatalkan'],
+                datasets: [{
+                    label: 'Jumlah Pesanan',
+                    data: [150, 44, 27, 53, 65],
+                    backgroundColor: [
+                        'rgba(23, 162, 184, 0.6)',
+                        'rgba(255, 193, 7, 0.6)',
+                        'rgba(0, 123, 255, 0.6)',
+                        'rgba(40, 167, 69, 0.6)',
+                        'rgba(220, 53, 69, 0.6)'
+                    ],
+                    borderColor: [
+                        'rgba(23, 162, 184, 1)',
+                        'rgba(255, 193, 7, 1)',
+                        'rgba(0, 123, 255, 1)',
+                        'rgba(40, 167, 69, 1)',
+                        'rgba(220, 53, 69, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            };
 
-                // Konfigurasi grafik
-                const configOrder = {
-                    type: 'bar',
-                    data: orderData,
-                    options: {
-                        responsive: true,
-                        plugins: {
-                            legend: {
-                                position: 'top',
-                            },
-                            title: {
-                                display: true,
-                                text: 'Statistik Pesanan'
-                            }
+            // Konfigurasi grafik
+            const configOrder = {
+                type: 'bar',
+                data: orderData,
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        title: {
+                            display: true,
+                            text: 'Statistik Pesanan'
                         }
                     }
-                };
-                // Inisialisasi grafik
-                const orderChart = new Chart(
-                    document.getElementById('orderChart'),
-                    configOrder
-                );
-                // Event listener untuk filter tanggal
-                document.getElementById('daterange').addEventListener('change', function() {
-                    const selectedDateRange = this.value;
-                    // Lakukan sesuatu dengan rentang tanggal yang dipilih
-                });
+                }
+            };
+            // Inisialisasi grafik
+            const orderChart = new Chart(
+                document.getElementById('orderChart'),
+                configOrder
+            );
+            // Event listener untuk filter tanggal
+            document.getElementById('daterange').addEventListener('change', function() {
+                const selectedDateRange = this.value;
+                // Lakukan sesuatu dengan rentang tanggal yang dipilih
+            });
 
-                // Inisialisasi date range picker
-                $('#daterange').daterangepicker({
-                    opens: 'left',
-                    locale: {
-                        format: 'YYYY-MM-DD'
-                    }
+            // Inisialisasi date range picker
+            $('#daterange').daterangepicker({
+                opens: 'left',
+                locale: {
+                    format: 'YYYY-MM-DD'
+                }
+            });
+
+
+            $(document).ready(function() {
+                $('#activityTable').DataTable({
+                    processing: true,
+                    serverSide: true,
+                    responsive: true,
+                    autoWidth: false,
+                    lengthChange: true,
+                    searching: true,
+                    paging: true,
+                    orderMulti: false,
+                    ajax: {
+                        url: "{{ route('admin.activities.data') }}",
+                        type: 'GET'
+                    },
+                    columns: [{
+                            data: 'created_at',
+                            name: 'timestamp'
+                        },
+                        {
+                            data: 'user.name',
+                            name: 'user.name'
+                        },
+                        {
+                            data: 'type',
+                            name: 'type'
+                        },
+                        {
+                            data: 'description',
+                            name: 'description'
+                        },
+                        {
+                            data: 'trace_id',
+                            name: 'trace_id'
+                        },
+                        {
+                            data: 'url',
+                            name: 'url'
+                        },
+                        {
+                            data: 'ip_address',
+                            name: 'ip_address'
+                        },
+                        {
+                            data: 'user_agent',
+                            name: 'user_agent'
+                        },
+                        {
+                            data: 'status',
+                            name: 'status'
+                        }
+                    ],
+                    order: [
+                        [0, 'desc']
+                    ],
+                    pageLength: 10,
                 });
-            </script>
-        @endverbatim
+            });
+        </script>
     @endpush
 @endsection

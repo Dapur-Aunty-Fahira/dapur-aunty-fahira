@@ -5,8 +5,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <meta name="description" content="@yield('description', 'Dapur Aunty Fahira - Your favorite food delivery service')">
-    <meta name="author" content="@yield('author', 'Dapur Aunty Fahira')">
+    <meta name="description" content="@yield('description', 'Food Delivery Service - Your favorite food delivery service')">
+    <meta name="author" content="@yield('author', 'Food Delivery Service')">
     <link rel="icon" href="{{ asset('images/logo.png') }}">
     <link rel="apple-touch-icon" href="{{ asset('images/logo.png') }}">
     <link rel="shortcut icon" href="{{ asset('images/logo.png') }}">
@@ -20,8 +20,8 @@
 
         <!-- Preloader -->
         <div class="preloader flex-column justify-content-center align-items-center bg-white">
-            <img class="animation__shake" src="{{ asset('images/logo.png') }}" alt="dapur aunty fahira logo"
-                height="300" width="300">
+            <img class="animation__shake" src="{{ asset('images/logo.png') }}" alt="company logo" height="300"
+                width="300">
         </div>
 
         <!-- Navbar -->

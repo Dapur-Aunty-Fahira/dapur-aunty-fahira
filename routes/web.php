@@ -45,6 +45,7 @@ Route::post('logout', function () {
 // Admin-only routes
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('admin/dashboard', [AdminDashboard::class, 'show'])->name('admin.dashboard');
+    Route::get('admin/activity-logs', [AdminDashboard::class, 'getActivityLogs'])->name('admin.activities.data');
 });
 
 // Pelanggan-only routes
