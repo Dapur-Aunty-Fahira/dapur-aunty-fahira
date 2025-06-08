@@ -503,7 +503,9 @@
                             loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                     </div>
                     <div class="mt-3 text-center">
-                        <span class="badge bg-danger bg-gradient fs-6 px-4 py-2 shadow-sm">
+                        <span
+                            class="badge bg-danger bg-gradient fs-6 px-4 py-2 shadow-sm d-inline-block w-100 w-md-auto text-break"
+                            style="white-space: normal; word-break: break-word; max-width: 100%;">
                             Jl. Raya Serang km.25, Kp. Jaha Rt 02/01, Sentul Jaya, Kec. Balaraja, Kabupaten Tangerang,
                             Banten 15610
                         </span>
