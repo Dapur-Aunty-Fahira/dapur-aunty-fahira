@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Page\Admin\Menu;
 use App\Http\Controllers\Authentication\Login;
 use App\Http\Controllers\Authentication\Register;
 use App\Http\Controllers\Page\Admin\AdminDashboard;
@@ -44,8 +45,13 @@ Route::post('logout', function () {
 
 // Admin-only routes
 Route::middleware(['auth', 'role:admin'])->group(function () {
+
+    // dashboard
     Route::get('admin/dashboard', [AdminDashboard::class, 'show'])->name('admin.dashboard');
     Route::get('admin/stats/users-orders', [AdminDashboard::class, 'getUserOrderStats'])->name('admin.dashboard.orders');
+
+    // menu
+    Route::get('admin/menu', [Menu::class, 'show'])->name('admin.menu');
 });
 
 // Pelanggan-only routes

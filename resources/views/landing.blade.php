@@ -6,8 +6,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description"
-        content="Dapur Aunty Fahira adalah layanan catering profesional yang menyajikan hidangan lezat untuk berbagai acara. Kami menyediakan menu nasi box, nasi besek, nasi bento, nasi tumpeng, liwet tampah, dan prasmanan dengan bahan berkualitas tinggi dan pelayanan terbaik. Pesan sekarang untuk pengalaman kuliner tak
-terlupakan!">
+        content="Dapur Aunty Fahira adalah layanan catering profesional yang menyajikan hidangan lezat untuk berbagai acara. Kami menyediakan menu nasi box, nasi besek, nasi bento, nasi tumpeng, liwet tampah, dan prasmanan dengan bahan berkualitas tinggi dan pelayanan terbaik. Pesan sekarang untuk pengalaman kuliner tak terlupakan!">
     <meta name="keywords"
         content="catering, nasi box, nasi besek, nasi bento, nasi tumpeng, liwet tampah, prasmanan, catering profesional, catering lezat, catering Jakarta, catering Banten" />
     <meta name="author" content="Dapur Aunty Fahira" />
@@ -29,13 +28,26 @@ terlupakan!">
     <meta name="twitter:image" content="{{ asset('images/logo.png') }}" />
     <title>Dapur Aunty Fahira - Catering Lezat & Profesional</title>
 
+    <!-- Preload Font & Logo -->
+    <link rel="preload" as="image" href="{{ asset('images/logo.png') }}"
+        imagesrcset="{{ asset('images/logo.png') }}" type="image/png">
+    <link rel="preload" as="style"
+        href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&display=swap">
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
     <!-- Bootstrap CDN -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
 
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 
     <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
             font-family: 'Quicksand', sans-serif;
             background: #fff0f6;
@@ -62,6 +74,12 @@ terlupakan!">
             border-radius: 8px;
             background: white;
             padding: 2px;
+        }
+
+        .navbar-nav .nav-link.active,
+        .navbar-nav .nav-link:focus {
+            font-weight: 700;
+            text-decoration: underline;
         }
 
         .header-section {
@@ -118,7 +136,8 @@ terlupakan!">
             transition: background 0.2s;
         }
 
-        .btn-maroon:hover {
+        .btn-maroon:hover,
+        .btn-maroon:focus {
             background-color: #ec7bb6;
             color: white;
         }
@@ -140,7 +159,8 @@ terlupakan!">
             text-decoration: none;
         }
 
-        .floating-button:hover {
+        .floating-button:hover,
+        .floating-button:focus {
             background-color: #ec7bb6;
             transform: scale(1.05);
         }
@@ -173,6 +193,52 @@ terlupakan!">
             text-align: center;
             font-weight: 600;
         }
+
+        /* Timeline improvements */
+        .timeline {
+            border-left: 4px solid #e557a1;
+            margin-left: 30px;
+            padding-left: 0;
+        }
+
+        .timeline-dot {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 4px solid #fff;
+            box-shadow: 0 0 0 2px #e557a1;
+            left: -42px;
+            z-index: 1;
+        }
+
+        @media (max-width: 767.98px) {
+            .timeline {
+                margin-left: 15px;
+            }
+
+            .timeline-dot {
+                left: -32px;
+            }
+
+            .ms-5 {
+                margin-left: 2rem !important;
+            }
+        }
+
+        /* Card hover effect */
+        .card-fixed:hover,
+        .card-fixed:focus-within {
+            box-shadow: 0 8px 24px rgba(229, 87, 161, 0.15), 0 1.5px 4px rgba(0, 0, 0, 0.07);
+            transform: translateY(-4px) scale(1.01);
+            transition: all 0.2s;
+        }
+
+        /* Accessibility: focus outline for buttons/links */
+        a:focus,
+        button:focus {
+            outline: 2px solid #e557a1;
+            outline-offset: 2px;
+        }
     </style>
 </head>
 
@@ -182,11 +248,12 @@ terlupakan!">
     <nav class="navbar navbar-expand-lg shadow-sm">
         <div class="container">
             <a class="navbar-brand" href="#">
-                <img src="{{ asset('images/logo.png') }}" alt="Logo Dapur Aunty Fahira" />
+                <img src="{{ asset('images/logo.png') }}" alt="Logo Dapur Aunty Fahira" loading="eager"
+                    fetchpriority="high" />
                 Dapur Aunty Fahira
             </a>
             <button class="navbar-toggler text-white" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarNav">
+                data-bs-target="#navbarNav" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
@@ -214,7 +281,7 @@ terlupakan!">
             Catering profesional yang siap menyajikan berbagai menu spesial untuk acara Anda. Dari pesta pernikahan,
             ulang tahun, hingga acara kantor — kami hadirkan rasa terbaik.
         </p>
-        <a href="#menu" class="btn btn-maroon mt-3 shadow">Lihat Menu</a>
+        <a href="#menu" class="btn btn-maroon mt-3 shadow" aria-label="Lihat menu spesial">Lihat Menu</a>
     </header>
 
     <!-- Features -->
@@ -303,7 +370,8 @@ terlupakan!">
                     <div class="col-md-4">
                         <div class="card card-fixed border-0 shadow-sm h-100">
                             <img src="{{ asset('images/' . $menu['img']) }}?auto=format&fit=crop&w=400&q=80"
-                                class="card-img-top rounded-top" alt="{{ $menu['title'] }}">
+                                class="card-img-top rounded-top" alt="{{ $menu['title'] }}" loading="lazy"
+                                width="100%" height="200">
                             <div class="card-body">
                                 <h5 class="card-title text-danger fw-bold">{{ $menu['title'] }}</h5>
                                 <p class="card-text">{{ $menu['desc'] }}</p>
@@ -359,37 +427,6 @@ terlupakan!">
                 </div>
             </div>
         </div>
-        <style>
-            .timeline {
-                border-left: 4px solid #e557a1;
-                margin-left: 30px;
-                padding-left: 0;
-            }
-
-            .timeline-dot {
-                width: 20px;
-                height: 20px;
-                border-radius: 50%;
-                border: 4px solid #fff;
-                box-shadow: 0 0 0 2px #e557a1;
-                left: -42px;
-                z-index: 1;
-            }
-
-            @media (max-width: 767.98px) {
-                .timeline {
-                    margin-left: 15px;
-                }
-
-                .timeline-dot {
-                    left: -32px;
-                }
-
-                .ms-5 {
-                    margin-left: 2rem !important;
-                }
-            }
-        </style>
     </section>
 
     <!-- Testimonials -->
@@ -441,13 +478,13 @@ terlupakan!">
                     class="d-flex align-items-center text-decoration-none text-dark fs-5" target="_blank"
                     rel="noopener">
                     <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp"
-                        style="width: 28px; height: 28px;" class="me-2"> +62 877 9792 4356
+                        style="width: 28px; height: 28px;" class="me-2" loading="lazy"> +62 877 9792 4356
                 </a>
                 <a href="https://instagram.com/dapurauntyfahira"
                     class="d-flex align-items-center text-decoration-none text-dark fs-5" target="_blank"
                     rel="noopener">
                     <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram"
-                        style="width: 28px; height: 28px;" class="me-2"> @dapurauntyfahira
+                        style="width: 28px; height: 28px;" class="me-2" loading="lazy"> @dapurauntyfahira
                 </a>
             </div>
         </div>
@@ -477,7 +514,7 @@ terlupakan!">
     </section>
 
     <!-- Floating Button -->
-    <a href="{{ route('login') }}" class="floating-button shadow">Pesan Sekarang</a>
+    <a href="{{ route('login') }}" class="floating-button shadow" aria-label="Pesan Sekarang">Pesan Sekarang</a>
 
     <!-- Footer -->
     <footer>

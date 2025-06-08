@@ -11,7 +11,8 @@
         </li>
         {{-- menu --}}
         <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a @if (route('admin.menu') === request()->url()) class="nav-link active" @else class="nav-link" @endif
+                href="{{ route('admin.menu') }}">
                 <i class="nav-icon fas fa-utensils"></i>
                 <p>Menu</p>
             </a>
