@@ -432,6 +432,7 @@
                 document.getElementById('menuImage').value = '';
                 document.getElementById('menuImagePreview').innerHTML = '';
                 document.getElementById('menuModalTitle').innerText = 'Tambah Menu';
+                clearMenuFormErrors();
                 $('#menuModal').modal('show');
             }
 
@@ -453,13 +454,42 @@
                             `<img src="${menu.image_url}" alt="Gambar Menu" class="img-fluid rounded" style="max-height:120px;">` :
                             '';
                         document.getElementById('menuModalTitle').innerText = 'Edit Menu';
+                        clearMenuFormErrors();
                         $('#menuModal').modal('show');
                     })
                     .catch(err => handleFetchError(err, 'Gagal memuat data menu'));
             }
 
+            function clearMenuFormErrors() {
+                // Remove all error messages and error classes
+                document.querySelectorAll('.invalid-feedback.menu-error').forEach(e => e.remove());
+                document.querySelectorAll('#menuForm .form-control').forEach(input => {
+                    input.classList.remove('is-invalid');
+                });
+            }
+
+            function showMenuFormErrors(errors) {
+                clearMenuFormErrors();
+                for (const key in errors) {
+                    const input = document.getElementById('menu' + key.charAt(0).toUpperCase() + key.slice(1));
+                    if (input) {
+                        input.classList.add('is-invalid');
+                        let errorDiv = document.createElement('div');
+                        errorDiv.className = 'invalid-feedback menu-error';
+                        errorDiv.innerText = errors[key][0];
+                        // Insert after input
+                        if (input.nextElementSibling && input.nextElementSibling.classList.contains('invalid-feedback')) {
+                            input.parentNode.replaceChild(errorDiv, input.nextElementSibling);
+                        } else {
+                            input.parentNode.appendChild(errorDiv);
+                        }
+                    }
+                }
+            }
+
             function saveMenu(e) {
                 e.preventDefault();
+                clearMenuFormErrors();
                 const id = document.getElementById('menuId').value;
                 const name = document.getElementById('menuName').value.trim();
                 const category_id = document.getElementById('menuCategory').value;
@@ -468,6 +498,18 @@
                 const description = document.getElementById('menuDescription').value;
                 const imageInput = document.getElementById('menuImage');
                 if (!name || !category_id || !price || !min_order) {
+                    if (!name) showMenuFormErrors({
+                        name: ['Nama wajib diisi']
+                    });
+                    if (!category_id) showMenuFormErrors({
+                        category: ['Kategori wajib diisi']
+                    });
+                    if (!price) showMenuFormErrors({
+                        price: ['Harga wajib diisi']
+                    });
+                    if (!min_order) showMenuFormErrors({
+                        minOrder: ['Minimal order wajib diisi']
+                    });
                     Swal.fire('Peringatan', 'Nama, kategori, harga, dan minimal order wajib diisi', 'warning');
                     return;
                 }
@@ -504,6 +546,7 @@
                                     messages = data.messages;
                                 }
                                 if (messages) {
+                                    showMenuFormErrors(messages);
                                     let html = '<ul class="text-left">';
                                     Object.values(messages).forEach(msgArr => {
                                         msgArr.forEach(msg => html += `<li>${msg}</li>`);

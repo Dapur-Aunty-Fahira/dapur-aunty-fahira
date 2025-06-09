@@ -13,6 +13,8 @@ class Menu extends Model
 
     protected $primaryKey = "id";
     protected $table = "menus";
+    protected $appends = ['price_formatted'];
+
     protected $fillable = [
         'category_id',
         'name',
@@ -32,4 +34,13 @@ class Menu extends Model
     {
         return $this->belongsTo(Category::class);
     }
+
+    public function getPriceFormattedAttribute()
+    {
+        return function_exists('format_rupiah')
+            ? format_rupiah($this->price)
+            : $this->price;
+    }
+
+
 }
