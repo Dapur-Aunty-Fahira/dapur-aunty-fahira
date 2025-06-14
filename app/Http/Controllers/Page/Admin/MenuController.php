@@ -35,6 +35,9 @@ class MenuController extends Controller
     {
         try {
             $menu = Menu::find($id);
+            if ($menu) {
+                $menu->price = (float) $menu->price;
+            }
             return response()->json($menu);
         } catch (\Exception $e) {
             Log::error('Error in getMenu' . $e->getMessage(), [
