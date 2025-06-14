@@ -1,14 +1,15 @@
 <?php
 
-use App\Http\Controllers\Authentication\ChangePasswordController;
-use App\Http\Controllers\Page\Admin\MenuController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Authentication\Login;
 use App\Http\Controllers\Authentication\Register;
 use App\Http\Controllers\Page\Admin\AdminDashboard;
+use App\Http\Controllers\Page\Admin\MenuController;
 use App\Http\Controllers\Page\Guest\GuestDashboard;
 use App\Http\Controllers\Page\Admin\CategoryController;
+use App\Http\Controllers\Page\Admin\UserManagementController;
+use App\Http\Controllers\Authentication\ChangePasswordController;
 
 /*
 |--------------------------------------------------------------------------
@@ -74,6 +75,11 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
         Route::post('store', [MenuController::class, 'store'])->name('admin.menu.store');
         Route::put('update/{id}', [MenuController::class, 'update'])->name('admin.menu.update');
         Route::delete('destroy/{id}', [MenuController::class, 'destroy'])->name('admin.menu.destroy');
+    });
+    // users
+    Route::prefix('admin/users')->group(function () {
+        Route::get('', [UserManagementController::class, 'index'])->name('admin.users.index');
+        Route::get('show', [UserManagementController::class, 'show'])->name('admin.users.show');
     });
 });
 

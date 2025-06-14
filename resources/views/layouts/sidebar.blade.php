@@ -68,7 +68,8 @@
         </li>
         {{-- kelola akun --}}
         <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a @if (route('admin.users.index') === request()->url()) class="nav-link active" @else class="nav-link" @endif
+                href="{{ route('admin.users.index') }}">
                 <i class="nav-icon fas fa-users"></i>
                 <p>Kelola Akun</p>
             </a>

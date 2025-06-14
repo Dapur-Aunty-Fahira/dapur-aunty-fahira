@@ -85,7 +85,7 @@
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Beranda</a></li>
+                        <li class="breadcrumb-item"><a href="/">Beranda</a></li>
                         <li class="breadcrumb-item active">Menu</li>
                     </ol>
                 </div>
@@ -101,7 +101,8 @@
                     <div class="mb-3">
                         <div class="input-group">
                             <input type="text" id="newCategoryName" class="form-control" placeholder="Nama Kategori">
-                            <button id="addCategoryBtn" class="btn btn-secondary"><i class="fas fa-plus"></i></button>
+                            <button id="addCategoryBtn" class="btn btn-light btn-sm font-weight-bold shadow-sm"><i
+                                    class="fas fa-plus"></i></button>
                         </div>
                     </div>
                     <div class="card shadow-sm">
@@ -126,13 +127,28 @@
                 <div class="col-md-8">
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h5 class="m-0">Menu</h5>
-                        <button class="btn btn-secondary" id="addMenuBtn"><i class="fas fa-plus"></i></button>
+                        <button class="btn btn-light btn-sm font-weight-bold shadow-sm" id="addMenuBtn"><i
+                                class="fas fa-plus"></i></button>
                     </div>
                     <div class="row g-3" id="menuCards"></div>
                 </div>
             </div>
         </div>
     </section>
+
+    <style>
+        .btn-light {
+            color: #ec4899 !important;
+            border-color: #f9a8d4 !important;
+            background: #fff !important;
+        }
+
+        .btn-light:hover {
+            background: #f9a8d4 !important;
+            color: #fff !important;
+            border-color: #ec4899 !important;
+        }
+    </style>
 
     <!-- Modal Menu -->
     <div class="modal fade" id="menuModal" tabindex="-1" aria-hidden="true">
@@ -252,8 +268,8 @@
                                 <tr>
                                     <td>${cat.name}</td>
                                     <td>
-                                        <button class="btn btn-sm btn-warning" onclick="editCategory(${cat.id}, '${cat.name.replace(/'/g, "\\'")}')"><i class="fas fa-pen"></i></button>
-                                        <button class="btn btn-sm btn-danger" onclick="deleteCategory(${cat.id})"><i class="fas fa-trash"></i></button>
+                                        <button class="btn btn-sm btn-light" onclick="editCategory(${cat.id}, '${cat.name.replace(/'/g, "\\'")}')"><i class="fas fa-pen"></i></button>
+                                        <button class="btn btn-sm btn-light" onclick="deleteCategory(${cat.id})"><i class="fas fa-trash"></i></button>
                                     </td>
                                 </tr>`;
                             select.innerHTML += `<option value="${cat.id}">${cat.name}</option>`;
@@ -272,7 +288,7 @@
 
             function addCategory() {
                 const name = document.getElementById('newCategoryName').value.trim();
-                if (!name) return Swal.fire('Peringatan', 'Nama tidak boleh kosong', 'warning');
+                if (!name) return Swal.fire('Peringatan', 'Nama category tidak boleh kosong', 'warning');
                 fetch("{{ route('admin.category.store') }}", {
                         method: 'POST',
                         headers: {
@@ -303,7 +319,7 @@
                     confirmButtonText: 'Simpan',
                     cancelButtonText: 'Batal',
                     inputValidator: (value) => {
-                        if (!value) return 'Nama tidak boleh kosong';
+                        if (!value) return 'Nama category tidak boleh kosong';
                         if (value === name) return 'Nama tidak berubah';
                     }
                 }).then((result) => {
@@ -413,8 +429,8 @@
                                         Rp${Number(menu.price).toLocaleString('id-ID')}
                                     </span>
                                     <div>
-                                        <button class="btn btn-sm btn-warning me-1" onclick="editMenu(${menu.id})" title="Edit"><i class='fas fa-pen'></i></button>
-                                        <button class="btn btn-sm btn-danger" onclick="deleteMenu(${menu.id})" title="Hapus"><i class='fas fa-trash'></i></button>
+                                        <button class="btn btn-sm btn-light me-1" onclick="editMenu(${menu.id})" title="Edit"><i class='fas fa-pen'></i></button>
+                                        <button class="btn btn-sm btn-light" onclick="deleteMenu(${menu.id})" title="Hapus"><i class='fas fa-trash'></i></button>
                                     </div>
                                 </div>
                             </div>
