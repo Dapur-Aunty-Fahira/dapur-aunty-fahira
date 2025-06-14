@@ -106,8 +106,8 @@
 
                 if (!old_password || !new_password || !confirm_password) {
                     Swal.showValidationMessage('Semua kolom harus diisi');
-                } else if (new_password.length < 8) {
-                    Swal.showValidationMessage('Password baru minimal 8 karakter');
+                } else if (new_password.length < 6) {
+                    Swal.showValidationMessage('Password baru minimal 6 karakter');
                 } else if (new_password !== confirm_password) {
                     Swal.showValidationMessage('Konfirmasi password tidak cocok');
                 }

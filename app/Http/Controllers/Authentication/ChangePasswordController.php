@@ -15,11 +15,11 @@ class ChangePasswordController extends Controller
         try {
             $request->validate([
                 'old_password' => 'required',
-                'new_password' => 'required|min:8|confirmed',
+                'new_password' => 'required|min:6|confirmed',
             ], [
                 'old_password.required' => 'Password lama wajib diisi.',
                 'new_password.required' => 'Password baru wajib diisi.',
-                'new_password.min' => 'Password baru minimal 8 karakter.',
+                'new_password.min' => 'Password baru minimal 6 karakter.',
                 'new_password.confirmed' => 'Konfirmasi password tidak cocok.',
             ]);
 
