@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Authentication\ChangePasswordController;
 use App\Http\Controllers\Page\Admin\MenuController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -43,6 +44,11 @@ Route::post('logout', function () {
     \Illuminate\Support\Facades\Auth::logout();
     return redirect()->route('showLogin');
 })->name('logout');
+
+Route::post('/change-password', [ChangePasswordController::class, 'changePassword'])
+    ->middleware('auth')
+    ->name('password.change');
+
 
 // Admin-only routes
 Route::middleware(['auth', 'role:admin'])->group(function () {
