@@ -34,10 +34,7 @@ class MenuController extends Controller
     public function getMenu($id)
     {
         try {
-            $menu = Menu::find($id);
-            if ($menu) {
-                $menu->price = (float) $menu->price;
-            }
+            $menu = Menu::with('category')->findOrFail($id);
             return response()->json($menu);
         } catch (\Exception $e) {
             Log::error('Error in getMenu' . $e->getMessage(), [
@@ -55,28 +52,25 @@ class MenuController extends Controller
             $validated = $request->validate([
                 'name' => 'required|string|max:50',
                 'price' => 'required|numeric|min:0',
-                'category_id' => 'required|integer|exists:categories,id',
-                'image' => 'required|image',
-                'description' => 'required|string',
-                'min_order' => 'required|integer|min:1'
+                'category_id' => 'required|exists:categories,id',
+                'image' => 'required|image|mimes:jpg,jpeg,png|max:2048',
+                'description' => 'nullable|string',
+                'min_order' => 'required|integer|min:1',
+                'is_available' => 'boolean',
+                'is_popular' => 'boolean',
+                'is_new' => 'boolean',
             ]);
 
             // Handle image upload
             if ($request->hasFile('image')) {
-                $imagePath = $request->file('image')->store('menus', 'public');
-                $validated['image'] = $imagePath;
+                $validated['image'] = $request->file('image')->store('menus', 'public');
             }
 
             $menu = Menu::create($validated);
-            if (!$menu) {
-                return response()->json([
-                    'error' => 'Failed to create Menu'
-                ], 500);
-            }
-            return response()->json($menu);
+            return response()->json($menu, 201);
         } catch (ValidationException $e) {
             return response()->json([
-                'error' => 'Validation failed',
+                'error' => 'Validasi gagal',
                 'messages' => $e->errors(),
             ], 422);
         } catch (\Exception $e) {
@@ -84,7 +78,7 @@ class MenuController extends Controller
                 'exception' => $e
             ]);
             return response()->json([
-                'error' => 'Failed to store Menu'
+                'error' => 'Gagal menyimpan menu'
             ], 500);
         }
     }
@@ -92,14 +86,23 @@ class MenuController extends Controller
     public function update(Request $request, $id)
     {
         try {
+            $menu = Menu::findOrFail($id);
+
             $validated = $request->validate([
                 'name' => 'required|string|max:50',
                 'price' => 'required|numeric|min:0',
-                'category_id' => 'required|integer|exists:categories,id',
-                'description' => 'sometimes|string',
-                'min_order' => 'sometimes|integer|min:1',
-                'image' => 'sometimes|image'
+                'category_id' => 'required|exists:categories,id',
+                'description' => 'nullable|string',
+                'min_order' => 'nullable|integer|min:1',
+                'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+                'is_available' => 'boolean',
+                'is_popular' => 'boolean',
+                'is_new' => 'boolean',
             ]);
+
+            if ($request->hasFile('image')) {
+                $validated['image'] = $request->file('image')->store('menus', 'public');
+            }
 
             $menu = Menu::findOrFail($id);
 
@@ -110,11 +113,10 @@ class MenuController extends Controller
             }
 
             $menu->update($validated);
-            $menu->refresh();
             return response()->json($menu);
         } catch (ValidationException $e) {
             return response()->json([
-                'error' => 'Validation failed',
+                'error' => 'Validasi gagal',
                 'messages' => $e->errors(),
             ], 422);
         } catch (\Exception $e) {
@@ -122,7 +124,7 @@ class MenuController extends Controller
                 'exception' => $e
             ]);
             return response()->json([
-                'error' => 'Failed to update Menu'
+                'error' => 'Gagal memperbarui menu'
             ], 500);
         }
     }
@@ -132,14 +134,10 @@ class MenuController extends Controller
         try {
             $menu = Menu::findOrFail($id);
             $menu->delete();
-            return response()->json($menu);
+            return response()->json(['message' => 'Menu berhasil dihapus']);
         } catch (\Exception $e) {
-            Log::error('Error in Delete Menu' . $e->getMessage(), [
-                'exception' => $e
-            ]);
-            return response()->json([
-                'error' => 'Failed to delete Menu'
-            ], 500);
+            Log::error('Error in destroy Menu: ' . $e->getMessage(), ['exception' => $e]);
+            return response()->json(['error' => 'Gagal menghapus menu'], 500);
         }
     }
 }

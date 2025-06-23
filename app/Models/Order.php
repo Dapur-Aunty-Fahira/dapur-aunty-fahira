@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\User;
+use App\Models\OrderItem;
 use App\Models\CustomerAddress;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -12,9 +13,11 @@ class Order extends Model
 {
     use HasFactory, SoftDeletes;
 
+    protected $table = 'orders';
     protected $primaryKey = 'order_number';
     public $incrementing = false;
     protected $keyType = 'string';
+
 
     protected $fillable = [
         'order_number',
@@ -41,7 +44,6 @@ class Order extends Model
     ];
 
     protected $dates = [
-        'delivery_date',
         'order_at',
         'processed_at',
         'sent_at',
@@ -55,7 +57,7 @@ class Order extends Model
      */
     public function user()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class);
     }
 
     /**
@@ -71,7 +73,7 @@ class Order extends Model
      */
     public function address()
     {
-        return $this->belongsTo(CustomerAddress::class, 'address_id');
+        return $this->belongsTo(CustomerAddress::class);
     }
 
     /**
@@ -80,5 +82,13 @@ class Order extends Model
     public function canceledBy()
     {
         return $this->belongsTo(User::class, 'canceled_by');
+    }
+
+    /**
+     * Relasi: Order memiliki banyak item.
+     */
+    public function items()
+    {
+        return $this->hasMany(OrderItem::class, 'order_number', 'order_number');
     }
 }
