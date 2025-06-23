@@ -28,6 +28,11 @@ class CustomerAddress extends Model
         'is_active',
     ];
 
+    protected $casts = [
+        'is_default' => 'boolean',
+        'is_active' => 'boolean',
+    ];
+
     /**
      * Relasi ke user pemilik alamat.
      */

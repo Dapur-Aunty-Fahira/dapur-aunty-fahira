@@ -11,7 +11,6 @@ class Menu extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $primaryKey = "id";
     protected $table = "menus";
 
     protected $fillable = [
@@ -32,6 +31,22 @@ class Menu extends Model
     public function category()
     {
         return $this->belongsTo(Category::class);
+    }
+
+    /**
+     * Relasi: Menu bisa muncul di banyak item order.
+     */
+    public function orderItems()
+    {
+        return $this->hasMany(OrderItem::class);
+    }
+
+    /**
+     * Accessor: Format harga dengan Rp (contoh: Rp10.000)
+     */
+    public function getFormattedPriceAttribute()
+    {
+        return 'Rp' . number_format($this->price, 0, ',', '.');
     }
 
 
