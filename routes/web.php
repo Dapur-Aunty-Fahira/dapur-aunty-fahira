@@ -7,7 +7,9 @@ use App\Http\Controllers\Authentication\Register;
 use App\Http\Controllers\Page\Admin\AdminDashboard;
 use App\Http\Controllers\Page\Admin\MenuController;
 use App\Http\Controllers\Page\Guest\GuestDashboard;
+use App\Http\Controllers\Page\Admin\ReportController;
 use App\Http\Controllers\Page\Admin\CategoryController;
+use App\Http\Controllers\Page\Kurir\DeliveryController;
 use App\Http\Controllers\Page\Admin\UserManagementController;
 use App\Http\Controllers\Authentication\ChangePasswordController;
 
@@ -31,6 +33,7 @@ Route::get('/', function () {
     return match ($user->role) {
         'admin' => redirect()->route('admin.dashboard'),
         'pelanggan' => redirect()->route('guest.dashboard'),
+        'kurir' => redirect()->route('kurir.delivery.index'),
         default => redirect()->route('showLogin'),
     };
 })->name('home');
@@ -76,6 +79,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
         Route::put('update/{id}', [MenuController::class, 'update'])->name('admin.menu.update');
         Route::delete('destroy/{id}', [MenuController::class, 'destroy'])->name('admin.menu.destroy');
     });
+
     // users
     Route::prefix('admin/users')->group(function () {
         Route::get('', [UserManagementController::class, 'index'])->name('admin.users.index');
@@ -85,7 +89,22 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
         Route::put('{user}', [UserManagementController::class, 'update'])->name('admin.users.update');
         Route::delete('{user}', [UserManagementController::class, 'destroy'])->name('admin.users.destroy');
     });
+
+    // laporan
+    Route::prefix('admin/reports')->group(function () {
+        Route::get('', [ReportController::class, 'index'])->name('admin.report.index');
+    });
 });
+
+// Kurir-only routes
+Route::middleware(['auth', 'role:kurir'])->group(function () {
+    // pengiriman
+    Route::prefix('kurir/delivery')->group(function () {
+        Route::get('', [DeliveryController::class, 'index'])->name('kurir.delivery.index');
+    });
+});
+
+
 
 // Pelanggan-only routes
 Route::middleware(['auth', 'role:pelanggan'])->group(function () {
