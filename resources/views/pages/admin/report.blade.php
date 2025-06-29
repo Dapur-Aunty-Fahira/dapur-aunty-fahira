@@ -98,21 +98,6 @@
         table.dataTable tbody tr:hover {
             background-color: #fff0f6 !important;
         }
-
-        .dataTables_wrapper .dataTables_paginate .paginate_button {
-            padding: 0.35em 0.9em;
-            margin: 2px;
-            border-radius: 0.5rem;
-            border: 1px solid #e5e7eb;
-            font-size: 0.8rem;
-            color: #6c757d !important;
-        }
-
-        .dataTables_wrapper .dataTables_paginate .paginate_button.current {
-            background-color: #f472b6 !important;
-            color: white !important;
-            border-color: transparent !important;
-        }
     </style>
 @endsection
 
