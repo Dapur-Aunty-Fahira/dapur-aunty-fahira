@@ -93,6 +93,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     // laporan
     Route::prefix('admin/reports')->group(function () {
         Route::get('', [ReportController::class, 'index'])->name('admin.report.index');
+        Route::get('show', [ReportController::class, 'show'])->name('admin.report.show');
     });
 });
 

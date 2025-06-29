@@ -426,7 +426,7 @@
                                 </p>
                                 <div class="mt-auto d-flex justify-content-between align-items-center">
                                     <span class="fw-bold text-success" style="font-size:1.1em;">
-                                        Rp${Number(menu.price).toLocaleString('id-ID')}
+                                        Rp. ${Number(menu.price).toLocaleString('id-ID')}
                                     </span>
                                     <div>
                                         <button class="btn btn-sm btn-light me-1" onclick="editMenu(${menu.id})" title="Edit"><i class='fas fa-pen'></i></button>
