@@ -29,8 +29,9 @@
                 </li>
                 {{-- pesanan --}}
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        <i class="nav-icon fas fa-columns"></i>
+                    <a @if (route('admin.orders.index') === request()->url()) class="nav-link active" @else class="nav-link" @endif
+                        href="{{ route('admin.orders.index') }}">
+                        <i class="nav-icon fas fa-receipt"></i>
                         <p>Pesanan</p>
                     </a>
                 </li>

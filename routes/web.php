@@ -7,6 +7,7 @@ use App\Http\Controllers\Authentication\Register;
 use App\Http\Controllers\Page\Admin\AdminDashboard;
 use App\Http\Controllers\Page\Admin\MenuController;
 use App\Http\Controllers\Page\Guest\GuestDashboard;
+use App\Http\Controllers\Page\Admin\OrderController;
 use App\Http\Controllers\Page\Admin\ReportController;
 use App\Http\Controllers\Page\Admin\CategoryController;
 use App\Http\Controllers\Page\Kurir\DeliveryController;
@@ -88,6 +89,13 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
         Route::get('{user}', [UserManagementController::class, 'edit'])->name('admin.users.edit');
         Route::put('{user}', [UserManagementController::class, 'update'])->name('admin.users.update');
         Route::delete('{user}', [UserManagementController::class, 'destroy'])->name('admin.users.destroy');
+    });
+
+    // order
+    Route::prefix('admin/orders')->group(function () {
+        Route::get('', [OrderController::class, 'index'])->name('admin.orders.index');
+        Route::get('/show', [OrderController::class, 'show'])->name('admin.orders.show');
+        Route::patch('/{order}/status', [OrderController::class, 'updateStatus'])->name('admin.orders.updateStatus');
     });
 
     // laporan
