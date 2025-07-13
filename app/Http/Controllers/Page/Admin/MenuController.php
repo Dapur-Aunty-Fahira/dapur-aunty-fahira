@@ -19,10 +19,18 @@ class MenuController extends Controller
     {
         try {
             $perPage = $request->get('per_page', 10);
-            $menus = Menu::with('category')->paginate($perPage);
+            $search = $request->get('search');
+
+            $menus = Menu::with('category')
+                ->when($search, function ($query, $search) {
+                    $query->where('name', 'ILIKE', "%$search%");
+                })
+                ->orderBy('updated_at', 'desc')
+                ->paginate($perPage);
+
             return response()->json($menus);
         } catch (\Exception $e) {
-            Log::error('Error in getAllMenu: ' . $e->getMessage(), [
+            Log::error('Error in getListMenu: ' . $e->getMessage(), [
                 'exception' => $e
             ]);
             return response()->json([
@@ -30,6 +38,7 @@ class MenuController extends Controller
             ], 500);
         }
     }
+
 
     public function getMenu($id)
     {

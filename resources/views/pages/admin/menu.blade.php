@@ -125,13 +125,89 @@
 
                 <!-- Right: Menu Cards -->
                 <div class="col-md-8">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h5 class="m-0">Menu</h5>
-                        <button class="btn btn-light btn-sm font-weight-bold shadow-sm" id="addMenuBtn"><i
-                                class="fas fa-plus"></i></button>
+                    <div class="d-flex flex-wrap align-items-center mb-4 justify-content-between">
+                        <div class="d-flex align-items-center gap-2">
+                            <h4 class="m-2 me-3 fw-bold text-pink">Daftar Menu</h4>
+                            <button class="btn btn-light btn-sm fw-bold shadow-sm border-pink" id="addMenuBtn" title="Tambah Menu">
+                                <i class="fas fa-plus"></i> <span class="d-none d-md-inline">Tambah</span>
+                            </button>
+                        </div>
+                        <div class="input-group" style="max-width: 340px;">
+                            <input type="text" class="form-control border-pink" id="searchMenuInput" placeholder="Cari nama menu...">
+                            <span class="input-group-text bg-white border-pink"><i class="fas fa-search text-pink"></i></span>
+                        </div>
                     </div>
                     <div class="row g-3" id="menuCards"></div>
+                    <div id="menuLoading" class="text-center py-4 d-none">
+                        <div class="spinner-border text-pink" role="status"></div>
+                        <div class="small mt-2 text-muted">Memuat menu...</div>
+                    </div>
+                    <div id="menuEmpty" class="text-center py-5 text-muted d-none">
+                        <i class="fas fa-utensils fa-2x mb-3 text-pink"></i>
+                        <div class="fw-semibold">Belum ada menu ditemukan.</div>
+                    </div>
                 </div>
+                <style>
+                    .text-pink { color: #ec4899 !important; }
+                    .border-pink { border-color: #f9a8d4 !important; }
+                    .fw-semibold { font-weight: 500 !important; }
+                    #menuCards .card {
+                        border-radius: 1rem;
+                        box-shadow: 0 2px 12px rgba(236,72,153,0.07);
+                        border: 1px solid #f9a8d4;
+                    }
+                    #menuCards .card:hover {
+                        box-shadow: 0 4px 24px rgba(236,72,153,0.13);
+                        border-color: #ec4899;
+                    }
+                    #menuCards .card-title {
+                        color: #ec4899;
+                    }
+                    #menuCards .btn-light {
+                        border-color: #f9a8d4 !important;
+                        color: #ec4899 !important;
+                        background: #fff !important;
+                    }
+                    #menuCards .btn-light:hover {
+                        background: #f9a8d4 !important;
+                        color: #fff !important;
+                        border-color: #ec4899 !important;
+                    }
+                    #searchMenuInput:focus {
+                        border-color: #ec4899 !important;
+                        box-shadow: 0 0 0 0.1rem rgba(236,72,153,.15);
+                    }
+                </style>
+                <script>
+                    // Improve search: filter by name or category
+                    function filterMenuCards(keyword) {
+                        const cards = document.querySelectorAll('#menuCards .card');
+                        keyword = keyword.toLowerCase();
+                        let found = false;
+                        cards.forEach(card => {
+                            const title = card.querySelector('.card-title').innerText.toLowerCase();
+                            const category = card.querySelector('.fa-tag')?.parentNode?.innerText?.toLowerCase() || '';
+                            if (title.includes(keyword) || category.includes(keyword)) {
+                                card.closest('.col-md-6, .col-lg-4').style.display = '';
+                                found = true;
+                            } else {
+                                card.closest('.col-md-6, .col-lg-4').style.display = 'none';
+                            }
+                        });
+                        document.getElementById('menuEmpty').classList.toggle('d-none', found || keyword === '');
+                    }
+                    // Show empty state if no menu cards
+                    function checkMenuEmpty() {
+                        const cards = document.querySelectorAll('#menuCards .card:visible');
+                        document.getElementById('menuEmpty').classList.toggle('d-none', cards.length > 0);
+                    }
+                    document.addEventListener('DOMContentLoaded', function() {
+                        document.getElementById('searchMenuInput').addEventListener('input', function() {
+                            filterMenuCards(this.value.trim());
+                            checkMenuEmpty();
+                        });
+                    });
+                </script>
             </div>
         </div>
     </section>
@@ -205,7 +281,10 @@
             document.addEventListener('DOMContentLoaded', function() {
                 fetchCategories();
                 fetchMenus();
-
+                document.getElementById('searchMenuInput').addEventListener('input', function() {
+                    const keyword = this.value.trim().toLowerCase();
+                    filterMenuCards(keyword);
+                });
                 document.getElementById('addCategoryBtn').addEventListener('click', addCategory);
                 document.getElementById('addMenuBtn').addEventListener('click', openMenuModal);
                 $('#menuForm').on('submit', saveMenu);
@@ -275,9 +354,12 @@
                             select.innerHTML += `<option value="${cat.id}">${cat.name}</option>`;
                         });
                         categoryTable = $('#categoryTable').DataTable({
-                            paging: false,
-                            searching: false,
+                            paging: true,
+                            searching: true,
+                            pageLength: 5,
+                            lengthChange: false,
                             info: false
+
                         });
                         if (showSuccess) {
                             Swal.fire('Berhasil', 'Kategori berhasil ditambahkan', 'success');
@@ -629,6 +711,18 @@
                                 document.getElementById(`menuCard-${id}`)?.remove();
                             })
                             .catch(err => handleFetchError(err, 'Gagal menghapus menu'));
+                    }
+                });
+            }
+
+            function filterMenuCards(keyword) {
+                const cards = document.querySelectorAll('#menuCards .card');
+                cards.forEach(card => {
+                    const title = card.querySelector('.card-title').innerText.toLowerCase();
+                    if (title.includes(keyword)) {
+                        card.closest('.col-md-6').style.display = '';
+                    } else {
+                        card.closest('.col-md-6').style.display = 'none';
                     }
                 });
             }
