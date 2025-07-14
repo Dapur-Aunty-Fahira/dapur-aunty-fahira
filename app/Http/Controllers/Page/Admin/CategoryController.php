@@ -12,7 +12,7 @@ class CategoryController extends Controller
     public function getAllCategory()
     {
         try {
-            $categories = Category::all();
+            $categories = Category::orderBy('updated_at', 'desc')->get();
             return response()->json($categories);
         } catch (\Exception $e) {
             Log::error('Error in getAllCategory: ' . $e->getMessage(), [

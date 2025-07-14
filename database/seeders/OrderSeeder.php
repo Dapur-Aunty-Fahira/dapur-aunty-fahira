@@ -34,7 +34,10 @@ class OrderSeeder extends Seeder
                     $total += $item->total_price;
                 }
 
-                $order->update(['total_price' => $total]);
+                $order->update([
+                    'total_price' => $total,
+                    'order_status' => collect(['menunggu konfirmasi', 'diproses', 'dikirim', 'selesai', 'dibatalkan'])->random(),
+                ]);
             });
     }
 }

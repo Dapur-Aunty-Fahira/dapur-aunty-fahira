@@ -100,16 +100,17 @@
                 <div class="col-md-4">
                     <div class="mb-3">
                         <div class="input-group">
-                            <input type="text" id="newCategoryName" class="form-control" placeholder="Nama Kategori">
+                            <input type="text" id="newCategoryName" class="form-control"
+                                placeholder="Input kategori baru...">
                             <button id="addCategoryBtn" class="btn btn-light btn-sm font-weight-bold shadow-sm"><i
-                                    class="fas fa-plus"></i></button>
+                                    class="fas fa-plus"></i> Add</button>
                         </div>
                     </div>
                     <div class="card shadow-sm">
                         <div class="card-header bg-light">
                             <strong>Daftar Kategori</strong>
                         </div>
-                        <div class="card-body p-0">
+                        <div class="card-body">
                             <table id="categoryTable" class="table table-bordered table-striped mb-0">
                                 <thead class="table-light">
                                     <tr>
@@ -128,13 +129,16 @@
                     <div class="d-flex flex-wrap align-items-center mb-4 justify-content-between">
                         <div class="d-flex align-items-center gap-2">
                             <h4 class="m-2 me-3 fw-bold text-pink">Daftar Menu</h4>
-                            <button class="btn btn-light btn-sm fw-bold shadow-sm border-pink" id="addMenuBtn" title="Tambah Menu">
-                                <i class="fas fa-plus"></i> <span class="d-none d-md-inline">Tambah</span>
+                            <button class="btn btn-light btn-sm fw-bold shadow-sm border-pink" id="addMenuBtn"
+                                title="Tambah Menu">
+                                <i class="fas fa-plus"></i> <span class="d-none d-md-inline">Add</span>
                             </button>
                         </div>
                         <div class="input-group" style="max-width: 340px;">
-                            <input type="text" class="form-control border-pink" id="searchMenuInput" placeholder="Cari nama menu...">
-                            <span class="input-group-text bg-white border-pink"><i class="fas fa-search text-pink"></i></span>
+                            <input type="text" class="form-control border-pink" id="searchMenuInput"
+                                placeholder="Cari nama menu...">
+                            <span class="input-group-text bg-white border-pink"><i
+                                    class="fas fa-search text-pink"></i></span>
                         </div>
                     </div>
                     <div class="row g-3" id="menuCards"></div>
@@ -148,34 +152,48 @@
                     </div>
                 </div>
                 <style>
-                    .text-pink { color: #ec4899 !important; }
-                    .border-pink { border-color: #f9a8d4 !important; }
-                    .fw-semibold { font-weight: 500 !important; }
+                    .text-pink {
+                        color: #ec4899 !important;
+                    }
+
+                    .border-pink {
+                        border-color: #f9a8d4 !important;
+                    }
+
+                    .fw-semibold {
+                        font-weight: 500 !important;
+                    }
+
                     #menuCards .card {
                         border-radius: 1rem;
-                        box-shadow: 0 2px 12px rgba(236,72,153,0.07);
+                        box-shadow: 0 2px 12px rgba(236, 72, 153, 0.07);
                         border: 1px solid #f9a8d4;
                     }
+
                     #menuCards .card:hover {
-                        box-shadow: 0 4px 24px rgba(236,72,153,0.13);
+                        box-shadow: 0 4px 24px rgba(236, 72, 153, 0.13);
                         border-color: #ec4899;
                     }
+
                     #menuCards .card-title {
                         color: #ec4899;
                     }
+
                     #menuCards .btn-light {
                         border-color: #f9a8d4 !important;
                         color: #ec4899 !important;
                         background: #fff !important;
                     }
+
                     #menuCards .btn-light:hover {
                         background: #f9a8d4 !important;
                         color: #fff !important;
                         border-color: #ec4899 !important;
                     }
+
                     #searchMenuInput:focus {
                         border-color: #ec4899 !important;
-                        box-shadow: 0 0 0 0.1rem rgba(236,72,153,.15);
+                        box-shadow: 0 0 0 0.1rem rgba(236, 72, 153, .15);
                     }
                 </style>
                 <script>
@@ -358,6 +376,7 @@
                             searching: true,
                             pageLength: 5,
                             lengthChange: false,
+                            order: [],
                             info: false
 
                         });

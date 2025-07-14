@@ -107,7 +107,10 @@
             let table = $('#reports-table').DataTable({
                 processing: true,
                 serverSide: true,
-                searching: false,
+                searching: true,
+                lengthChange: true,
+                pageLength: 10,
+                order: [],
                 ajax: {
                     url: "{{ route('admin.report.show') }}",
                     data: function(d) {
@@ -134,7 +137,10 @@
                     },
                     {
                         data: 'total_price',
-                        className: 'text-right'
+                        className: 'text-right',
+                        render: function(data) {
+                            return 'Rp ' + parseInt(data).toLocaleString('id-ID');
+                        }
                     },
                     {
                         data: 'delivery_date',
@@ -149,7 +155,18 @@
                     },
                     {
                         data: 'order_status',
-                        className: 'text-center'
+                        className: 'text-center',
+                        render: function(data) {
+
+                            let badgeClass = {
+                                'menunggu konfirmasi': 'badge-warning',
+                                'diproses': 'badge-info',
+                                'dikirim': 'badge-primary',
+                                'selesai': 'badge-success',
+                                'dibatalkan': 'badge-danger'
+                            } [data] || 'badge-secondary';
+                            return `<span class="badge ${badgeClass} text-capitalize">${data}</span>`;
+                        }
                     },
                     {
                         data: 'created_at',

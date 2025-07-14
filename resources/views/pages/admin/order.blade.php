@@ -116,12 +116,10 @@
             let table = $('#orders-table').DataTable({
                 processing: true,
                 serverSide: true,
-                searching: false,
+                searching: true,
                 lengthChange: true,
                 pageLength: 10,
-                order: [
-                    [10, 'desc']
-                ],
+                order: [],
                 ajax: {
                     url: "{{ route('admin.orders.show') }}",
                     data: function(d) {
@@ -134,8 +132,7 @@
                         className: 'text-center'
                     },
                     {
-                        data: 'order_number',
-                        className: 'text-center'
+                        data: 'order_number'
                     },
                     {
                         data: 'user_name'
@@ -185,16 +182,10 @@
                     {
                         data: 'created_at',
                         className: 'text-center',
-                        render: function(data) {
-                            return moment(data).format('DD/MM/YYYY HH:mm');
-                        }
                     },
                     {
                         data: 'updated_at',
                         className: 'text-center',
-                        render: function(data) {
-                            return moment(data).format('DD/MM/YYYY HH:mm');
-                        }
                     }
                 ]
             });

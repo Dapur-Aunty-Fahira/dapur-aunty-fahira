@@ -32,6 +32,7 @@ class OrderController extends Controller
             $orderColumnIndex = $request->input('order.0.column');
             $orderDir = $request->input('order.0.dir', 'asc');
             $columns = $request->input('columns');
+            $searchValue = $request->input('search.value');
             $orderColumn = $columns[$orderColumnIndex]['data'] ?? 'created_at';
 
             // Map column names to database columns
@@ -58,6 +59,19 @@ class OrderController extends Controller
                 $query->where('orders.order_status', $orderStatus);
             }
 
+            // Add search functionality
+            if (!empty($searchValue)) {
+                $query->where(function ($q) use ($searchValue) {
+                    $q->where('orders.order_number', 'like', "%{$searchValue}%")
+                        ->orWhere('users.name', 'like', "%{$searchValue}%")
+                        ->orWhere('orders.total_price', 'like', "%{$searchValue}%")
+                        ->orWhere('orders.delivery_date', 'like', "%{$searchValue}%")
+                        ->orWhere('orders.delivery_time', 'like', "%{$searchValue}%")
+                        ->orWhere('customer_addresses.address', 'like', "%{$searchValue}%")
+                        ->orWhere('orders.order_status', 'like', "%{$searchValue}%");
+                });
+            }
+
             // Get total records before filtering
             $totalOrders = Order::count();
 
@@ -82,8 +96,8 @@ class OrderController extends Controller
                     'user_name' => $order->user->name ?? '-',
                     'total_quantity' => $order->items->sum('quantity'),
                     'total_price' => $order->total_price,
-                    'delivery_date' => $order->delivery_date,
-                    'delivery_time' => $order->delivery_time,
+                    'delivery_date' => $order->delivery_date ?? '-',
+                    'delivery_time' => $order->delivery_time ?? '-',
                     'full_address' => $order->address->address ?? '-',
                     'order_status' => $order->order_status,
                     'created_at' => $order->created_at ? $order->created_at->format('Y-m-d H:i:s') : '',
