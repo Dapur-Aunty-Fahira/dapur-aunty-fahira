@@ -80,7 +80,7 @@ class UserManagementController extends Controller
                 'data' => $users,
             ]);
         } catch (\Exception $e) {
-            \Log::error('UserManagementController@show', [
+            Log::error('UserManagementController@show', [
                 'exception' => $e,
                 'request' => $request->all(),
             ]);

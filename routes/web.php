@@ -117,5 +117,5 @@ Route::middleware(['auth', 'role:kurir'])->group(function () {
 
 // Pelanggan-only routes
 Route::middleware(['auth', 'role:pelanggan'])->group(function () {
-    Route::get('guest/dashboard', [GuestDashboard::class, 'show'])->name('guest.dashboard');
+    Route::get('pemesanan', [GuestDashboard::class, 'show'])->name('guest.dashboard');
 });
