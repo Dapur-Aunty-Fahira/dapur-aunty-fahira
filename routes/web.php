@@ -95,7 +95,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::prefix('admin/orders')->group(function () {
         Route::get('', [OrderController::class, 'index'])->name('admin.orders.index');
         Route::get('/show', [OrderController::class, 'show'])->name('admin.orders.show');
-        Route::patch('/{order}/status', [OrderController::class, 'updateStatus'])->name('admin.orders.updateStatus');
+        Route::patch('{order_number}/status', [OrderController::class, 'updateStatus'])->name('admin.orders.updateStatus');
     });
 
     // laporan

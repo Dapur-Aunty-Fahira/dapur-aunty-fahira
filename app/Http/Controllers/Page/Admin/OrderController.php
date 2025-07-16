@@ -94,12 +94,18 @@ class OrderController extends Controller
                 $data[] = [
                     'order_number' => $order->order_number,
                     'user_name' => $order->user->name ?? '-',
+                    //combine each item with quantity and price
+                    'menu_items' => $order->items->map(function ($item) {
+                        return $item->menu->name . ' (x' . $item->quantity . '. @ Rp. ' . number_format($item->menu->price * $item->quantity, 0, ',', '.') . ')';
+                    })->implode(', '),
                     'total_quantity' => $order->items->sum('quantity'),
                     'total_price' => $order->total_price,
                     'delivery_date' => $order->delivery_date ?? '-',
                     'delivery_time' => $order->delivery_time ?? '-',
                     'full_address' => $order->address->address ?? '-',
                     'order_status' => $order->order_status,
+                    'payment_proof' => $order->payment_proof ?? '-',
+                    'payment_status' => $order->payment_status,
                     'created_at' => $order->created_at ? $order->created_at->format('Y-m-d H:i:s') : '',
                     'updated_at' => $order->updated_at ? $order->updated_at->format('Y-m-d H:i:s') : '',
                 ];
@@ -134,12 +140,33 @@ class OrderController extends Controller
     {
         try {
             $order = Order::where('order_number', $orderNumber)->firstOrFail();
-            $status = $request->input('status');
-            $validStatuses = ['pending', 'processed', 'sent', 'arrived', 'completed', 'canceled'];
-            if (!in_array($status, $validStatuses)) {
+            $order_status = $request->input('order_status');
+            $payment_status = $request->input('payment_status');
+            $validStatuses = ['menunggu konfirmasi', 'diproses', 'dikirim', 'selesai', 'dibatalkan'];
+            if (!in_array($order_status, $validStatuses)) {
                 return response()->json(['error' => 'Status tidak valid.'], 400);
             }
-            $order->order_status = $status;
+
+            if ($payment_status) {
+                $validPaymentStatuses = ['Validasi pembayaran', 'Diterima', 'Ditolak'];
+                if (!in_array($payment_status, $validPaymentStatuses)) {
+                    return response()->json(['error' => 'Status pembayaran tidak valid.'], 400);
+                }
+                $order->payment_status = $payment_status;
+            }
+            if ($order_status === 'diproses') {
+                $order->processed_at = now();
+            } elseif ($order_status === 'dikirim') {
+                $order->sent_at = now();
+            } elseif ($order_status === 'selesai') {
+                $order->arrived_at = now();
+                $order->completed_at = now();
+            } elseif ($order_status === 'dibatalkan') {
+                $order->canceled_by = auth()->id();
+                $order->canceled_at = now();
+                $order->cancellation_reason = $request->input('cancellation_reason', 'Tidak ada alasan diberikan');
+            }
+            $order->order_status = $order_status;
             $order->save();
             return response()->json(['success' => true, 'message' => 'Status pesanan berhasil diperbarui.']);
         } catch (\Throwable $e) {
@@ -148,10 +175,10 @@ class OrderController extends Controller
         }
     }
 
-    public function cancelOrder(Request $request, $orderNumber)
+    public function cancelOrder(Request $request, $order_number)
     {
         try {
-            $order = Order::where('order_number', $orderNumber)->firstOrFail();
+            $order = Order::where('order_number', $order_number)->firstOrFail();
             $reason = $request->input('reason');
             if (empty($reason)) {
                 return response()->json(['error' => 'Alasan pembatalan tidak boleh kosong.'], 400);
