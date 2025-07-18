@@ -11,8 +11,9 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('notifications', function (Blueprint $table) {
-            $table->bigIncrements('notification_id'); // ID unik untuk setiap notifikasi
-            $table->foreignId('user_id')->constrained('users', 'user_id'); // ID user yang menerima notifikasi
+            $table->increments('notification_id'); // ID unik untuk setiap notifikasi
+            $table->integer('user_id')->unsigned(); // ID user yang menerima notifikasi
+            $table->foreign('user_id')->references('user_id')->on('users')->onDelete('cascade'); // Foreign key ke users.user_id
             $table->string('title'); // Judul notifikasi
             $table->text('message'); // Pesan notifikasi
             $table->enum('type', ['info', 'warning', 'error', 'success'])->default('info'); // Tipe notifikasi

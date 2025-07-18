@@ -11,15 +11,16 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('order_items', function (Blueprint $table) {
-            $table->bigIncrements('order_item_id');
+            $table->increments('order_item_id');
             $table->string('order_number', 50); // Kolom foreign key ke orders.order_number
-            $table->foreignId('menu_id')->constrained('menus', 'menu_id')->onDelete('cascade'); // ID menu yang terkait dengan item ini
+            $table->integer('menu_id')->unsigned(); // ID menu yang terkait dengan item ini
+            $table->foreign('menu_id')->references('menu_id')->on('menus')->onDelete('cascade'); // Foreign key ke menus.menu_id
+            $table->foreign('order_number')->references('order_number')->on('orders')->onDelete('cascade'); // Foreign key ke orders.order_number
             $table->decimal('price', 38, 2); // Harga per item
             $table->integer('quantity')->default(1); // Jumlah item yang dipesan
             $table->text('notes')->nullable(); // Catatan tambahan untuk item, bisa null
             $table->timestamps();  // Timestamps untuk created_at dan updated_at
             $table->softDeletes(); // Kolom untuk soft delete
-            $table->foreign('order_number')->references('order_number')->on('orders')->onDelete('cascade');
             $table->index('order_number'); // Index untuk order_number untuk performa query
             $table->index('menu_id'); // Index untuk menu_id untuk performa query
             $table->index('created_at'); // Index untuk created_at untuk performa query

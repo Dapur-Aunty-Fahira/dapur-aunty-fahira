@@ -13,9 +13,12 @@ return new class extends Migration {
         Schema::create('orders', function (Blueprint $table) {
             $table->string('order_number', 50); // Nomor order
             $table->primary('order_number'); // Set order_number as primary key
-            $table->foreignId('user_id')->constrained('users', 'user_id'); // ID user yang membuat order
-            $table->foreignId('courier_id')->nullable()->constrained('users', 'user_id'); // kurir yang mengantarkan order, bisa null jika belum ditugaskan
-            $table->foreignId('address_id')->constrained('customer_addresses', 'address_id'); // ID alamat pengiriman
+            $table->integer('user_id')->unsigned(); // ID user yang membuat order
+            $table->foreign('user_id')->references('user_id')->on('users')->onDelete('cascade'); // Foreign key ke users.user_id
+            $table->integer('courier_id')->unsigned()->nullable(); // kurir yang mengantarkan order, bisa null jika belum ditugaskan
+            $table->foreign('courier_id')->references('user_id')->on('users')->onDelete('set null'); // Foreign key ke users.user_id
+            $table->integer('address_id')->unsigned(); // ID alamat pengiriman
+            $table->foreign('address_id')->references('address_id')->on('customer_addresses')->onDelete('cascade');
             $table->date('delivery_date')->nullable(); //tanggal pesanan ingin sampai ke pelanggan
             $table->time('delivery_time')->nullable(); //waktu pesanan ingin sampai ke pelanggan
             $table->text('notes')->nullable(); // Catatan tambahan

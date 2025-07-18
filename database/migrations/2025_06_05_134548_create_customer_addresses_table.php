@@ -11,8 +11,9 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('customer_addresses', function (Blueprint $table) {
-            $table->bigIncrements('address_id'); // ID unik untuk setiap alamat pelanggan
-            $table->foreignId('user_id')->constrained('users', 'user_id')->onDelete('cascade'); // ID user yang memiliki alamat
+            $table->increments('address_id'); // ID unik untuk setiap alamat pelanggan
+            $table->integer('user_id')->unsigned(); // ID user yang memiliki alamat
+            $table->foreign('user_id')->references('user_id')->on('users')->onDelete('cascade'); // Foreign key ke users.user_id
             $table->string('recipient_name', 100); // Nama penerima alamat
             $table->string('phone', 25); // Nomor telepon penerima
             $table->string('address', 255); // Baris alamat pertama

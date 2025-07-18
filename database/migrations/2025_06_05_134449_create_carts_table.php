@@ -11,9 +11,11 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('carts', function (Blueprint $table) {
-            $table->bigIncrements('cart_id'); // ID unik untuk setiap keranjang
-            $table->foreignId('user_id')->constrained('users', 'user_id')->onDelete('cascade'); // ID user yang memiliki keranjang
-            $table->foreignId('menu_id')->constrained('menus', 'menu_id')->onDelete('cascade'); // ID menu yang ditambahkan ke keranjang
+            $table->increments('cart_id'); // ID unik untuk setiap keranjang
+            $table->integer('user_id')->unsigned(); // ID user yang memiliki keranjang
+            $table->foreign('user_id')->references('user_id')->on('users')->onDelete('cascade'); // Foreign key ke users.user_id
+            $table->integer('menu_id')->unsigned(); // ID menu yang ditambahkan ke keranjang
+            $table->foreign('menu_id')->references('menu_id')->on('menus')->onDelete('cascade'); // Foreign key ke menus.menu_id
             $table->integer('quantity')->default(1); // Jumlah item menu yang ditambahkan ke keranjang
             $table->timestamps(); // Timestamps untuk created_at dan updated_at
             $table->softDeletes(); // Kolom untuk soft delete

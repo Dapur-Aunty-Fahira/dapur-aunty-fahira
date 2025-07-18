@@ -12,7 +12,8 @@ return new class extends Migration {
     {
         Schema::create('menus', function (Blueprint $table) {
             $table->increments('menu_id'); // ID menu, auto-increment sebagai primary key
-            $table->foreignId('category_id')->constrained('categories', 'category_id')->onDelete('cascade'); // Foreign key ke categories.category_id
+            $table->integer('category_id')->unsigned(); // Foreign key ke categories.category_id
+            $table->foreign('category_id')->references('category_id')->on('categories')->onDelete('cascade'); // Foreign key ke categories.category_id
             $table->string('name', 100); // Nama menu
             $table->string('image', 255)->nullable(); // Gambar menu, bisa null
             $table->text('description')->nullable(); // Deskripsi menu, bisa null

@@ -11,7 +11,7 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->bigIncrements('user_id'); // ID user, auto-increment sebagai primary key
+            $table->increments('user_id'); // ID user, auto-increment sebagai primary key
             $table->string('name', 100); // Nama lengkap user
             $table->string('email', 100)->unique(); // Email user, harus unik
             $table->timestamp('email_verified_at')->nullable(); // Waktu verifikasi email
