@@ -52,8 +52,8 @@ class OrderController extends Controller
 
             // Build query
             $query = Order::with(['user', 'address', 'items.menu'])
-                ->join('users', 'orders.user_id', '=', 'users.id')
-                ->join('customer_addresses', 'orders.address_id', '=', 'customer_addresses.id');
+                ->join('users', 'orders.user_id', '=', 'users.user_id')
+                ->join('customer_addresses', 'orders.address_id', '=', 'customer_addresses.address_id');
 
             if (!empty($orderStatus)) {
                 $query->where('orders.order_status', $orderStatus);
@@ -106,6 +106,7 @@ class OrderController extends Controller
                     'order_status' => $order->order_status,
                     'payment_proof' => $order->payment_proof ?? '-',
                     'payment_status' => $order->payment_status,
+                    'cancellation_reason' => $order->cancellation_reason ?? '-',
                     'created_at' => $order->created_at ? $order->created_at->format('Y-m-d H:i:s') : '',
                     'updated_at' => $order->updated_at ? $order->updated_at->format('Y-m-d H:i:s') : '',
                 ];

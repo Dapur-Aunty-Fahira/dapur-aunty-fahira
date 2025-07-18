@@ -528,6 +528,9 @@
                                 <p class="mb-2" style="min-height:40px;font-size:0.95em;color:#555;">
                                     ${menu.description ? menu.description : '<span class="text-muted">Tidak ada deskripsi</span>'}
                                 </p>
+                                <p class="mb-2" style="min-height:40px;font-size:0.95em;color:#555;">
+                                    Minimal Order: ${menu.min_order ? menu.min_order : '<span class="text-muted">Tidak ada batasan minimal</span>'} pcs
+                                </p>
                                 <div class="mt-auto d-flex justify-content-between align-items-center">
                                     <span class="fw-bold text-success" style="font-size:1.1em;">
                                         Rp. ${Number(menu.price).toLocaleString('id-ID')}
@@ -648,6 +651,15 @@
                     formData.append('_method', 'PUT');
                 }
                 formData.append('_token', '{{ csrf_token() }}');
+
+                Swal.fire({
+                    title: id ? 'Menyimpan perubahan menu...' : 'Menyimpan menu baru...',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+
                 fetch(url, {
                         method: method,
                         headers: {
@@ -685,6 +697,12 @@
                         return res.json();
                     })
                     .then(() => {
+                        Swal.fire({
+                            icon: 'success',
+                            title: id ? 'Menu berhasil diubah!' : 'Menu berhasil ditambahkan!',
+                            showConfirmButton: false,
+                            timer: 1400
+                        });
                         $('#menuModal').modal('hide');
                         fetchMenus();
                     })

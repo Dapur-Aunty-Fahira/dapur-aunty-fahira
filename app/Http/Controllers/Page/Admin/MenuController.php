@@ -61,7 +61,7 @@ class MenuController extends Controller
             $validated = $request->validate([
                 'name' => 'required|string|max:50',
                 'price' => 'required|numeric|min:0',
-                'category_id' => 'required|exists:categories,id',
+                'category_id' => 'required|exists:categories,category_id',
                 'image' => 'required|image|mimes:jpg,jpeg,png|max:2048',
                 'description' => 'nullable|string',
                 'min_order' => 'required|integer|min:1',
@@ -100,7 +100,7 @@ class MenuController extends Controller
             $validated = $request->validate([
                 'name' => 'required|string|max:50',
                 'price' => 'required|numeric|min:0',
-                'category_id' => 'required|exists:categories,id',
+                'category_id' => 'required|exists:categories,category_id',
                 'description' => 'nullable|string',
                 'min_order' => 'nullable|integer|min:1',
                 'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
