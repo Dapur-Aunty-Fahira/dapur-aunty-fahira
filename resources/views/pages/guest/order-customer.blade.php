@@ -198,6 +198,7 @@
         &copy; 2025 Dapur Aunty Fahira - Semua Hak Dilindungi
     </footer>
 
+
     <!-- Modal Profil -->
     <div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
         <div class="modal-dialog">

@@ -57,7 +57,7 @@ class Order extends Model
      */
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id', 'user_id');
     }
 
     /**
@@ -65,7 +65,7 @@ class Order extends Model
      */
     public function courier()
     {
-        return $this->belongsTo(User::class, 'courier_id');
+        return $this->belongsTo(User::class, 'courier_id', 'user_id');
     }
 
     /**
@@ -73,7 +73,7 @@ class Order extends Model
      */
     public function address()
     {
-        return $this->belongsTo(CustomerAddress::class);
+        return $this->belongsTo(CustomerAddress::class, 'address_id', 'address_id');
     }
 
     /**
@@ -81,7 +81,7 @@ class Order extends Model
      */
     public function canceledBy()
     {
-        return $this->belongsTo(User::class, 'canceled_by');
+        return $this->belongsTo(User::class, 'canceled_by', 'user_id');
     }
 
     /**

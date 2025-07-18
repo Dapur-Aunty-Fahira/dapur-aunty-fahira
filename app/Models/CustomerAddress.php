@@ -11,7 +11,7 @@ class CustomerAddress extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $primaryKey = "id";
+    protected $primaryKey = "address_id";
     protected $table = "customer_addresses";
     protected $fillable = [
         'user_id',
@@ -38,6 +38,6 @@ class CustomerAddress extends Model
      */
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id', 'user_id');
     }
 }

@@ -12,6 +12,7 @@ class Menu extends Model
     use HasFactory, SoftDeletes;
 
     protected $table = "menus";
+    protected $primaryKey = "menu_id";
 
     protected $fillable = [
         'category_id',
@@ -30,7 +31,7 @@ class Menu extends Model
      */
     public function category()
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsTo(Category::class, 'category_id', 'category_id');
     }
 
     /**
@@ -38,7 +39,7 @@ class Menu extends Model
      */
     public function orderItems()
     {
-        return $this->hasMany(OrderItem::class);
+        return $this->hasMany(OrderItem::class, 'menu_id', 'menu_id');
     }
 
     /**

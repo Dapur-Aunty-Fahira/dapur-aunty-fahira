@@ -11,7 +11,6 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::table('order_items', function (Blueprint $table) {
-            $table->decimal('total_price', 38, 2)->change();
             $table->decimal('price', 38, 2)->change();
         });
     }
@@ -22,7 +21,6 @@ return new class extends Migration {
     public function down(): void
     {
         Schema::table('order_items', function (Blueprint $table) {
-            $table->decimal('total_price', 10, 2)->change();
             $table->decimal('price', 10, 2)->change();
         });
     }

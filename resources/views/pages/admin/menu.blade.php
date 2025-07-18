@@ -341,7 +341,7 @@
                             validation: data.errors
                         };
                     }
-                    throw new Error(data.message || 'Terjadi kesalahan');
+                    throw new Error(data.error || 'Terjadi kesalahan');
                 });
             }
 
@@ -365,11 +365,12 @@
                                 <tr>
                                     <td>${cat.name}</td>
                                     <td>
-                                        <button class="btn btn-sm btn-light" onclick="editCategory(${cat.id}, '${cat.name.replace(/'/g, "\\'")}')"><i class="fas fa-pen"></i></button>
-                                        <button class="btn btn-sm btn-light" onclick="deleteCategory(${cat.id})"><i class="fas fa-trash"></i></button>
+                                        <button class="btn btn-sm btn-light" onclick="editCategory(${cat.category_id}, '${cat.name.replace(/'/g, "\\'")}')"><i class="fas fa-pen"></i></button>
+                                        <button class="btn btn-sm btn-light" onclick="deleteCategory(${cat.category_id})"><i class="fas fa-trash"></i></button>
                                     </td>
                                 </tr>`;
-                            select.innerHTML += `<option value="${cat.id}">${cat.name}</option>`;
+                            select.innerHTML += `<option value="${cat.category_id}">${cat.name}</option>`;
+
                         });
                         categoryTable = $('#categoryTable').DataTable({
                             paging: true,
@@ -412,6 +413,8 @@
             }
 
             function editCategory(id, name) {
+                console.log('id:', id, 'name:', name);
+
                 Swal.fire({
                     title: 'Edit Nama Kategori',
                     input: 'text',
@@ -512,7 +515,7 @@
 
             function renderMenuCard(menu) {
                 return `
-                    <div class="col-md-6 col-lg-4 mb-3" id="menuCard-${menu.id}">
+                    <div class="col-md-6 col-lg-4 mb-3" id="menuCard-${menu.menu_id}">
                         <div class="card h-100 shadow-sm border-0">
                             <div class="position-relative" style="height:180px;overflow:hidden;background:#f8f9fa;">
                                 <img src="${getMenuImageUrl(menu)}" alt="${menu.name}" class="w-100 h-100 object-fit-cover" style="object-fit:cover;">
@@ -530,8 +533,8 @@
                                         Rp. ${Number(menu.price).toLocaleString('id-ID')}
                                     </span>
                                     <div>
-                                        <button class="btn btn-sm btn-light me-1" onclick="editMenu(${menu.id})" title="Edit"><i class='fas fa-pen'></i></button>
-                                        <button class="btn btn-sm btn-light" onclick="deleteMenu(${menu.id})" title="Hapus"><i class='fas fa-trash'></i></button>
+                                        <button class="btn btn-sm btn-light me-1" onclick="editMenu(${menu.menu_id})" title="Edit"><i class='fas fa-pen'></i></button>
+                                        <button class="btn btn-sm btn-light" onclick="deleteMenu(${menu.menu_id})" title="Hapus"><i class='fas fa-trash'></i></button>
                                     </div>
                                 </div>
                             </div>
@@ -560,7 +563,7 @@
                         return res.json();
                     })
                     .then(menu => {
-                        document.getElementById('menuId').value = menu.id;
+                        document.getElementById('menuId').value = menu.menu_id;
                         document.getElementById('menuName').value = menu.name;
                         document.getElementById('menuCategory').value = menu.category_id;
                         document.getElementById('menuPrice').value = menu.price;

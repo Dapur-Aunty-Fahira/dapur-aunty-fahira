@@ -21,7 +21,7 @@ class MenuSeeder extends Seeder
         Category::all()->each(function ($category) {
             Menu::factory()
                 ->count(3)
-                ->create(['category_id' => $category->id]);
+                ->create(['category_id' => $category->category_id]);
         });
     }
 }

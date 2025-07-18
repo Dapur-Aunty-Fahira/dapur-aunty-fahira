@@ -21,12 +21,10 @@ class OrderItemFactory extends Factory
 
         $quantity = $this->faker->numberBetween(1, 3);
         $price = $menu?->price ?? $this->faker->randomFloat(2, 10000, 50000);
-        $total = $quantity * $price;
         return [
             'menu_id' => $menu?->id ?? Menu::factory(),
             'quantity' => $quantity,
             'price' => $price,
-            'total_price' => $total,
             'notes' => $this->faker->optional()->sentence(),
         ];
     }

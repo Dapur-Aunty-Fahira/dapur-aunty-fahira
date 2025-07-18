@@ -13,13 +13,12 @@ class OrderItem extends Model
     use HasFactory, SoftDeletes;
 
     protected $table = "order_items";
-    protected $primaryKey = "id";
+    protected $primaryKey = "order_item_id";
     protected $fillable = [
         "order_number",
         "menu_id",
         "quantity",
         "price",
-        "total_price",
         "notes",
 
     ];
@@ -38,7 +37,7 @@ class OrderItem extends Model
      */
     public function menu()
     {
-        return $this->belongsTo(Menu::class);
+        return $this->belongsTo(Menu::class, 'menu_id', 'menu_id');
     }
 
     /**

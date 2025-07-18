@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Page\Admin;
 
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 
@@ -66,10 +67,17 @@ class CategoryController extends Controller
     {
         try {
             $validated = $request->validate([
-                'name' => 'required|string|max:20|unique:categories,name,' . $id,
+                'name' => [
+                    'required',
+                    'string',
+                    'max:20',
+                    Rule::unique('categories', 'name')->ignore($id, 'category_id')
+                ],
                 'description' => 'nullable|string|max:255'
             ]);
-            $category = Category::findOrFail($id);
+
+            $category = Category::where('category_id', $id)->firstOrFail();
+            // Update the category
             $category->update($validated);
             return response()->json($category);
         } catch (\Illuminate\Validation\ValidationException $e) {

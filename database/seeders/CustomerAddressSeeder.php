@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use App\Models\User;
 use App\Models\CustomerAddress;
 use Illuminate\Database\Seeder;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class CustomerAddressSeeder extends Seeder
 {
@@ -23,7 +22,7 @@ class CustomerAddressSeeder extends Seeder
         User::all()->each(function ($user) {
             CustomerAddress::factory()
                 ->count(2)
-                ->create(['user_id' => $user->id]);
+                ->create(['user_id' => $user->user_id]);
         });
     }
 }

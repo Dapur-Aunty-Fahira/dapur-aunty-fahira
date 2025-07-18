@@ -26,12 +26,11 @@ class OrderSeeder extends Seeder
                     $qty = rand(1, 3);
                     $item = OrderItem::factory()->create([
                         'order_number' => $order->order_number,
-                        'menu_id' => $menu->id,
+                        'menu_id' => $menu->menu_id,
                         'quantity' => $qty,
                         'price' => $menu->price,
-                        'total_price' => $qty * $menu->price,
                     ]);
-                    $total += $item->total_price;
+                    $total += $qty * $menu->price;
                 }
 
                 $order->update([

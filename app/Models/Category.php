@@ -11,7 +11,7 @@ class Category extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $primaryKey = "id";
+    protected $primaryKey = "category_id";
     protected $table = "categories";
     protected $fillable = [
         'name',
@@ -24,6 +24,6 @@ class Category extends Model
      */
     public function menus()
     {
-        return $this->hasMany(Menu::class);
+        return $this->hasMany(Menu::class, 'category_id', 'category_id');
     }
 }

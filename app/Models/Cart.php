@@ -12,11 +12,13 @@ class Cart extends Model
 {
     use HasFactory, SoftDeletes;
 
+    protected $table = "carts";
+    protected $primaryKey = "cart_id";
+
     protected $fillable = [
         'user_id',
         'menu_id',
         'quantity',
-        'price',
     ];
 
     /**
@@ -24,7 +26,7 @@ class Cart extends Model
      */
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id', 'user_id');
     }
 
     /**
@@ -32,7 +34,7 @@ class Cart extends Model
      */
     public function menu()
     {
-        return $this->belongsTo(Menu::class);
+        return $this->belongsTo(Menu::class, 'menu_id', 'menu_id');
     }
 
     /**
@@ -40,7 +42,7 @@ class Cart extends Model
      */
     public function getTotalPriceAttribute()
     {
-        return $this->quantity * $this->price;
+        return $this->quantity * $this->menu->price;
     }
 
     /**

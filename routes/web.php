@@ -6,11 +6,11 @@ use App\Http\Controllers\Authentication\Login;
 use App\Http\Controllers\Authentication\Register;
 use App\Http\Controllers\Page\Admin\AdminDashboard;
 use App\Http\Controllers\Page\Admin\MenuController;
-use App\Http\Controllers\Page\Guest\GuestDashboard;
 use App\Http\Controllers\Page\Admin\OrderController;
 use App\Http\Controllers\Page\Admin\ReportController;
 use App\Http\Controllers\Page\Admin\CategoryController;
 use App\Http\Controllers\Page\Kurir\DeliveryController;
+use App\Http\Controllers\Page\Guest\OrderCustomerController;
 use App\Http\Controllers\Page\Admin\UserManagementController;
 use App\Http\Controllers\Authentication\ChangePasswordController;
 
@@ -117,5 +117,5 @@ Route::middleware(['auth', 'role:kurir'])->group(function () {
 
 // Pelanggan-only routes
 Route::middleware(['auth', 'role:pelanggan'])->group(function () {
-    Route::get('pemesanan', [GuestDashboard::class, 'show'])->name('guest.dashboard');
+    Route::get('pemesanan', [OrderCustomerController::class, 'index'])->name('guest.pemesanan');
 });

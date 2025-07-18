@@ -11,10 +11,11 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('orders', function (Blueprint $table) {
-            $table->string('order_number', 50)->primary(); // Nomor order
-            $table->foreignId('user_id')->constrained('users'); // ID user yang membuat order
-            $table->foreignId('courier_id')->nullable()->constrained('users'); // kurir yang mengantarkan order, bisa null jika belum ditugaskan
-            $table->foreignId('address_id')->constrained('customer_addresses'); // ID alamat pengiriman
+            $table->string('order_number', 50); // Nomor order
+            $table->primary('order_number'); // Set order_number as primary key
+            $table->foreignId('user_id')->constrained('users', 'user_id'); // ID user yang membuat order
+            $table->foreignId('courier_id')->nullable()->constrained('users', 'user_id'); // kurir yang mengantarkan order, bisa null jika belum ditugaskan
+            $table->foreignId('address_id')->constrained('customer_addresses', 'address_id'); // ID alamat pengiriman
             $table->date('delivery_date')->nullable(); //tanggal pesanan ingin sampai ke pelanggan
             $table->time('delivery_time')->nullable(); //waktu pesanan ingin sampai ke pelanggan
             $table->text('notes')->nullable(); // Catatan tambahan
@@ -31,9 +32,17 @@ return new class extends Migration {
             $table->timestamp('completed_at')->nullable(); // Waktu order selesai
             $table->timestamp('canceled_at')->nullable(); // Waktu order dibatalkan
             $table->text('cancellation_reason')->nullable(); // Alasan pembatalan
-            $table->foreignId('canceled_by')->nullable()->constrained('users'); // ID user yang membatalkan
+            $table->foreignId('canceled_by')->nullable()->constrained('users', 'user_id'); // ID user yang membatalkan
             $table->timestamps(); // Timestamps untuk created_at dan updated_at
             $table->softDeletes(); // Kolom untuk soft delete
+            $table->index('user_id'); // Index untuk user_id untuk performa query
+            $table->index('courier_id'); // Index untuk courier_id untuk performa query
+            $table->index('address_id'); // Index untuk address_id untuk performa query
+            $table->index('order_status'); // Index untuk order_status untuk performa query
+            $table->index('created_at'); // Index untuk created_at untuk performa query
+            $table->index('updated_at'); // Index untuk updated_at untuk performa query
+            $table->index('deleted_at'); // Index untuk deleted_at untuk performa query pada soft deletes
+            $table->comment('Tabel ini menyimpan informasi order yang dibuat oleh user. Setiap order terkait dengan user, kurir, alamat pengiriman, dan memiliki status serta waktu yang berbeda. Order juga dapat memiliki catatan tambahan, total harga, metode pembayaran, dan bukti pembayaran. Status order mencakup berbagai tahap dari menunggu konfirmasi hingga selesai atau dibatalkan.'); // Deskripsi tabel
         });
     }
 

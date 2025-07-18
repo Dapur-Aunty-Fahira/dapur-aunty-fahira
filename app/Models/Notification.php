@@ -9,6 +9,8 @@ class Notification extends Model
 {
     use HasFactory;
 
+    protected $table = 'notifications';
+    protected $primaryKey = 'notification_id';
     protected $fillable = [
         'user_id',
         'title',
@@ -22,7 +24,7 @@ class Notification extends Model
      */
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id', 'user_id');
     }
 
     /**
