@@ -36,6 +36,7 @@
     </footer>
 
     @include('layouts.guest.javascript')
+
     @stack('scripts')
 </body>
 
