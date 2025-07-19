@@ -503,14 +503,34 @@
             }
 
             function getMenuImageUrl(menu) {
-                // Prioritaskan image_url jika ada
-                if (menu.image_url) return menu.image_url;
+                // Prioritaskan image_url jika valid URL (http/https)
+                if (
+                    menu.image_url &&
+                    typeof menu.image_url === 'string' &&
+                    (menu.image_url.startsWith('http://') || menu.image_url.startsWith('https://'))
+                ) {
+                    return menu.image_url;
+                }
+
+                // Jika image berupa URL penuh (http/https), gunakan langsung
+                if (
+                    menu.image &&
+                    typeof menu.image === 'string' &&
+                    (menu.image.startsWith('http://') || menu.image.startsWith('https://'))
+                ) {
+                    return menu.image;
+                }
                 // Jika image berupa path relatif (misal: menus/xxx.jpg), buat URL ke storage
-                if (menu.image && !menu.image.startsWith('C:\\')) {
+                if (
+                    menu.image &&
+                    typeof menu.image === 'string' &&
+                    !menu.image.startsWith('C:\\')
+                ) {
                     return `/storage/${menu.image.replace(/\\/g, '/')}`;
                 }
-                // Jika image berupa path lokal sementara (C:\...), tampilkan gambar default
-                return '/images/no-image.png';
+
+                // Jika image_url ada tapi bukan URL valid, atau image berupa path lokal sementara (C:\...), tampilkan gambar default lokal
+                return 'https://placehold.co/300x180?text=No+Image';
             }
 
             function renderMenuCard(menu) {
@@ -573,9 +593,8 @@
                         document.getElementById('menuMinOrder').value = menu.min_order ?? '';
                         document.getElementById('menuDescription').value = menu.description ?? '';
                         document.getElementById('menuImage').value = '';
-                        document.getElementById('menuImagePreview').innerHTML = menu.image_url ?
-                            `<img src="${menu.image_url}" alt="Gambar Menu" class="img-fluid rounded" style="max-height:120px;">` :
-                            '';
+                        document.getElementById('menuImagePreview').innerHTML =
+                            `<img src="${menu.image_url || 'https://placehold.co/300x180?text=No+Image'}" alt="Gambar Menu" class="img-fluid rounded" style="max-height:120px;">`;
                         document.getElementById('menuModalTitle').innerText = 'Edit Menu';
                         clearMenuFormErrors();
                         $('#menuModal').modal('show');

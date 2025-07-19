@@ -33,7 +33,7 @@ Route::get('/', function () {
     $user = Auth::user();
     return match ($user->role) {
         'admin' => redirect()->route('admin.dashboard'),
-        'pelanggan' => redirect()->route('guest.dashboard'),
+        'pelanggan' => redirect()->route('guest.pemesanan'),
         'kurir' => redirect()->route('kurir.delivery.index'),
         default => redirect()->route('showLogin'),
     };

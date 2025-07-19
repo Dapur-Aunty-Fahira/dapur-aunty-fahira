@@ -1,12 +1,12 @@
 <?php
 
 namespace App\Http\Controllers\Page\Admin;
-
 use App\Models\Menu;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Validation\ValidationException;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\ValidationException;
 
 class MenuController extends Controller
 {
@@ -62,7 +62,7 @@ class MenuController extends Controller
                 'name' => 'required|string|max:50',
                 'price' => 'required|numeric|min:0',
                 'category_id' => 'required|exists:categories,category_id',
-                'image' => 'required|image|mimes:jpg,jpeg,png|max:2048',
+                'image' => 'required|image|mimes:jpg,jpeg,png',
                 'description' => 'nullable|string',
                 'min_order' => 'required|integer|min:1',
                 'is_available' => 'boolean',
@@ -102,28 +102,28 @@ class MenuController extends Controller
                 'price' => 'required|numeric|min:0',
                 'category_id' => 'required|exists:categories,category_id',
                 'description' => 'nullable|string',
-                'min_order' => 'nullable|integer|min:1',
+                'min_order' => 'required|integer|min:1',
                 'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
                 'is_available' => 'boolean',
                 'is_popular' => 'boolean',
                 'is_new' => 'boolean',
             ]);
 
-            if ($request->hasFile('image')) {
-                $validated['image'] = $request->file('image')->store('menus', 'public');
-            }
-
-            $menu = Menu::findOrFail($id);
-
             // Handle image upload if present
             if ($request->hasFile('image')) {
-                $imagePath = $request->file('image')->store('menus', 'public');
-                $validated['image'] = $imagePath;
+                // Delete old image if exists
+                if ($menu->image && Storage::disk('public')->exists($menu->image)) {
+                    Storage::disk('public')->delete($menu->image);
+                }
+                $validated['image'] = $request->file('image')->store('menus', 'public');
             }
 
             $menu->update($validated);
             return response()->json($menu);
         } catch (ValidationException $e) {
+            Log::error('Validation error in Update Menu: ' . $e->getMessage(), [
+                'exception' => $e
+            ]);
             return response()->json([
                 'error' => 'Validasi gagal',
                 'messages' => $e->errors(),
