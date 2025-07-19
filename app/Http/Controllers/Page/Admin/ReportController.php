@@ -45,7 +45,7 @@ class ReportController extends Controller
                 'total_price' => 'total_price',
                 'delivery_date' => 'delivery_date',
                 'delivery_time' => 'delivery_time',
-                'full_address' => 'customer_addresses.address', // pakai join
+                'full_address' => 'address', // pakai join
                 'order_status' => 'order_status',
                 'created_at' => 'created_at',
                 'updated_at' => 'updated_at',
@@ -66,7 +66,6 @@ class ReportController extends Controller
                 !empty($searchValue)
             ) {
                 $query->leftJoin('users', 'orders.user_id', '=', 'users.id')
-                    ->leftJoin('customer_addresses', 'orders.address_id', '=', 'customer_addresses.id')
                     ->select('orders.*');
             }
 
@@ -75,7 +74,7 @@ class ReportController extends Controller
                 $query->where(function ($q) use ($searchValue) {
                     $q->where('orders.order_number', 'like', "%{$searchValue}%")
                         ->orWhere('users.name', 'like', "%{$searchValue}%")
-                        ->orWhere('customer_addresses.address', 'like', "%{$searchValue}%")
+                        ->orWhere('orders.address', 'like', "%{$searchValue}%")
                         ->orWhere('orders.total_price', 'like', "%{$searchValue}%")
                         ->orWhere('orders.delivery_date', 'like', "%{$searchValue}%")
                         ->orWhere('orders.delivery_time', 'like', "%{$searchValue}%")

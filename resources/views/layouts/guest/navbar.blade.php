@@ -29,12 +29,6 @@
                     <hr class="dropdown-divider">
                 </li>
                 <li>
-                    <a href="#" class="dropdown-item d-flex align-items-center gap-2" id="change-address-btn"
-                        style="--bs-dropdown-link-active-bg: #e557a1;">
-                        <i class="bi bi-geo-alt text-primary"></i> Manage Alamat
-                    </a>
-                </li>
-                <li>
                     <a href="#" class="dropdown-item d-flex align-items-center gap-2" id="change-password-btn"
                         style="--bs-dropdown-link-active-bg: #e557a1;">
                         <i class="bi bi-key text-warning"></i> Ganti Password

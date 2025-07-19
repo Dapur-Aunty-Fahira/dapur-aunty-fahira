@@ -17,8 +17,7 @@ return new class extends Migration {
             $table->foreign('user_id')->references('user_id')->on('users')->onDelete('cascade'); // Foreign key ke users.user_id
             $table->integer('courier_id')->unsigned()->nullable(); // kurir yang mengantarkan order, bisa null jika belum ditugaskan
             $table->foreign('courier_id')->references('user_id')->on('users')->onDelete('set null'); // Foreign key ke users.user_id
-            $table->integer('address_id')->unsigned(); // ID alamat pengiriman
-            $table->foreign('address_id')->references('address_id')->on('customer_addresses')->onDelete('cascade');
+            $table->text('address');
             $table->date('delivery_date')->nullable(); //tanggal pesanan ingin sampai ke pelanggan
             $table->time('delivery_time')->nullable(); //waktu pesanan ingin sampai ke pelanggan
             $table->text('notes')->nullable(); // Catatan tambahan
@@ -40,7 +39,7 @@ return new class extends Migration {
             $table->softDeletes(); // Kolom untuk soft delete
             $table->index('user_id'); // Index untuk user_id untuk performa query
             $table->index('courier_id'); // Index untuk courier_id untuk performa query
-            $table->index('address_id'); // Index untuk address_id untuk performa query
+            $table->index('address'); // Index untuk address_id untuk performa query
             $table->index('order_status'); // Index untuk order_status untuk performa query
             $table->index('created_at'); // Index untuk created_at untuk performa query
             $table->index('updated_at'); // Index untuk updated_at untuk performa query

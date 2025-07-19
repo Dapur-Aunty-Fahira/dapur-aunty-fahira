@@ -31,58 +31,60 @@
         </div>
     </main>
 
-    <!-- Modal Checkout Multi Step -->
-    <div class="modal fade" id="checkoutModal" tabindex="-1" aria-labelledby="checkoutModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered">
-            <div class="modal-content">
-                <form id="checkoutForm">
+    <!-- Modal Checkout -->
+    <div class="modal fade" id="checkoutModal" tabindex="-1" aria-labelledby="checkoutModalLabel">
+        <div class="modal-dialog">
+            <form id="checkoutForm" enctype="multipart/form-data">
+                <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="checkoutModalLabel">Form Pemesanan</h5>
+                        <h5 class="modal-title" id="checkoutModalLabel">Formulir Pemesanan</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
                     </div>
                     <div class="modal-body">
 
-                        <!-- STEP 1: Data Pelanggan -->
-                        <div class="step step-1">
-                            <div class="mb-3">
-                                <label for="deliveryDate" class="form-label">Tanggal Pengiriman</label>
-                                <input type="date" class="form-control" id="deliveryDate" name="delivery_date" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="deliveryTime" class="form-label">Jam Pengiriman</label>
-                                <input type="time" class="form-control" id="deliveryTime" name="delivery_time" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="alamatPemesanId" class="form-label">Alamat Pengiriman</label>
-                                <input type="text" class="form-control" id="alamatPemesanId" name="address_id"
-                                    placeholder="Alamat lengkap" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="notes" class="form-label">Catatan Tambahan (Opsional)</label>
-                                <textarea class="form-control" id="notes" name="notes" rows="3"></textarea>
-                            </div>
+                        <div class="mb-3">
+                            <label for="nama" class="form-label">Nama Lengkap</label>
+                            <input type="text" class="form-control" id="nama" name="nama" required>
                         </div>
 
-                        <!-- STEP 2: Upload Bukti Transfer -->
-                        <div class="step step-2 d-none">
-                            <div class="mb-3">
-                                <label for="buktiBayar" class="form-label">Upload Bukti Transfer</label>
-                                <input type="file" class="form-control" id="buktiBayar" accept="image/*" required>
-                                <img id="buktiPreview" class="img-fluid mt-3 d-none rounded shadow"
-                                    style="max-height: 200px;" alt="Preview Bukti Transfer">
-                            </div>
+                        <div class="mb-3">
+                            <label for="hp" class="form-label">No HP</label>
+                            <input type="text" class="form-control" id="hp" name="hp" required>
                         </div>
+
+                        <div class="mb-3">
+                            <label for="bukti" class="form-label">Upload Bukti Transfer</label>
+                            <input type="file" class="form-control" id="bukti" name="bukti" accept="image/*"
+                                required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="delivery_date" class="form-label">Tanggal Pengiriman</label>
+                            <input type="date" class="form-control" id="delivery_date" name="delivery_date" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="delivery_time" class="form-label">Waktu Pengiriman</label>
+                            <input type="time" class="form-control" id="delivery_time" name="delivery_time" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="address" class="form-label">Alamat Pengiriman</label>
+                            <textarea class="form-control" id="address" name="address" rows="2" required
+                                placeholder="Masukkan alamat lengkap pengiriman"></textarea>
+                        </div>
+
+                        <input type="hidden" id="totalOrder" name="totalOrder" value="">
 
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary back-step d-none">Kembali</button>
-                        <button type="button" class="btn btn-primary next-step">Lanjut</button>
-                        <button type="button" class="btn btn-success d-none submit-order">Kirim Pesanan</button>
+                        <button type="submit" class="btn btn-primary">Kirim Pesanan</button>
                     </div>
-                </form>
-            </div>
+                </div>
+            </form>
         </div>
     </div>
+
 
 
 
@@ -363,31 +365,122 @@
                 totalHarga += item.quantity * item.price;
 
                 return `
-                <div class="d-flex justify-content-between align-items-center mb-2">
-                <div>
-                    <div class="fw-semibold">${item.name}</div>
-                    <small class="text-muted">${formatRupiah(item.price)} x ${item.quantity}</small>
-                </div>
-                <div>
-                    <button class="btn btn-sm btn-light border change-qty" data-id="${item.cart_id}" data-name="${item.name}" data-delta="-1" aria-label="Kurangi ${item.name}">-</button>
-                    <span class="mx-1">${item.quantity}</span>
-                    <button class="btn btn-sm btn-light border change-qty" data-id="${item.cart_id}" data-name="${item.name}" data-delta="1" aria-label="Tambah ${item.name}">+</button>
-                    <button class="btn btn-sm btn-danger ms-2 remove-item" data-id="${item.cart_id}" data-name="${item.name}" aria-label="Hapus ${item.name}"><i class="bi bi-trash"></i></button>
-                </div>
-                </div>`;
+            <div class="d-flex justify-content-between align-items-center mb-2">
+            <div>
+                <div class="fw-semibold">${item.name}</div>
+                <small class="text-muted">${formatRupiah(item.price)} x ${item.quantity}</small>
+            </div>
+            <div>
+                <button class="btn btn-sm btn-light border change-qty" data-id="${item.cart_id}" data-name="${item.name}" data-delta="-1" aria-label="Kurangi ${item.name}">-</button>
+                <span class="mx-1">${item.quantity}</span>
+                <button class="btn btn-sm btn-light border change-qty" data-id="${item.cart_id}" data-name="${item.name}" data-delta="1" aria-label="Tambah ${item.name}">+</button>
+                <button class="btn btn-sm btn-danger ms-2 remove-item" data-id="${item.cart_id}" data-name="${item.name}" aria-label="Hapus ${item.name}"><i class="bi bi-trash"></i></button>
+            </div>
+            </div>`;
             }).join('');
 
             html += `
             <hr>
             <div class="d-flex justify-content-between fw-bold">
-                <span>Total</span>
-                <span>${formatRupiah(totalHarga)}</span>
+            <span>Total</span>
+            <span>${formatRupiah(totalHarga)}</span>
             </div>`;
 
             cartItems.innerHTML = html;
             checkoutBtn.disabled = false;
             cartCount.textContent = totalQty;
         }
+
+        // --- Checkout Modal Form Handler (Sesuai validasi backend) ---
+        document.addEventListener('DOMContentLoaded', function() {
+            const checkoutForm = document.getElementById('checkoutForm');
+            if (checkoutForm) {
+                checkoutForm.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+
+                    const form = e.target;
+                    const formData = new FormData(form);
+
+                    // Ambil user_id dari localStorage (atau window.LaravelUserId)
+                    let userId = window.LaravelUserId ?? localStorage.getItem('user_id');
+                    if (!userId) {
+                        Swal.fire('Gagal!', 'Anda harus login.', 'error');
+                        return;
+                    }
+                    formData.set('user_id', userId);
+
+                    // Pastikan field sesuai validasi controller
+                    if (!formData.get('delivery_date') || !formData.get('delivery_time') || !formData
+                        .get('address')) {
+                        Swal.fire('Gagal!', 'Mohon lengkapi data pengiriman.', 'error');
+                        return;
+                    }
+
+                    // Validasi file bukti transfer (payment_proof)
+                    const bukti = formData.get('bukti');
+                    if (!bukti || !bukti.type.startsWith('image/')) {
+                        Swal.fire('Gagal!', 'Bukti transfer harus berupa gambar.', 'error');
+                        return;
+                    }
+                    // Ganti nama field file agar sesuai controller
+                    formData.set('payment_proof', bukti);
+                    formData.delete('bukti');
+
+                    try {
+                        const response = await fetch('/api/v1/order/checkout', {
+                            method: 'POST',
+                            body: formData,
+                        });
+
+                        let result;
+                        const contentType = response.headers.get('content-type');
+                        if (contentType && contentType.indexOf('application/json') !== -1) {
+                            result = await response.json();
+                        } else {
+                            Swal.fire('Gagal!', 'Terjadi kesalahan pada server.', 'error');
+                            return;
+                        }
+                        if (response.ok && result.status === 'sukses') {
+                            Swal.fire('Sukses!', 'Pesanan Anda berhasil dibuat! Nomor Pesanan: ' +
+                                result.data.order_number, 'success');
+                            form.reset();
+                            // Hide modal
+                            const modalEl = bootstrap.Modal.getInstance(document.getElementById(
+                                'checkoutModal'));
+                            if (modalEl) modalEl.hide();
+                            updateCartDisplay([]);
+                            fetchCartFromDB();
+                        } else {
+                            let msg = result.message || 'Terjadi kesalahan.';
+                            // Jika ada detail validasi
+                            if (result.errors) {
+                                msg += '<ul class="text-start">';
+                                for (const key in result.errors) {
+                                    msg += `<li>${result.errors[key]}</li>`;
+                                }
+                                msg += '</ul>';
+                            }
+                            Swal.fire({
+                                title: 'Gagal!',
+                                html: msg,
+                                icon: 'error'
+                            });
+                        }
+                    } catch (err) {
+                        Swal.fire('Gagal!', 'Gagal mengirim pesanan.', 'error');
+                    }
+                });
+            }
+        });
+
+        document.getElementById('checkoutBtn').addEventListener('click', function() {
+            const totalText = document.querySelector('#cartItems .fw-bold span:last-child')?.textContent || 'Rp0';
+            document.getElementById('totalOrder').value = totalText;
+
+            const modalEl = document.getElementById('checkoutModal');
+            const modal = new bootstrap.Modal(modalEl);
+            modal.show();
+        });
 
         // Event delegation for cart actions
         document.getElementById('cartItems').addEventListener('click', function(e) {
@@ -504,7 +597,7 @@
         });
 
         // Checkout button
-        document.getElementById('checkoutBtn').addEventListener('click', submitOrder);
+        // document.getElementById('checkoutBtn').addEventListener('click', submitOrder);
 
         function previewImage(e) {
             const input = e.target;
@@ -527,12 +620,12 @@
             const userId = localStorage.getItem('user_id'); // sesuaikan jika pakai auth
             const deliveryDate = document.getElementById('deliveryDate').value;
             const deliveryTime = document.getElementById('deliveryTime').value;
-            const addressId = document.getElementById('alamatPemesanId').value; // hidden input atau select
+            const address = document.getElementById('address').value; // hidden input atau select
             const paymentMethod = 'transfer'; // atau dari dropdown
             const notes = document.getElementById('notes')?.value || '';
             const bukti = document.getElementById('buktiBayar').files[0];
 
-            if (!userId || !deliveryDate || !deliveryTime || !addressId || !bukti) {
+            if (!userId || !deliveryDate || !deliveryTime || !address || !bukti) {
                 Swal.fire({
                     title: 'Lengkapi Data',
                     text: 'Mohon isi semua data dan unggah bukti pembayaran.',
@@ -556,8 +649,7 @@
             formData.append("user_id", userId);
             formData.append("delivery_date", deliveryDate);
             formData.append("delivery_time", deliveryTime);
-            formData.append("address_id", addressId);
-            formData.append("payment_method", paymentMethod);
+            formData.append("address", address);
             formData.append("notes", notes);
             formData.append("payment_proof", bukti);
 

@@ -23,7 +23,7 @@ class Order extends Model
         'order_number',
         'user_id',
         'courier_id',
-        'address_id',
+        'address',
         'delivery_date',
         'delivery_time',
         'notes',

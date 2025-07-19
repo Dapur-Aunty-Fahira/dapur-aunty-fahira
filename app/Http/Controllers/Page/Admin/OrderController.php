@@ -43,7 +43,7 @@ class OrderController extends Controller
                 'total_price' => 'orders.total_price',
                 'delivery_date' => 'orders.delivery_date',
                 'delivery_time' => 'orders.delivery_time',
-                'full_address' => 'customer_addresses.address',
+                'full_address' => 'orders.address',
                 'order_status' => 'orders.order_status',
                 'created_at' => 'orders.created_at',
                 'updated_at' => 'orders.updated_at',
@@ -52,8 +52,7 @@ class OrderController extends Controller
 
             // Build query
             $query = Order::with(['user', 'address', 'items.menu'])
-                ->join('users', 'orders.user_id', '=', 'users.user_id')
-                ->join('customer_addresses', 'orders.address_id', '=', 'customer_addresses.address_id');
+                ->join('users', 'orders.user_id', '=', 'users.user_id');
 
             if (!empty($orderStatus)) {
                 $query->where('orders.order_status', $orderStatus);
@@ -67,7 +66,7 @@ class OrderController extends Controller
                         ->orWhere('orders.total_price', 'like', "%{$searchValue}%")
                         ->orWhere('orders.delivery_date', 'like', "%{$searchValue}%")
                         ->orWhere('orders.delivery_time', 'like', "%{$searchValue}%")
-                        ->orWhere('customer_addresses.address', 'like', "%{$searchValue}%")
+                        ->orWhere('orders.address', 'like', "%{$searchValue}%")
                         ->orWhere('orders.order_status', 'like', "%{$searchValue}%");
                 });
             }

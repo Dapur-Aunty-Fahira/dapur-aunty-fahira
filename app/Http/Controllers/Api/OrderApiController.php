@@ -23,8 +23,7 @@ class OrderApiController extends Controller
             'user_id' => 'required|exists:users,user_id',
             'delivery_date' => 'required|date',
             'delivery_time' => 'required|string',
-            'address_id' => 'required|exists:customer_addresses,address_id',
-            'payment_method' => 'required|string',
+            'address' => 'required',
             'notes' => 'nullable|string',
             'payment_proof' => 'required|image|max:2048',
         ]);
@@ -53,12 +52,11 @@ class OrderApiController extends Controller
             $order = Order::create([
                 'order_number' => $orderNumber,
                 'user_id' => $userId,
-                'address_id' => $validated['address_id'],
+                'address' => $validated['address'],
                 'delivery_date' => $validated['delivery_date'],
                 'delivery_time' => $validated['delivery_time'],
                 'notes' => $validated['notes'] ?? null,
                 'total_price' => $total,
-                'payment_method' => $validated['payment_method'],
                 'payment_proof' => $buktiPath,
             ]);
 
@@ -84,7 +82,6 @@ class OrderApiController extends Controller
             return $this->success([
                 'order_number' => $order->order_number,
                 'total_price' => $order->total_price,
-                'payment_method' => $order->payment_method,
                 'payment_proof' => $order->payment_proof,
                 'delivery_date' => $order->delivery_date,
                 'delivery_time' => $order->delivery_time,
