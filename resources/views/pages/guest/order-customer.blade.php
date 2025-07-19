@@ -31,6 +31,60 @@
         </div>
     </main>
 
+    <!-- Modal Checkout Multi Step -->
+    <div class="modal fade" id="checkoutModal" tabindex="-1" aria-labelledby="checkoutModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <form id="checkoutForm">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="checkoutModalLabel">Form Pemesanan</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                    </div>
+                    <div class="modal-body">
+
+                        <!-- STEP 1: Data Pelanggan -->
+                        <div class="step step-1">
+                            <div class="mb-3">
+                                <label for="deliveryDate" class="form-label">Tanggal Pengiriman</label>
+                                <input type="date" class="form-control" id="deliveryDate" name="delivery_date" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="deliveryTime" class="form-label">Jam Pengiriman</label>
+                                <input type="time" class="form-control" id="deliveryTime" name="delivery_time" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="alamatPemesanId" class="form-label">Alamat Pengiriman</label>
+                                <input type="text" class="form-control" id="alamatPemesanId" name="address_id"
+                                    placeholder="Alamat lengkap" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="notes" class="form-label">Catatan Tambahan (Opsional)</label>
+                                <textarea class="form-control" id="notes" name="notes" rows="3"></textarea>
+                            </div>
+                        </div>
+
+                        <!-- STEP 2: Upload Bukti Transfer -->
+                        <div class="step step-2 d-none">
+                            <div class="mb-3">
+                                <label for="buktiBayar" class="form-label">Upload Bukti Transfer</label>
+                                <input type="file" class="form-control" id="buktiBayar" accept="image/*" required>
+                                <img id="buktiPreview" class="img-fluid mt-3 d-none rounded shadow"
+                                    style="max-height: 200px;" alt="Preview Bukti Transfer">
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary back-step d-none">Kembali</button>
+                        <button type="button" class="btn btn-primary next-step">Lanjut</button>
+                        <button type="button" class="btn btn-success d-none submit-order">Kirim Pesanan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
 
     <style>
         /* Kartu Menu Styling */
@@ -456,7 +510,7 @@
             const input = e.target;
             const preview = document.getElementById('buktiPreview');
             const file = input.files[0];
-            if (file) {
+            if (file && file.type.startsWith('image/')) {
                 const reader = new FileReader();
                 reader.onload = function(ev) {
                     preview.src = ev.target.result;
@@ -479,7 +533,22 @@
             const bukti = document.getElementById('buktiBayar').files[0];
 
             if (!userId || !deliveryDate || !deliveryTime || !addressId || !bukti) {
-                alert('Mohon lengkapi semua data checkout.');
+                Swal.fire({
+                    title: 'Lengkapi Data',
+                    text: 'Mohon isi semua data dan unggah bukti pembayaran.',
+                    icon: 'warning',
+                    confirmButtonText: 'OK'
+                });
+                return;
+            }
+
+            if (!bukti.type.startsWith('image/')) {
+                Swal.fire({
+                    title: 'Format Salah',
+                    text: 'Bukti pembayaran harus berupa gambar.',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
                 return;
             }
 
@@ -492,6 +561,16 @@
             formData.append("notes", notes);
             formData.append("payment_proof", bukti);
 
+            Swal.fire({
+                title: 'Sedang Diproses',
+                text: 'Mohon tunggu, pesanan Anda sedang dikirim...',
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+
             fetch('/api/v1/order/checkout', {
                     method: 'POST',
                     body: formData,
@@ -502,17 +581,35 @@
                 .then(res => res.json())
                 .then(res => {
                     if (res.status === 'sukses') {
-                        alert('Pesanan berhasil dibuat! Nomor Order: ' + res.order_number);
-                        localStorage.removeItem('cart');
-                        cart = {};
-                        fetchCartFromDB();
+                        Swal.fire({
+                            title: 'Berhasil',
+                            text: 'Pesanan Anda berhasil dibuat! Nomor Pesanan: ' + res.order_number,
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        }).then(() => {
+                            localStorage.removeItem('cart');
+                            cart = {};
+                            fetchCartFromDB();
+
+                            // Optional: redirect
+                            // window.location.href = '/order/success';
+                        });
                     } else {
-                        alert('Gagal: ' + res.message);
+                        Swal.fire({
+                            title: 'Gagal',
+                            text: res.message || 'Terjadi kesalahan saat memproses pesanan.',
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        });
                     }
                 })
                 .catch(err => {
-                    console.error(err);
-                    alert('Terjadi kesalahan saat menyimpan pesanan.');
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'Terjadi kesalahan saat menyimpan pesanan.',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
                 });
         }
 
