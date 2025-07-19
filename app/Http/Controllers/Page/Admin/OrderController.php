@@ -51,7 +51,7 @@ class OrderController extends Controller
             $sortColumn = $sortable[$orderColumn] ?? 'orders.created_at';
 
             // Build query
-            $query = Order::with(['user', 'address', 'items.menu'])
+            $query = Order::with(['user', 'items.menu'])
                 ->join('users', 'orders.user_id', '=', 'users.user_id');
 
             if (!empty($orderStatus)) {
@@ -101,7 +101,7 @@ class OrderController extends Controller
                     'total_price' => $order->total_price,
                     'delivery_date' => $order->delivery_date ?? '-',
                     'delivery_time' => $order->delivery_time ?? '-',
-                    'full_address' => $order->address->address ?? '-',
+                    'full_address' => $order->address ?? '-',
                     'order_status' => $order->order_status,
                     'payment_proof' => $order->payment_proof ?? '-',
                     'payment_status' => $order->payment_status,
@@ -126,7 +126,7 @@ class OrderController extends Controller
     public function detail($orderNumber)
     {
         try {
-            $order = Order::with(['user', 'address', 'items.menu'])
+            $order = Order::with(['user', 'items.menu'])
                 ->where('order_number', $orderNumber)
                 ->firstOrFail();
             return view('pages.admin.order_detail', compact('order'));

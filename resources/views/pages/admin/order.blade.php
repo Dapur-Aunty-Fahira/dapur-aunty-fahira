@@ -296,7 +296,7 @@
                             className: 'text-center',
                             render: function(data, type, row) {
                                 if (data && data !== '-') {
-                                    return `<a href="${data}" target="_blank">Lihat Bukti Pembayaran</a>`;
+                                    return `<a href="{{ asset('storage') }}/${data}" target="_blank">Lihat Bukti Pembayaran</a>`;
                                 }
                                 return '-';
                             }
@@ -354,7 +354,13 @@
                     $('#payment_status').val(data.payment_status);
                     // image link payment proof
                     $('#payment_proof').text(data.payment_proof || '-');
-                    $('#payment_proof_link').attr('href', data.payment_proof || '#');
+                    if (data.payment_proof && data.payment_proof !== '-') {
+                        $('#payment_proof_link')
+                            .attr('href', '{{ asset('storage') }}/' + data.payment_proof)
+                            .show();
+                    } else {
+                        $('#payment_proof_link').attr('href', '#').hide();
+                    }
 
                     $('#orderDetailModal').modal('show');
                 });

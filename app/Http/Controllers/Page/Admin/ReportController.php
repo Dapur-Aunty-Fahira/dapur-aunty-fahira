@@ -53,7 +53,7 @@ class ReportController extends Controller
 
             $sortColumn = $sortable[$orderColumn] ?? 'created_at';
 
-            $query = Order::with(['user', 'address', 'items.menu']);
+            $query = Order::with(['user', 'items.menu']);
 
             // Filtering
             if (!empty($orderStatus)) {
@@ -101,7 +101,7 @@ class ReportController extends Controller
                     'total_price' => $order->total_price,
                     'delivery_date' => $order->delivery_date ?? '-',
                     'delivery_time' => $order->delivery_time ?? '-',
-                    'full_address' => $order->address->address ?? '-',
+                    'full_address' => $order->address ?? '-',
                     'order_status' => $order->order_status,
                     'created_at' => $order->created_at ? $order->created_at->format('Y-m-d H:i:s') : '',
                     'updated_at' => $order->updated_at ? $order->updated_at->format('Y-m-d H:i:s') : '',

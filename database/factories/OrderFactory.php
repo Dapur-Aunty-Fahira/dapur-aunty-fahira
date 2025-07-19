@@ -23,7 +23,7 @@ class OrderFactory extends Factory
             'order_number' => strtoupper('ORD-' . Str::random(8)),
             'user_id' => User::inRandomOrder()->first()?->id ?? User::factory(),
             'courier_id' => null, // bisa diisi manual jika ingin
-            'address' => CustomerAddress::inRandomOrder()->first()?->id ?? CustomerAddress::factory(),
+            'address' => $this->faker->address,
             'delivery_date' => $this->faker->optional()->date(),
             'delivery_time' => $this->faker->optional()->time(),
             'notes' => $this->faker->optional()->sentence(),

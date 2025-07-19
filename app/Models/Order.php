@@ -69,14 +69,6 @@ class Order extends Model
     }
 
     /**
-     * Relasi ke alamat pengiriman.
-     */
-    public function address()
-    {
-        return $this->belongsTo(CustomerAddress::class, 'address_id', 'address_id');
-    }
-
-    /**
      * Relasi ke user yang membatalkan order.
      */
     public function canceledBy()
