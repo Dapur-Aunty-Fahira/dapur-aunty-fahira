@@ -33,7 +33,7 @@ class OrderController extends Controller
             $orderDir = $request->input('order.0.dir', 'asc');
             $columns = $request->input('columns');
             $searchValue = $request->input('search.value');
-            $orderColumn = $columns[$orderColumnIndex]['data'] ?? 'created_at';
+            $orderColumn = $columns[$orderColumnIndex]['data'] ?? 'updated_at';
 
             // Map column names to database columns
             $sortable = [
@@ -48,7 +48,7 @@ class OrderController extends Controller
                 'created_at' => 'orders.created_at',
                 'updated_at' => 'orders.updated_at',
             ];
-            $sortColumn = $sortable[$orderColumn] ?? 'orders.created_at';
+            $sortColumn = $sortable[$orderColumn] ?? 'orders.updated_at';
 
             // Build query
             $query = Order::with(['user', 'items.menu'])
@@ -80,7 +80,16 @@ class OrderController extends Controller
             // Apply sorting, pagination
             if ($sortColumn) {
                 $query->orderBy($sortColumn, $orderDir);
+            } else {
+                $query->orderBy('orders.updated_at', 'desc');
             }
+
+            // If no order is specified, default to updated_at desc
+            if (!$request->has('order.0.column')) {
+                $query->getQuery()->orders = [];
+                $query->orderBy('orders.updated_at', 'desc');
+            }
+
             $orders = $query
                 ->select('orders.*')
                 ->skip($start)

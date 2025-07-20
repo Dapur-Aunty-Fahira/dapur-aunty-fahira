@@ -395,6 +395,37 @@
             cartCount.textContent = totalQty;
         }
 
+        function compressImage(file, quality = 0.6, maxWidth = 1280) {
+            return new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+
+                reader.onload = (event) => {
+                    const img = new Image();
+                    img.src = event.target.result;
+
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        const scale = Math.min(maxWidth / img.width, 1);
+                        canvas.width = img.width * scale;
+                        canvas.height = img.height * scale;
+
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+                        canvas.toBlob((blob) => {
+                            const compressedFile = new File([blob], file.name, {
+                                type: 'image/jpeg',
+                                lastModified: Date.now(),
+                            });
+                            resolve(compressedFile);
+                        }, 'image/jpeg', quality);
+                    };
+                };
+            });
+        }
+
+
         // --- Checkout Modal Form Handler (Sesuai validasi backend) ---
         document.addEventListener('DOMContentLoaded', function() {
             const checkoutForm = document.getElementById('checkoutForm');
@@ -421,13 +452,13 @@
                     }
 
                     // Validasi file bukti transfer (payment_proof)
-                    const bukti = formData.get('bukti');
-                    if (!bukti || !bukti.type.startsWith('image/')) {
+                    const originalBukti = formData.get('bukti');
+                    if (!originalBukti || !originalBukti.type.startsWith('image/')) {
                         Swal.fire('Gagal!', 'Bukti transfer harus berupa gambar.', 'error');
                         return;
                     }
-                    // Ganti nama field file agar sesuai controller
-                    formData.set('payment_proof', bukti);
+                    const compressedBukti = await compressImage(originalBukti, 0.6); // 60% quality
+                    formData.set('payment_proof', compressedBukti);
                     formData.delete('bukti');
 
                     try {
