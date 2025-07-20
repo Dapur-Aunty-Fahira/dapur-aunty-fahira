@@ -291,7 +291,7 @@
         `);
         }
 
-        $(function() {
+        jQuery(function($) {
             loadCategories();
             loadMenus();
 
@@ -301,9 +301,12 @@
 
             $('#category-tabs').on('click', '.nav-link', function(e) {
                 e.preventDefault();
+                if ($(this).hasClass('active')) return; // Prevent reload if already active
                 $('#category-tabs .nav-link').removeClass('active');
                 $(this).addClass('active');
-                category = $(this).data('category');
+                category = ($(this).data('category') || '').trim();
+                page = 1;
+                lastPage = false;
                 loadMenus(true);
             });
 
