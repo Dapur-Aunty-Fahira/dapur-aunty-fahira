@@ -32,6 +32,7 @@ class Login extends Controller
             return match ($user->role) {
                 'admin' => redirect()->route('admin.dashboard'),
                 'pelanggan' => redirect()->route('guest.pemesanan'),
+                'kurir' => redirect()->route('kurir.delivery.index'),
                 default => $this->logoutWithError('Unknown role'),
             };
         }

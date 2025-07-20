@@ -1,5 +1,5 @@
 <div class="container align-items-center">
-    <a class="navbar-brand d-flex align-items-center gap-2" href="#">
+    <a class="navbar-brand d-flex align-items-center gap-2" href="/">
         <img src="/images/logo.png" alt="Logo Dapur Aunty Fahira" loading="lazy" class="shadow-sm"
             style="background: #fff; border-radius: 10px; padding: 3px;">
         <span style="letter-spacing: 1px;">Dapur Aunty Fahira</span>
@@ -29,7 +29,7 @@
                     <hr class="dropdown-divider">
                 </li>
                 <li>
-                    <a href="#" class="dropdown-item d-flex align-items-center gap-2"
+                    <a href="{{ route('guest.history-pesanan') }}" class="dropdown-item d-flex align-items-center gap-2"
                         style="--bs-dropdown-link-active-bg: #e557a1;">
                         <i class="bi bi-clock-history text-primary"></i> Riwayat Pesanan
                     </a>

@@ -108,11 +108,6 @@
 
 <style>
     /* Change active/focus/hover color for all <a> elements to pink */
-    a:active,
-    a:focus,
-    a:hover {
-        color: #e557a1 !important;
-    }
 
     .dropdown-menu .dropdown-item.active,
     .dropdown-menu .dropdown-item:active,

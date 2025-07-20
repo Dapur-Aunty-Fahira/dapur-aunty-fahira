@@ -24,7 +24,11 @@ use App\Http\Controllers\Api\CategoryApiController;
 Route::prefix('v1')->group(function () {
     Route::get('/categories', [CategoryApiController::class, 'showCategories']);
     Route::get('/menus', [MenuApiController::class, 'showMenus']);
-    Route::post('/order/checkout', [OrderApiController::class, 'checkoutOrder']);
+    Route::prefix('/order')->group(function () {
+        Route::post('/checkout', [OrderApiController::class, 'checkoutOrder']);
+        Route::get('/timeline/{user_id}', [OrderApiController::class, 'getOrderTimeline']);
+        Route::get('/invoice/{order_number}', [OrderApiController::class, 'downloadInvoice']);
+    });
     // route group cart
     Route::prefix('/cart')->group(function () {
         Route::get('/user/{user_id}', [CartApiController::class, 'getUserCart']);
@@ -32,5 +36,7 @@ Route::prefix('v1')->group(function () {
         Route::patch('/update/{cart_id}', [CartApiController::class, 'updateQuantity']);
         Route::delete('/delete/{cart_id}', [CartApiController::class, 'removeFromCart']);
     });
+
+
 
 });

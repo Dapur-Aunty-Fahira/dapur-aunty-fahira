@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Models\Cart;
 use App\Models\Order;
+use PDF;
 use App\Models\OrderItem;
 use App\Traits\ApiResponse;
 use Illuminate\Support\Str;
@@ -98,4 +99,56 @@ class OrderApiController extends Controller
             return $this->error(null, 'Gagal membuat pesanan', 500);
         }
     }
+
+    public function getOrderTimeline($userId): JsonResponse
+    {
+        try {
+            $orders = Order::with(['items.menu'])
+                ->where('user_id', $userId)
+                ->orderByDesc('created_at')
+                ->get()
+                ->map(function ($order) {
+                    return [
+                        'order_number' => $order->order_number,
+                        'total_price' => $order->total_price,
+                        'order_status' => $order->order_status,
+                        'delivery_date' => $order->delivery_date,
+                        'delivery_time' => $order->delivery_time,
+                        'address' => $order->address,
+                        'created_at' => $order->created_at->format('d M Y H:i'),
+                        'items' => $order->items->map(function ($item) {
+                            return [
+                                'menu_name' => $item->menu->name ?? 'Menu tidak ditemukan',
+                                'price' => $item->price,
+                                'quantity' => $item->quantity
+                            ];
+                        })
+                    ];
+                });
+            return $this->success($orders, 'Timeline pesanan berhasil dimuat');
+        } catch (ValidationException $e) {
+            Log::error('Validation error fetching order timeline: ' . $e->getMessage());
+            return $this->validationError($e->errors());
+        } catch (\Exception $e) {
+            Log::error('Error fetching order timeline: ' . $e->getMessage());
+            return $this->error('Terjadi kesalahan pada server.', 500);
+        }
+    }
+
+    public function downloadInvoice(Request $request, $orderNumber, PDF $pdf)
+    {
+        try {
+            $order = Order::with(['items.menu'])
+                ->where('order_number', $orderNumber)
+                ->firstOrFail();
+
+            $pdf = PDF::loadView('invoice.order', compact('order'));
+
+            return $pdf->download("Invoice_{$order->order_number}.pdf");
+        } catch (\Exception $e) {
+            Log::error('Error generating invoice: ' . $e->getMessage());
+            return $this->error('Gagal mengunduh invoice.', 500);
+        }
+    }
+
 }

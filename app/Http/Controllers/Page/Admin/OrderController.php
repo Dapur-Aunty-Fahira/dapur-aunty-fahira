@@ -157,7 +157,7 @@ class OrderController extends Controller
             }
 
             if ($payment_status) {
-                $validPaymentStatuses = ['Validasi pembayaran', 'Diterima', 'Ditolak'];
+                $validPaymentStatuses = ['Validasi pembayaran', 'Lunas', 'Ditolak'];
                 if (!in_array($payment_status, $validPaymentStatuses)) {
                     return response()->json(['error' => 'Status pembayaran tidak valid.'], 400);
                 }

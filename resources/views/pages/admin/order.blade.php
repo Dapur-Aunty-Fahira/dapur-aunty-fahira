@@ -149,7 +149,7 @@
                                     <label>Status Pembayaran:</label>
                                     <select class="form-control" name="payment_status" id="payment_status">
                                         <option value="Validasi pembayaran">Validasi Pembayaran</option>
-                                        <option value="Diterima">Diterima</option>
+                                        <option value="Lunas">Lunas</option>
                                         <option value="Ditolak">Ditolak</option>
                                     </select>
                                 </div>
@@ -336,7 +336,7 @@
                             render: function(data) {
                                 let badgeClass = {
                                     'Validasi pembayaran': 'badge-warning',
-                                    'Diterima': 'badge-success',
+                                    'Lunas': 'badge-success',
                                     'Ditolak': 'badge-danger'
                                 } [data] || 'badge-secondary';
                                 return `<span class="badge ${badgeClass} text-capitalize">${data}</span>`;
