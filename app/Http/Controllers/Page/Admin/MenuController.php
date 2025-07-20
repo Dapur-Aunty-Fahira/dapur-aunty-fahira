@@ -18,7 +18,7 @@ class MenuController extends Controller
     public function getListMenu(Request $request)
     {
         try {
-            $perPage = $request->get('per_page', 10);
+            $perPage = $request->get('per_page', 6);
             $search = $request->get('search');
 
             $menus = Menu::with('category')
