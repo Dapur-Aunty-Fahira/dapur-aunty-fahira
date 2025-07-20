@@ -22,12 +22,17 @@
                 style="min-width: 220px;">
                 <li class="px-3 py-2">
                     <strong class="d-block mb-1" style="color: #e557a1;">{{ Auth::user()->name }}</strong>
-                    <small class="text-muted">{{ Auth::user()->role }}</small><br>
+                    <small class="text-muted">{{ ucfirst(Auth::user()->role) }}</small><br>
                     <small class="text-muted">Member sejak {{ Auth::user()->created_at->format('M Y') }}</small>
                 </li>
                 <li>
                     <hr class="dropdown-divider">
                 </li>
+                <li>
+                    <a href="#" class="dropdown-item d-flex align-items-center gap-2"
+                        style="--bs-dropdown-link-active-bg: #e557a1;">
+                        <i class="bi bi-clock-history text-primary"></i> Riwayat Pesanan
+                    </a>
                 <li>
                     <a href="#" class="dropdown-item d-flex align-items-center gap-2" id="change-password-btn"
                         style="--bs-dropdown-link-active-bg: #e557a1;">

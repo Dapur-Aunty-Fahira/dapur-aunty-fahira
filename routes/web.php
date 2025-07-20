@@ -3,7 +3,6 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Authentication\Login;
-use App\Http\Controllers\Authentication\Register;
 use App\Http\Controllers\Page\Admin\AdminDashboard;
 use App\Http\Controllers\Page\Admin\MenuController;
 use App\Http\Controllers\Page\Admin\OrderController;
@@ -14,6 +13,7 @@ use App\Http\Controllers\Page\Kurir\DeliveryController;
 use App\Http\Controllers\Page\Guest\OrderCustomerController;
 use App\Http\Controllers\Page\Admin\UserManagementController;
 use App\Http\Controllers\Authentication\ChangePasswordController;
+use App\Http\Controllers\Authentication\RegisterController;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,8 +44,8 @@ Route::get('/', function () {
 // Authentication
 Route::get('login', [Login::class, 'showLoginForm'])->name('showLogin');
 Route::post('login', [Login::class, 'login'])->name('login');
-Route::get('/register', [Register::class, 'showRegistrationForm'])->name('showRegister');
-Route::post('/register', [Register::class, 'register'])->name('register');
+Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('showRegister');
+Route::post('/register', [RegisterController::class, 'register'])->name('register');
 Route::post('logout', function () {
     Auth::logout();
     return redirect()->route('showLogin');

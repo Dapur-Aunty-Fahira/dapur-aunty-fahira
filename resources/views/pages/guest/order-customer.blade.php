@@ -44,12 +44,16 @@
 
                         <div class="mb-3">
                             <label for="nama" class="form-label">Nama Lengkap</label>
-                            <input type="text" class="form-control" id="nama" name="nama" required>
+                            <input type="text" class="form-control" id="nama" name="nama" required
+                                value="{{ old('nama', Auth::check() ? Auth::user()->name : '') }}">
                         </div>
 
-                        <div class="mb-3">
+                        <div class="m -3">
                             <label for="hp" class="form-label">No HP</label>
-                            <input type="text" class="form-control" id="hp" name="hp" required>
+                            <input type="tel" class="form-control" id="hp" name="hp" required
+                                pattern="[0-9]{10,15}" inputmode="numeric" maxlength="15" placeholder="08xxxxxxxxxx"
+                                value="{{ old('hp', Auth::check() ? Auth::user()->phone ?? '' : '') }}"
+                                oninput="this.value = this.value.replace(/[^0-9]/g, '');">
                         </div>
 
                         <div class="mb-3">

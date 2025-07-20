@@ -134,7 +134,8 @@
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label>Bukti Pembayaran:</label>
-                                    <p id="payment_proof" class="mb-0"></p>
+                                    <p id="payment_proof" class="mb-0" hidden></p>
+                                    <br>
                                     <a href="#" id="payment_proof_link" target="_blank">Lihat Bukti Pembayaran</a>
                                 </div>
                                 <div class="col-md-6 mb-3">
