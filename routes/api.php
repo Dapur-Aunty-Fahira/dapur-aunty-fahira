@@ -28,6 +28,10 @@ Route::prefix('v1')->group(function () {
         Route::post('/checkout', [OrderApiController::class, 'checkoutOrder']);
         Route::get('/timeline/{user_id}', [OrderApiController::class, 'getOrderTimeline']);
         Route::get('/invoice/{order_number}', [OrderApiController::class, 'downloadInvoice']);
+        Route::get('/available', [OrderApiController::class, 'getAvailableOrders']);
+        Route::get('/my-deliveries/{user_id}', [OrderApiController::class, 'getMyDeliveries']);
+        Route::post('/assign/{order_number}', [OrderApiController::class, 'assignOrder']);
+        Route::post('/complete', [OrderApiController::class, 'completeOrder']);
     });
     // route group cart
     Route::prefix('/cart')->group(function () {

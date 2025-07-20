@@ -151,4 +151,102 @@ class OrderApiController extends Controller
         }
     }
 
+    public function getAvailableOrders(): JsonResponse
+    {
+        try {
+            $orders = Order::with(['items.menu'])
+                ->where('order_status', 'dikirim')
+                ->whereNull('courier_id')
+                ->orderByDesc('delivery_date')
+                ->get()
+                ->map(function ($order) {
+                    return [
+                        'order_number' => $order->order_number,
+                        'total_price' => $order->total_price,
+                        'address' => $order->address,
+                        'delivery_date' => $order->delivery_date,
+                        'delivery_time' => $order->delivery_time,
+                        'created_at' => $order->created_at->format('d M Y H:i'),
+                    ];
+                });
+            return $this->success($orders, 'Daftar pesanan tersedia berhasil dimuat');
+        } catch (\Exception $e) {
+            Log::error('Error fetching available orders: ' . $e->getMessage());
+            return $this->error('Terjadi kesalahan pada server.', 500);
+        }
+    }
+
+    public function getMyDeliveries($userId): JsonResponse
+    {
+        try {
+            $orders = Order::with(['items.menu'])
+                ->where('courier_id', $userId)
+                ->where('order_status', 'dikirim')
+                ->orderByDesc('created_at')
+                ->get()
+                ->map(function ($order) {
+                    return [
+                        'order_number' => $order->order_number,
+                        'total_price' => $order->total_price,
+                        'address' => $order->address,
+                        'delivery_date' => $order->delivery_date,
+                        'delivery_time' => $order->delivery_time,
+                        'created_at' => $order->created_at->format('d M Y H:i'),
+                    ];
+                });
+            return $this->success($orders, 'Daftar pengantaran saya berhasil dimuat');
+        } catch (\Exception $e) {
+            Log::error('Error fetching my deliveries: ' . $e->getMessage());
+            return $this->error('Terjadi kesalahan pada server.', 500);
+        }
+    }
+
+    public function assignOrder(Request $request, $orderNumber): JsonResponse
+    {
+        $request->validate([
+            'user_id' => 'required|exists:users,user_id',
+        ]);
+
+        try {
+            $order = Order::where('order_number', $orderNumber)->firstOrFail();
+            if ($order->courier_id) {
+                return $this->error('Pesanan sudah ditugaskan kepada kurir lain.', 400);
+            }
+
+            $order->courier_id = $request->user_id;
+            $order->save();
+
+            return $this->success(null, 'Pesanan berhasil ditugaskan.');
+        } catch (\Exception $e) {
+            Log::error('Error assigning order: ' . $e->getMessage());
+            return $this->error('Gagal menugaskan pesanan.', 500);
+        }
+    }
+
+    public function completeOrder(Request $request): JsonResponse
+    {
+        $request->validate([
+            'arrival_proof' => 'required|image|max:2048',
+            'order_number' => 'required|exists:orders,order_number',
+        ]);
+
+        try {
+            $order = Order::where('order_number', $request->order_number)->firstOrFail();
+            if ($order->order_status !== 'dikirim') {
+                return $this->error('Pesanan tidak dalam status dikirim.', 400);
+            }
+
+            // Simpan bukti pengantaran
+            $proofPath = $request->file('arrival_proof')->store('bukti-pengantaran', 'public');
+            $order->arrival_proof = $proofPath;
+            $order->order_status = 'selesai';
+            $order->save();
+
+            return $this->success(null, 'Pesanan berhasil diselesaikan.');
+        } catch (\Exception $e) {
+            Log::error('Error completing order: ' . $e->getMessage());
+            return $this->error('Gagal menyelesaikan pesanan.', 500);
+        }
+    }
+
 }
