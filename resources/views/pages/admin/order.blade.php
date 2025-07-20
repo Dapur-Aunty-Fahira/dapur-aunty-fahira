@@ -136,7 +136,14 @@
                                     <label>Bukti Pembayaran:</label>
                                     <p id="payment_proof" class="mb-0" hidden></p>
                                     <br>
-                                    <a href="#" id="payment_proof_link" target="_blank">Lihat Bukti Pembayaran</a>
+                                    <a href="#" id="payment_proof_link" data-toggle="modal"
+                                        data-target="#imagePreviewModal">Lihat Bukti Pembayaran</a>
+
+                                    <div id="payment_proof_preview" class="mt-2">
+                                        <img id="payment_proof_img" src="" alt="Bukti Pembayaran"
+                                            class="img-fluid rounded border shadow-sm"
+                                            style="max-height: 300px; display: none;">
+                                    </div>
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label>Status Pembayaran:</label>
@@ -156,6 +163,27 @@
                 </div>
             </div>
         </div>
+
+        <div class="modal fade" id="imagePreviewModal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content bg-white">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Bukti Pembayaran</h5>
+                        <button type="button" class="close"
+                            onclick="$('#imagePreviewModal').modal('hide'); setTimeout(function() { $('#orderDetailModal').addClass('modal-open').css('overflow', 'auto'); }, 300);"
+                            aria-label="Tutup">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <img id="modal_payment_proof_img" src="" class="img-fluid rounded shadow-sm"
+                            alt="Bukti Pembayaran">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
 
 
         <style>
@@ -297,7 +325,7 @@
                             className: 'text-center',
                             render: function(data, type, row) {
                                 if (data && data !== '-') {
-                                    return `<a href="{{ asset('storage') }}/${data}" target="_blank">Lihat Bukti Pembayaran</a>`;
+                                    return `<a href="#" class="payment-proof-link" data-target="#imagePreviewModal">Lihat Bukti Pembayaran</a>`;
                                 }
                                 return '-';
                             }
@@ -355,12 +383,18 @@
                     $('#payment_status').val(data.payment_status);
                     // image link payment proof
                     $('#payment_proof').text(data.payment_proof || '-');
-                    if (data.payment_proof && data.payment_proof !== '-') {
+                    const paymentProofPath = data.payment_proof;
+                    if (paymentProofPath && paymentProofPath !== '-') {
+                        const fullPath = '{{ asset('storage') }}/' + paymentProofPath;
                         $('#payment_proof_link')
-                            .attr('href', '{{ asset('storage') }}/' + data.payment_proof)
+                            .attr('href', fullPath)
+                            .show();
+                        $('#payment_proof_img')
+                            .attr('src', fullPath)
                             .show();
                     } else {
                         $('#payment_proof_link').attr('href', '#').hide();
+                        $('#payment_proof_img').attr('src', '').hide();
                     }
 
                     $('#orderDetailModal').modal('show');
@@ -429,6 +463,16 @@
                 $('#order_status').on('change', function() {
                     toggleCancellationReason();
                 });
+
+                $('#payment_proof_link').on('click', function(e) {
+                    e.preventDefault();
+                    const src = $('#payment_proof_img').attr('src');
+                    if (src) {
+                        $('#modal_payment_proof_img').attr('src', src);
+                        $('#imagePreviewModal').modal('show');
+                    }
+                });
+
 
             });
         </script>
