@@ -12,8 +12,8 @@ return new class extends Migration {
         // Ubah panjang kolom
         DB::statement("ALTER TABLE users ALTER COLUMN name TYPE VARCHAR(50);");
         DB::statement("ALTER TABLE users ALTER COLUMN email TYPE VARCHAR(50);");
-        DB::statement("ALTER TABLE users ALTER COLUMN password TYPE VARCHAR(50);");
-        DB::statement("ALTER TABLE users ALTER COLUMN remember_token TYPE VARCHAR(50);");
+        // DB::statement("ALTER TABLE users ALTER COLUMN password TYPE VARCHAR(50);");
+        // DB::statement("ALTER TABLE users ALTER COLUMN remember_token TYPE VARCHAR(50);");
 
         // Ganti enum role menjadi VARCHAR(10)
         DB::statement("ALTER TABLE users ALTER COLUMN role TYPE VARCHAR(10) USING role::VARCHAR(10);");
@@ -27,8 +27,8 @@ return new class extends Migration {
         // Kembalikan ke panjang semula
         DB::statement("ALTER TABLE users ALTER COLUMN name TYPE VARCHAR(100);");
         DB::statement("ALTER TABLE users ALTER COLUMN email TYPE VARCHAR(100);");
-        DB::statement("ALTER TABLE users ALTER COLUMN password TYPE VARCHAR(100);");
-        DB::statement("ALTER TABLE users ALTER COLUMN remember_token TYPE VARCHAR(100);");
+        // DB::statement("ALTER TABLE users ALTER COLUMN password TYPE VARCHAR(100);");
+        // DB::statement("ALTER TABLE users ALTER COLUMN remember_token TYPE VARCHAR(100);");
 
         // Kembalikan kolom role ke enum
         // Harus buat tipe enum baru

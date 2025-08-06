@@ -29,15 +29,18 @@ class RegisterController extends Controller
         try {
             DB::beginTransaction();
 
+            // Hash the password
+            $hashedPassword = Hash::make($validated['password']);
+
             $user = User::create([
                 'name' => $validated['name'],
                 'email' => $validated['email'],
                 'phone' => $validated['phone'],
-                'password' => substr(Hash::make($validated['password']), 0, 50),
+                'password' => $hashedPassword,
             ]);
 
-            Auth::login($user);
             DB::commit();
+            Auth::login($user);
 
             return redirect()->route('home')->with('success', 'Registrasi berhasil!');
 
