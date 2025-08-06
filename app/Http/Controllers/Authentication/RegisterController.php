@@ -45,7 +45,7 @@ class RegisterController extends Controller
             DB::rollBack();
             Log::error('Register error: ' . $e->getMessage());
 
-            return redirect()->route('showRegistrationForm')->withErrors(['register' => 'Terjadi kesalahan saat registrasi. Silakan coba lagi.'])->withInput();
+            return redirect()->route('showRegister')->withErrors(['register' => 'Terjadi kesalahan saat registrasi. Silakan coba lagi.'])->withInput();
         }
     }
 }
