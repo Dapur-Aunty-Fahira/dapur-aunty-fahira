@@ -57,7 +57,7 @@
         <div class="modal-dialog">
             <form id="userForm">
                 @csrf
-                <input type="hidden" name="id" id="user_id">
+                <input type="hidden" name="user_id" id="user_id">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="userModalTitle">Tambah Pengguna</h5>
@@ -162,8 +162,8 @@
                             <i class="fas fa-ellipsis-v"></i>
                         </button>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item btn-edit" href="#" data-id="${row.id}"><i class="fas fa-edit mr-2"></i>Edit</a>
-                            <a class="dropdown-item btn-delete" href="#" data-id="${row.id}"><i class="fas fa-trash-alt mr-2"></i>Hapus</a>
+                            <a class="dropdown-item btn-edit" href="#" data-user_id="${row.user_id}"><i class="fas fa-edit mr-2"></i>Edit</a>
+                            <a class="dropdown-item btn-delete" href="#" data-user_id="${row.user_id}"><i class="fas fa-trash-alt mr-2"></i>Hapus</a>
                         </div>
                     </div>`
                     }
@@ -181,9 +181,9 @@
 
             $('#users-table').on('click', '.btn-edit', function(e) {
                 e.preventDefault();
-                let id = $(this).data('id');
+                let id = $(this).data('user_id');
                 $.get(`/admin/users/${id}`, function(res) {
-                    $('#user_id').val(res.data.id);
+                    $('#user_id').val(res.data.user_id);
                     $('#name').val(res.data.name);
                     $('#email').val(res.data.email);
                     $('#phone').val(res.data.phone);
@@ -267,7 +267,7 @@
 
             $('#users-table').on('click', '.btn-delete', function(e) {
                 e.preventDefault();
-                let id = $(this).data('id');
+                let id = $(this).data('user_id');
 
                 Swal.fire({
                     title: 'Yakin ingin menghapus?',
