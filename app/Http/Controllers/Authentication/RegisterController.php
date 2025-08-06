@@ -20,9 +20,9 @@ class RegisterController extends Controller
     public function register(Request $request)
     {
         $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'email', 'max:255', 'unique:users,email'],
-            'password' => ['required', 'confirmed', 'min:6'],
+            'name' => ['required', 'string', 'max:50'],
+            'email' => ['required', 'email', 'max:50', 'unique:users,email'],
+            'password' => ['required', 'confirmed', 'min:6', 'max:50'],
             'phone' => ['required', 'string', 'max:15'],
         ]);
 
@@ -33,7 +33,7 @@ class RegisterController extends Controller
                 'name' => $validated['name'],
                 'email' => $validated['email'],
                 'phone' => $validated['phone'],
-                'password' => Hash::make($validated['password']),
+                'password' => substr(Hash::make($validated['password']), 0, 50),
             ]);
 
             Auth::login($user);
