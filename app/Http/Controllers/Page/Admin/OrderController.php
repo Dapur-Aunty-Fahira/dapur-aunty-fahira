@@ -52,7 +52,8 @@ class OrderController extends Controller
 
             // Build query
             $query = Order::with(['user', 'items.menu'])
-                ->join('users', 'orders.user_id', '=', 'users.user_id');
+                ->leftJoin('users', 'orders.user_id', '=', 'users.user_id');
+
 
             if (!empty($orderStatus)) {
                 $query->where('orders.order_status', $orderStatus);
@@ -75,7 +76,23 @@ class OrderController extends Controller
             $totalOrders = Order::count();
 
             // Get filtered count
-            $filteredOrders = (clone $query)->count();
+            $filteredOrders = Order::when(!empty($orderStatus), function ($q) use ($orderStatus) {
+                $q->where('order_status', $orderStatus);
+            })
+            ->when(!empty($searchValue), function ($q) use ($searchValue) {
+                $q->where(function ($query) use ($searchValue) {
+                    $query->where('order_number', 'like', "%{$searchValue}%")
+                        ->orWhere('address', 'like', "%{$searchValue}%")
+                        ->orWhere('total_price', 'like', "%{$searchValue}%")
+                        ->orWhere('delivery_date', 'like', "%{$searchValue}%")
+                        ->orWhere('delivery_time', 'like', "%{$searchValue}%")
+                        ->orWhere('order_status', 'like', "%{$searchValue}%");
+                });
+            })
+            ->count();
+
+
+
 
             // Apply sorting, pagination
             if ($sortColumn) {

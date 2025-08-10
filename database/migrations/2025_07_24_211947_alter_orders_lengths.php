@@ -12,7 +12,7 @@ return new class extends Migration {
         // PostgreSQL-compatible ALTER TABLE untuk mengubah panjang kolom
         DB::statement("ALTER TABLE orders ALTER COLUMN payment_method TYPE VARCHAR(20);");
         DB::statement("ALTER TABLE orders ALTER COLUMN payment_status TYPE VARCHAR(20);");
-        DB::statement("ALTER TABLE orders ALTER COLUMN arrival_proof TYPE VARCHAR(20);");
+        DB::statement("ALTER TABLE orders ALTER COLUMN arrival_proof TYPE VARCHAR(100);");
     }
 
     /**

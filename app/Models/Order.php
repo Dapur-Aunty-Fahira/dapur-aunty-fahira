@@ -59,6 +59,12 @@ class Order extends Model
         return $this->belongsTo(User::class, 'user_id', 'user_id');
     }
 
+    public function scopeJoinUsers($query)
+    {
+        return $query->join('users', 'orders.user_id', '=', 'users.user_id');
+    }
+
+
     /**
      * Relasi ke kurir (user) yang mengantarkan.
      */
