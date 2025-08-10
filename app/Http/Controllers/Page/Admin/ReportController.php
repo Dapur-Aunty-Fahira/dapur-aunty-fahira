@@ -65,7 +65,7 @@ class ReportController extends Controller
                 in_array($orderColumn, ['user_name', 'full_address']) ||
                 !empty($searchValue)
             ) {
-                $query->leftJoin('users', 'orders.user_id', '=', 'users.id')
+                $query->leftJoin('users', 'orders.user_id', '=', 'users.user_id')
                     ->select('orders.*');
             }
 
@@ -115,7 +115,7 @@ class ReportController extends Controller
                 'data' => $data,
             ]);
         } catch (\Throwable $e) {
-            Log::error('OrderController@show error', [
+            Log::error('ReportController@show error', [
                 'message' => $e->getMessage(),
                 'trace' => $e->getTraceAsString(),
                 'request' => $request->all(),
