@@ -92,10 +92,10 @@ class UserManagementController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($id)
+    public function edit($user_id)
     {
         try {
-            $user = User::findOrFail($id);
+            $user = User::findOrFail($user_id);
 
             return $this->success($user, 'Data pengguna berhasil diambil');
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
@@ -103,7 +103,7 @@ class UserManagementController extends Controller
         } catch (\Throwable $e) {
             Log::error('UserManagementController@edit', [
                 'exception' => $e,
-                'user_id' => $id,
+                'user_id' => $user_id,
             ]);
 
             return $this->error('Terjadi kesalahan saat mengambil data pengguna');
@@ -113,8 +113,20 @@ class UserManagementController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UserRequest $request, User $user)
+    public function update(UserRequest $request, $user_id)
     {
+        $user = User::find($user_id);
+        if (!$user) {
+            return $this->error('Pengguna tidak ditemukan', 404);
+        }
+
+        // Update user
+        // dd($request->all());
+        // Validate incoming request
+        $data = $request->validated();
+
+        // Update user data
+        // Only update password if provided
         try {
             $data = $request->validated();
 

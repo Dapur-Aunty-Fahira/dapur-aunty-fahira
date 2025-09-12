@@ -28,7 +28,7 @@ class UserRequest extends FormRequest
         // Determine method or route action
         $method = $this->method();
 
-        $userId = $this->input('id') ?? null;
+        $userId = $this->route('user') ?? null;
         // only used on update
 
 
@@ -45,9 +45,9 @@ class UserRequest extends FormRequest
             case 'PUT':
             case 'PATCH': // Update
                 return [
-                    'id' => 'required|integer',
+                    'user_id' => 'required|integer',
                     'name' => 'sometimes|required|string|max:60',
-                    'email' => 'sometimes|required|string|email|max:60|unique:users,email,' . $userId,
+                    'email' => 'sometimes|required|string|email|max:60|unique:users,email,' . $userId . ',user_id',
                     'password' => 'nullable|string|min:6|confirmed',
                     'role' => 'required|in:admin,pelanggan,kurir',
                     'phone' => 'nullable|string|max:20',

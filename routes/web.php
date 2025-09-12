@@ -87,8 +87,8 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
         Route::get('', [UserManagementController::class, 'index'])->name('admin.users.index');
         Route::get('show', [UserManagementController::class, 'show'])->name('admin.users.show');
         Route::post('store', [UserManagementController::class, 'store'])->name('admin.users.store');
-        Route::get('{user}', [UserManagementController::class, 'edit'])->name('admin.users.edit');
-        Route::put('{user}', [UserManagementController::class, 'update'])->name('admin.users.update');
+        Route::get('{user_id}', [UserManagementController::class, 'edit'])->name('admin.users.edit');
+        Route::put('{user_id}', [UserManagementController::class, 'update'])->name('admin.users.update');
         Route::delete('{user}', [UserManagementController::class, 'destroy'])->name('admin.users.destroy');
     });
 
