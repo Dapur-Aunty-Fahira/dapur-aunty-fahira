@@ -126,7 +126,7 @@
                         data: 'order_number'
                     },
                     {
-                        data: 'user_name'
+                        data: 'name'
                     },
                     {
                         data: 'menu_list'

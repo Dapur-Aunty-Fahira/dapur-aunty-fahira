@@ -40,7 +40,7 @@ class ReportController extends Controller
             // Mapping nama kolom frontend ke kolom database
             $sortable = [
                 'order_number' => 'order_number',
-                'user_name' => 'users.name', // pakai join
+                'name' => 'users.name', // pakai join
                 'total_quantity' => '', // handled manually
                 'total_price' => 'total_price',
                 'delivery_date' => 'delivery_date',
@@ -62,7 +62,7 @@ class ReportController extends Controller
 
             // Join tambahan untuk user dan address jika sorting/search dipakai
             if (
-                in_array($orderColumn, ['user_name', 'full_address']) ||
+                in_array($orderColumn, ['name', 'full_address']) ||
                 !empty($searchValue)
             ) {
                 $query->leftJoin('users', 'orders.user_id', '=', 'users.user_id')
@@ -95,7 +95,7 @@ class ReportController extends Controller
             $data = $orders->map(function ($order) {
                 return [
                     'order_number' => $order->order_number,
-                    'user_name' => $order->user->name ?? '-',
+                    'name' => $order->user->name ?? '-',
                     'menu_list' => $order->items->pluck('menu.name')->unique()->implode(', '),
                     'total_quantity' => $order->items->sum('quantity'),
                     'total_price' => $order->total_price,

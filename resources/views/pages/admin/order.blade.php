@@ -91,7 +91,7 @@
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label>Nama Pemesan:</label>
-                                    <p id="detail_user_name" class="mb-0"></p>
+                                    <p id="detail_name" class="mb-0"></p>
                                 </div>
                                 <div class="col-md-12 mb-3">
                                     <label>Menu Dipesan:</label>
@@ -275,7 +275,7 @@
                             data: 'order_number'
                         },
                         {
-                            data: 'user_name'
+                            data: 'name'
                         },
                         {
                             data: 'menu_items',
@@ -371,7 +371,7 @@
 
                     $('#order_id').val(data.id);
                     $('#detail_order_number').text(data.order_number);
-                    $('#detail_user_name').text(data.user_name);
+                    $('#detail_name').text(data.name);
                     $('#detail_menu_list').text(data.menu_items);
                     $('#detail_total_quantity').text(data.total_quantity);
                     $('#detail_total_paid').text('Rp. ' + parseInt(data.total_price).toLocaleString('id-ID'));

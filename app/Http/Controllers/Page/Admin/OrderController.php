@@ -38,7 +38,7 @@ class OrderController extends Controller
             // Map column names to database columns
             $sortable = [
                 'order_number' => 'orders.order_number',
-                'user_name' => 'users.name',
+                'name' => 'users.name',
                 'total_quantity' => null, // handled after fetching
                 'total_price' => 'orders.total_price',
                 'delivery_date' => 'orders.delivery_date',
@@ -79,17 +79,17 @@ class OrderController extends Controller
             $filteredOrders = Order::when(!empty($orderStatus), function ($q) use ($orderStatus) {
                 $q->where('order_status', $orderStatus);
             })
-            ->when(!empty($searchValue), function ($q) use ($searchValue) {
-                $q->where(function ($query) use ($searchValue) {
-                    $query->where('order_number', 'like', "%{$searchValue}%")
-                        ->orWhere('address', 'like', "%{$searchValue}%")
-                        ->orWhere('total_price', 'like', "%{$searchValue}%")
-                        ->orWhere('delivery_date', 'like', "%{$searchValue}%")
-                        ->orWhere('delivery_time', 'like', "%{$searchValue}%")
-                        ->orWhere('order_status', 'like', "%{$searchValue}%");
-                });
-            })
-            ->count();
+                ->when(!empty($searchValue), function ($q) use ($searchValue) {
+                    $q->where(function ($query) use ($searchValue) {
+                        $query->where('order_number', 'like', "%{$searchValue}%")
+                            ->orWhere('address', 'like', "%{$searchValue}%")
+                            ->orWhere('total_price', 'like', "%{$searchValue}%")
+                            ->orWhere('delivery_date', 'like', "%{$searchValue}%")
+                            ->orWhere('delivery_time', 'like', "%{$searchValue}%")
+                            ->orWhere('order_status', 'like', "%{$searchValue}%");
+                    });
+                })
+                ->count();
 
 
 
@@ -118,7 +118,7 @@ class OrderController extends Controller
             foreach ($orders as $order) {
                 $data[] = [
                     'order_number' => $order->order_number,
-                    'user_name' => $order->user->name ?? '-',
+                    'name' => $order->user->name ?? '-',
                     //combine each item with quantity and price
                     'menu_items' => $order->items->map(function ($item) {
                         return $item->menu->name . ' (x' . $item->quantity . '. @ Rp. ' . number_format($item->menu->price * $item->quantity, 0, ',', '.') . ')';
