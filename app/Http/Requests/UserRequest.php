@@ -39,7 +39,7 @@ class UserRequest extends FormRequest
                     'email' => 'required|string|email|max:60|unique:users,email',
                     'password' => 'required|string|min:6|confirmed',
                     'role' => 'required|in:admin,pelanggan,kurir',
-                    'phone' => 'nullable|numeric|max:20',
+                    'phone' => 'nullable|numeric|digits_between:0,20',
                 ];
 
             case 'PUT':
@@ -50,7 +50,7 @@ class UserRequest extends FormRequest
                     'email' => 'sometimes|required|string|email|max:60|unique:users,email,' . $userId . ',user_id',
                     'password' => 'nullable|string|min:6|confirmed',
                     'role' => 'required|in:admin,pelanggan,kurir',
-                    'phone' => 'nullable|numeric|max:20',
+                    'phone' => 'nullable|numeric|digits_between:0,20',
                 ];
             default:
                 return []; // Usually no validation for show/edit/delete
