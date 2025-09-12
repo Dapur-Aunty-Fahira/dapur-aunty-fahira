@@ -121,8 +121,12 @@ class OrderController extends Controller
                     'name' => $order->user->name ?? '-',
                     //combine each item with quantity and price
                     'menu_items' => $order->items->map(function ($item) {
+                        if (!$item->menu) {
+                            return 'Menu tidak ditemukan';
+                        }
                         return $item->menu->name . ' (x' . $item->quantity . '. @ Rp. ' . number_format($item->menu->price * $item->quantity, 0, ',', '.') . ')';
                     })->implode(', '),
+
                     'total_quantity' => $order->items->sum('quantity'),
                     'total_price' => $order->total_price,
                     'delivery_date' => $order->delivery_date ?? '-',
