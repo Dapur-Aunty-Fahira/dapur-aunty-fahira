@@ -13,6 +13,27 @@ use App\Traits\ApiResponse;
 class MenuApiController extends Controller
 {
     use ApiResponse;
+    /**
+     * Menampilkan daftar menu dengan paginasi, filter, dan pencarian opsional.
+     *
+     * Method ini mengambil data menu dari database, dengan opsi filter berdasarkan nama kategori
+     * dan pencarian berdasarkan nama menu. Hasilnya dipaginasi dan memuat relasi kategori.
+     *
+     * Parameter Query:
+     * - category (string, opsional): Filter menu berdasarkan nama kategori.
+     * - search (string, opsional): Cari menu berdasarkan nama (pencocokan sebagian).
+     *
+     * Respons:
+     * - status (string): Status respons ('sukses' jika berhasil).
+     * - message (string): Pesan respons.
+     * - data (array): Array item menu pada halaman saat ini.
+     * - next_page_url (string|null): URL ke halaman berikutnya, atau null jika sudah halaman terakhir.
+     * - current_page (int): Nomor halaman saat ini.
+     * - last_page (int): Nomor halaman terakhir.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function showMenus(Request $request): JsonResponse
     {
         try {

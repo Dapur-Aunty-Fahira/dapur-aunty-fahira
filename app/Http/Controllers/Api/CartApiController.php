@@ -13,6 +13,39 @@ use Illuminate\Validation\ValidationException;
 class CartApiController extends Controller
 {
     use ApiResponse;
+    /**
+     * Mengelola operasi API terkait keranjang belanja untuk pengguna.
+     *
+     * Metode:
+     *
+     * getUserCart($userId)
+     *   Mengambil semua item keranjang untuk pengguna tertentu, termasuk detail menu terkait.
+     *   Mengembalikan respons sukses dengan item keranjang atau respons error jika gagal.
+     *
+     * addToCart(Request $request)
+     *   Menambahkan item menu ke keranjang pengguna atau memperbarui jumlah jika sudah ada.
+     *   Memvalidasi permintaan untuk user_id, menu_id, dan quantity.
+     *   Mengembalikan respons sukses dengan item keranjang atau respons error jika gagal.
+     *
+     * updateQuantity(Request $request, $cartId)
+     *   Memperbarui jumlah item pada keranjang tertentu.
+     *   Memvalidasi permintaan untuk quantity.
+     *   Mengembalikan respons sukses dengan item keranjang yang diperbarui atau respons error jika gagal.
+     *
+     * removeFromCart($cartId)
+     *   Menghapus item tertentu dari keranjang.
+     *   Mengembalikan respons sukses jika berhasil dihapus atau respons error jika gagal.
+     *
+     * Penanganan Error:
+     *   Menangkap exception validasi dan umum, mencatat error, dan mengembalikan respons error yang sesuai.
+     */
+
+    /**
+     * Mengambil semua item keranjang untuk pengguna tertentu.
+     *
+     * @param int $userId
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function getUserCart($userId)
     {
         try {
@@ -35,6 +68,13 @@ class CartApiController extends Controller
             return $this->error('Terjadi kesalahan pada server.', 500);
         }
     }
+
+    /**
+     * Menambahkan item ke keranjang pengguna atau memperbarui jumlah jika sudah ada.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
 
     public function addToCart(Request $request)
     {
@@ -71,6 +111,13 @@ class CartApiController extends Controller
         }
     }
 
+    /**
+     * Memperbarui jumlah item pada keranjang tertentu.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param int $cartId
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function updateQuantity(Request $request, $cartId)
     {
         $validated = $request->validate([
@@ -92,6 +139,12 @@ class CartApiController extends Controller
         }
     }
 
+    /**
+     * Menghapus item tertentu dari keranjang.
+     *
+     * @param int $cartId
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function removeFromCart($cartId)
     {
         try {

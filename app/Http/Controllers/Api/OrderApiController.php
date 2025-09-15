@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Models\Cart;
 use App\Models\Order;
-use PDF;
+use Barryvdh\DomPDF\PDF;
 use App\Models\OrderItem;
 use App\Traits\ApiResponse;
 use Illuminate\Support\Str;
@@ -18,6 +18,47 @@ use Illuminate\Validation\ValidationException;
 class OrderApiController extends Controller
 {
     use ApiResponse;
+    /**
+     * OrderApiController menangani endpoint API terkait pemrosesan pesanan, termasuk checkout, pengambilan timeline,
+     * unduh invoice, penugasan kurir, dan penyelesaian pesanan.
+     *
+     * Metode:
+     *
+     * @method JsonResponse checkoutOrder(Request $request)
+     *     Menangani proses checkout pesanan. Memvalidasi data request, menghitung total harga,
+     *     menyimpan bukti pembayaran, membuat pesanan dan item pesanan, mengosongkan keranjang user,
+     *     dan mengembalikan detail pesanan. Melakukan rollback transaksi dan mencatat error jika gagal.
+     *
+     * @method JsonResponse getOrderTimeline($userId)
+     *     Mengambil timeline pesanan untuk user tertentu, termasuk detail pesanan dan item terkait.
+     *     Mengembalikan daftar pesanan terformat atau response error jika gagal.
+     *
+     * @method \Symfony\Component\HttpFoundation\BinaryFileResponse downloadInvoice(Request $request, $orderNumber, PDF $pdf)
+     *     Membuat dan mengunduh invoice PDF untuk pesanan tertentu berdasarkan nomor pesanan.
+     *     Mengembalikan file PDF atau response error jika gagal.
+     *
+     * @method JsonResponse getAvailableOrders()
+     *     Mengambil daftar pesanan yang tersedia untuk ditugaskan ke kurir (status 'dikirim' dan belum ada kurir).
+     *     Mengembalikan daftar pesanan terformat atau response error jika gagal.
+     *
+     * @method JsonResponse getMyDeliveries($userId)
+     *     Mengambil daftar pesanan yang sedang dikirim oleh kurir (user) tertentu.
+     *     Mengembalikan daftar pengantaran terformat atau response error jika gagal.
+     *
+     * @method JsonResponse assignOrder(Request $request, $orderNumber)
+     *     Menugaskan pesanan ke kurir dengan memperbarui courier_id pada pesanan tertentu.
+     *     Memvalidasi user ID kurir dan memeriksa apakah pesanan sudah ditugaskan.
+     *     Mengembalikan response sukses atau error.
+     *
+     * @method JsonResponse completeOrder(Request $request)
+     *     Menandai pesanan selesai dengan mengunggah bukti pengantaran dan memperbarui status pesanan menjadi 'selesai'.
+     *     Memvalidasi request dan memastikan status pesanan sudah benar.
+     *     Mengembalikan response sukses atau error.
+     */
+
+    /**
+     * Menangani proses checkout pesanan.
+     */
     public function checkoutOrder(Request $request): JsonResponse
     {
         $validated = $request->validate([
@@ -100,6 +141,10 @@ class OrderApiController extends Controller
         }
     }
 
+    /**
+     * Mengambil timeline pesanan untuk user tertentu, termasuk detail pesanan dan item terkait.
+     * Mengembalikan daftar pesanan terformat atau response error jika gagal.
+     */
     public function getOrderTimeline($userId): JsonResponse
     {
         try {
@@ -135,6 +180,10 @@ class OrderApiController extends Controller
         }
     }
 
+    /**
+     * Membuat dan mengunduh invoice PDF untuk pesanan tertentu berdasarkan nomor pesanan.
+     * Mengembalikan file PDF atau response error jika gagal.
+     */
     public function downloadInvoice(Request $request, $orderNumber, PDF $pdf)
     {
         try {
@@ -142,7 +191,7 @@ class OrderApiController extends Controller
                 ->where('order_number', $orderNumber)
                 ->firstOrFail();
 
-            $pdf = PDF::loadView('invoice.order', compact('order'));
+            $pdf = $pdf->loadView('invoice.order', compact('order'));
 
             return $pdf->download("Invoice_{$order->order_number}.pdf");
         } catch (\Exception $e) {
@@ -151,6 +200,10 @@ class OrderApiController extends Controller
         }
     }
 
+    /**
+     * Mengambil daftar pesanan yang tersedia untuk ditugaskan ke kurir (status 'dikirim' dan belum ada kurir).
+     * Mengembalikan daftar pesanan terformat atau response error jika gagal.
+     */
     public function getAvailableOrders(): JsonResponse
     {
         try {
@@ -176,6 +229,10 @@ class OrderApiController extends Controller
         }
     }
 
+    /**
+     * Mengambil daftar pesanan yang sedang dikirim oleh kurir (user) tertentu.
+     * Mengembalikan daftar pengantaran terformat atau response error jika gagal.
+     */
     public function getMyDeliveries($userId): JsonResponse
     {
         try {
@@ -201,6 +258,11 @@ class OrderApiController extends Controller
         }
     }
 
+    /**
+     * Menugaskan pesanan ke kurir dengan memperbarui courier_id pada pesanan tertentu.
+     * Memvalidasi user ID kurir dan memeriksa apakah pesanan sudah ditugaskan.
+     * Mengembalikan response sukses atau error.
+     */
     public function assignOrder(Request $request, $orderNumber): JsonResponse
     {
         $request->validate([
@@ -223,6 +285,11 @@ class OrderApiController extends Controller
         }
     }
 
+    /**
+     * Menandai pesanan selesai dengan mengunggah bukti pengantaran dan memperbarui status pesanan menjadi 'selesai'.
+     *    Memvalidasi request dan memastikan status pesanan sudah benar.
+     *     Mengembalikan response sukses atau error.
+     */
     public function completeOrder(Request $request): JsonResponse
     {
         $request->validate([

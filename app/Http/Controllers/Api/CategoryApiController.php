@@ -13,6 +13,16 @@ use App\Traits\ApiResponse;
 class CategoryApiController extends Controller
 {
     use ApiResponse;
+    /**
+     * Menampilkan daftar kategori beserta menu yang terkait.
+     *
+     * Mengambil semua data kategori beserta relasi menu dari database.
+     * Mengembalikan respons JSON dengan data kategori jika berhasil.
+     * Menangani validasi dan exception umum, mencatat error dan mengembalikan respons yang sesuai.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function showCategories(Request $request): JsonResponse
     {
         try {
