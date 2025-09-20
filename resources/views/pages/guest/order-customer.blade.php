@@ -18,6 +18,11 @@
             </ul>
         </div>
 
+        <!-- Search Bar -->
+        <div class="mb-4">
+            <input type="text" id="menu-search" class="form-control" placeholder="Cari menu...">
+        </div>
+
         <!-- Menu Cards -->
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4" id="menu-list">
             <!-- Menu akan dimuat via AJAX -->
@@ -167,6 +172,7 @@
 
         let page = 1;
         let category = '';
+        let search = '';
         let loading = false;
         let lastPage = false;
 
@@ -218,6 +224,7 @@
                 page: page
             };
             if (category) dataParams.category = category;
+            if (search) dataParams.search = search;
 
             $.ajax({
                 url: '/api/v1/menus',
@@ -315,6 +322,13 @@
                     loadMenus();
                 }
             });
+        });
+
+        $('#menu-search').on('input', function() {
+            search = $(this).val().trim();
+            page = 1;
+            lastPage = false;
+            loadMenus(true); // reset list
         });
     </script>
 
