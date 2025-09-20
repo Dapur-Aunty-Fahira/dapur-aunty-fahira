@@ -161,6 +161,7 @@ class OrderApiController extends Controller
                         'delivery_date' => $order->delivery_date,
                         'delivery_time' => $order->delivery_time,
                         'address' => $order->address,
+                        'courirer_name' => $order->courier ? $order->courier->name : '',
                         'created_at' => $order->created_at->format('d M Y H:i'),
                         'items' => $order->items->map(function ($item) {
                             return [
