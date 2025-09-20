@@ -157,6 +157,7 @@ class OrderApiController extends Controller
                         'order_number' => $order->order_number,
                         'total_price' => $order->total_price,
                         'order_status' => $order->order_status,
+                        'arrival_proof' => $order->arrival_proof,
                         'delivery_date' => $order->delivery_date,
                         'delivery_time' => $order->delivery_time,
                         'address' => $order->address,

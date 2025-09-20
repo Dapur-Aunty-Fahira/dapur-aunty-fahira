@@ -55,32 +55,40 @@
             let html = '<ul class="list-group list-group-flush">';
             orders.forEach(order => {
                 html += `
-            <li class="list-group-item">
-                <div class="d-flex justify-content-between">
-                    <div>
-                        <h6 class="mb-1">#${order.order_number} - Rp${Number(order.total_price).toLocaleString()}</h6>
-                        <p class="mb-1">Status: <strong>${order.order_status.replace(/\b\w/g, c => c.toUpperCase())}</strong></p>
-                        <p class="mb-1">Pengantaran pada: ${order.delivery_date} pukul ${order.delivery_time}</p>
-                        <p class="mb-1">Alamat: ${order.address}</p>
-                        <small>Waktu pesanan dibuat: ${order.created_at}</small>
-                    </div>
-                    <div class="text-end">
-                        <button class="btn btn-sm btn-outline-primary" onclick="toggleDetails('${order.order_number}')">Detail</button>
-                        <a href="api/v1/order/invoice/${order.order_number}" target="_blank" class="btn btn-sm btn-outline-success ms-2">Invoice</a>
-                    </div>
+        <li class="list-group-item">
+            <div class="d-flex justify-content-between">
+                <div>
+                    <h6 class="mb-1">#${order.order_number} - Rp${Number(order.total_price).toLocaleString()}</h6>
+                    <p class="mb-1">Status: <strong>${order.order_status.replace(/\b\w/g, c => c.toUpperCase())}</strong></p>
+                    <p class="mb-1">Pengantaran pada: ${order.delivery_date} pukul ${order.delivery_time}</p>
+                    <p class="mb-1">Alamat: ${order.address}</p>
+                    <small>Waktu pesanan dibuat: ${order.created_at}</small>
                 </div>
-                <div id="details-${order.order_number}" class="mt-2 d-none">
-                    ${(order.items || []).map(item => `
-                                                                        <div class="border p-2 mb-1 rounded bg-light">
-                                                                            <strong>${item.menu_name}</strong> x ${item.quantity} @ Rp${Number(item.price).toLocaleString()}
-                                                                        </div>
-                                                                    `).join('')}
+                <div class="text-end">
+                    <button class="btn btn-sm btn-outline-primary" onclick="toggleDetails('${order.order_number}')">Detail</button>
+                    <a href="api/v1/order/invoice/${order.order_number}" target="_blank" class="btn btn-sm btn-outline-success ms-2">Invoice</a>
                 </div>
-            </li>`;
+            </div>
+            <div id="details-${order.order_number}" class="mt-2 d-none">
+                ${(order.items || []).map(item => `
+                        <div class="border p-2 mb-1 rounded bg-light">
+                            <strong>${item.menu_name}</strong> x ${item.quantity} @ Rp${Number(item.price).toLocaleString()}
+                        </div>
+                    `).join('')}
+
+                ${order.order_status === 'selesai' && order.arrival_proof ? `
+                        <div class="mt-3">
+                            <p class="fw-bold mb-1">Bukti Pengantaran:</p>
+                            <img src="/storage/${order.arrival_proof}" alt="Bukti Pengantaran" class="img-fluid rounded border" style="max-width:300px;">
+                        </div>
+                    ` : ''}
+            </div>
+        </li>`;
             });
             html += '</ul>';
             timeline.innerHTML = html;
         }
+
 
         function toggleDetails(orderNumber) {
             const el = document.getElementById(`details-${orderNumber}`);
